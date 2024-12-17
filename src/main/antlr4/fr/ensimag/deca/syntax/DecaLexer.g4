@@ -11,8 +11,6 @@ options {
 @members {
 }
 
-EOL : '\n';
-
 OBRACE : '{';
 CBRACE : '}';
 
@@ -59,9 +57,21 @@ READINT : 'readInt';
 READFLOAT : 'readFloat';
 NEW : 'new';
 
-INT : 'int';
-STRING : 'String';
-FLOAT : 'float';
+fragment SIGN : ('+' | '-')?;
+
+INT : SIGN DIGIT+;
+STRING : ~('"' | '\\');
+MULTI_LINE_STRING : '"'(STRING | '\n' | '\\"' | '\\\\')*'"';
+
+fragment NUM : DIGIT+;
+fragment DEC : NUM '.' NUM;
+fragment EXP : ('E' | 'e') SIGN NUM;
+fragment FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
+fragment DIGITHEX : DIGIT | 'a' .. 'f' | 'A' .. 'F';
+fragment NUMHEX : DIGITHEX+;
+fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
+FLOAT : FLOATDEC | FLOATHEX;
+
 TRUE : 'true';
 FALSE : 'false';
 THIS : 'this';
@@ -78,8 +88,15 @@ EXTENDS : 'extends';
 PROTECTED : 'protected';
 
 ASM : 'asm';
-STRING_CAR : ~('"' | '\\');
-MULTI_LINE_STRING : '"'(STRING_CAR | EOL | '\\"' | '\\\\')*'"';
 
-COMMENT : '//' (~('\n'))* EOL {skip();};
+COMMENT : '//' (~('\n'))* '\n' {skip();};
 MULTI_LINE_COMMENT : '/*' .*? '*/' {skip();};
+
+WS  :   ( ' '
+        | '\t'
+        | '\r'
+        | '\n'
+        ) {
+              skip(); // avoid producing a token
+          }
+    ;
