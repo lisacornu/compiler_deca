@@ -1,0 +1,18 @@
+// Description:
+//    Programme minimaliste utilisant touts les symboles de comparaison(les identifcateur doivent fonctionné egalement) .
+//
+// Resultats:
+//     
+//
+// Historique:
+//    cree le 17/12/2024
+
+{
+    boolean result1 = (3 == 3);
+    boolean result2 = (3 != 4);
+    boolean result3 = (3 <= 4);
+    boolean result4 = (4 >= 3);
+    boolean result5 = (4 > 3);
+    boolean result6 = (3 < 4);
+    boolean result7 = !result6;
+}
