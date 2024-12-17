@@ -1,0 +1,13 @@
+// Description:
+//    Programme minimaliste utilisant les mots reservées.
+//
+// Resultats:
+//    Hello
+//
+// Historique:
+//    cree le 17/12/2024
+
+
+class A extends B { 
+
+}
