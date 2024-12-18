@@ -28,11 +28,11 @@ public class DecacMain {
         }
 
         if (options.getPrintBanner()) {
-            throw new UnsupportedOperationException("decac -b not yet implemented");
+            options.displayBanner();
         }
 
         if (options.getSourceFiles().isEmpty()) {
-            throw new UnsupportedOperationException("decac without argument not yet implemented");
+            options.displayUsage();
         }
 
         if (options.getParallel()) {
