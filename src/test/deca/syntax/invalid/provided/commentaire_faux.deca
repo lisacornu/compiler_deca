@@ -1,5 +1,5 @@
 // Description:
-//    tests de programme incorrect lexicalement (commentaire)
+//    tests de programme incorrect syntax (mais pas lexicalement) (commentaire)
 //
 // Resultats:
 //    ligne 10 : Erreur, mais pas ici */ ne doit pas etre inclue dans le commentaire
@@ -8,4 +8,3 @@
 //    cree le 17/12/2024
 
 /*c'est un commentaire*/ mais non */
-"je ff f f f "

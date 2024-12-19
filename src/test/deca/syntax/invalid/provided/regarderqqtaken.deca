@@ -1,0 +1,65 @@
+// Description:
+//    regarder si sa afficher les bon taken(faux syntax)
+//
+// Resultats:
+//    ok pour lexer 
+//    
+//
+// Historique:
+//    cree le 18/12/2024
+
+1.4
+11
+1
+class 
+int i
+boolean
+"i"
+"Abdelmlek"
+"Abdel
+"
+{
+}
+(
+)
+;
+,
+=
+==
+!=
+<=
+>=
+>
+<
+print
+println
+printx
+printlnx
+while
+for
+if
+else
+||
+&&
+instanceof
+return
++
+-
+*
+/
+%;
+!
+.
+readInt
+readFloat
+new
+true
+false
+this
+null
+class
+extends
+protected
+asm
+//
+/*jsdjozdj*/
