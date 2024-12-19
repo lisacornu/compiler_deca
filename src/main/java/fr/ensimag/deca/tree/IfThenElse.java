@@ -43,7 +43,19 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        s.print("if (");
+        condition.decompile(s);
+        s.print(") {\n");
+        s.indent();
+        thenBranch.decompile(s);
+        s.unindent();
+
+        s.print("} else {\n");
+        s.indent();
+        elseBranch.decompile(s);
+        s.unindent();
+        s.print("}");
     }
 
     @Override

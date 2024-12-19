@@ -41,30 +41,34 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+    public boolean getParse() {
+        return parse;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
+    private boolean parse = false, verify = false, noCheck = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
     
     public void parseArgs(String[] args) throws CLIException {
 
-        //Lecture des arguments
         //TODO : verifier le format des erreurs
 
-        //Paramètres
-        boolean parse = false, verify = false, noCheck = false;
+        //Lecture des options
+
         Iterator<String> argIterator = Arrays.asList(args).iterator();
         while (argIterator.hasNext()) {
 
             String arg = argIterator.next();
             switch(arg) {
 
-                case "-b":
+                case "-b": //Affiche la bannière
                     printBanner = true;
                     break;
 
-                case "-p":
+                case "-p": //Decompile l'arbre du programme et affiche le résultat en sortie
                     if (verify) throw new CLIException("Options -p et -v sont incompatibles.");
                     parse = true;
                     break;

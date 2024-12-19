@@ -192,6 +192,12 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
+        //Arrête decac et affiche la compilation de l'arbre
+        if (compilerOptions.getParse()) {
+            System.out.println(prog.decompile());
+            return false;
+        }
+
 
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
