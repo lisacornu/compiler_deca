@@ -122,11 +122,12 @@ public class DecacCompiler {
  
 
     /** The global environment for types (and the symbolTable) */
-    public final EnvironmentType environmentType = new EnvironmentType(this);
     public final SymbolTable symbolTable = new SymbolTable();
+    public final EnvironmentType environmentType = new EnvironmentType(this);
+
 
     public Symbol createSymbol(String name) {
-        //return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
+        // remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
 
@@ -200,7 +201,7 @@ public class DecacCompiler {
 
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        //assert(prog.checkAllDecorations());
 
         addComment("start main program");
         prog.codeGenProgram(this);

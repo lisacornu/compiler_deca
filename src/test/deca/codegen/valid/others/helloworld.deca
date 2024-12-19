@@ -1,0 +1,14 @@
+// Description:
+//    test du sprint 1 : hello world
+//
+// Resultats:
+//    Hello world ! (avec print)
+//    Hello world ! (avec println)
+//
+// Historique:
+//    cree le 19/12/2024
+
+{
+    print("Hello world ! (avec print)") ;
+    println("Hello world ! (avec println)") ;
+}
