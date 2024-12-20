@@ -42,7 +42,7 @@ public abstract class AbstractPrint extends AbstractInst {
                 
                 for (AbstractExpr arg : getArguments().getList()){
                     if (!arg.verifyExpr(compiler, localEnv, currentClass).isString()){
-                        throw new ContextualError("Type is not supported (String)", getLocation());
+                        throw new ContextualError("Type is not String", getLocation());
                     }
                 }
     }
