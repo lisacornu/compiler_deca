@@ -45,6 +45,10 @@ public class CompilerOptions {
         return parse;
     }
 
+    public boolean getVerify() {
+        return verify;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
