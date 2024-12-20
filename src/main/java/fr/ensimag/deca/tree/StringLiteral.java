@@ -35,11 +35,19 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
+<<<<<<< Updated upstream
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type stringType = new StringType(compiler.createSymbol("string"));
         this.setType(stringType);  // Décoration explicite
         return stringType;
+=======
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        Type string = new StringType(compiler.createSymbol("string"));
+        setType(string);   
+        return string;
+>>>>>>> Stashed changes
     }
 
 
