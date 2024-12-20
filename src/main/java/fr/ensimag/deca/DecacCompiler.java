@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.concurrent.Callable;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -36,7 +38,7 @@ import org.apache.log4j.Logger;
  * @author gl31
  * @date 01/01/2025
  */
-public class DecacCompiler {
+public class DecacCompiler implements Callable<Boolean> {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     
     /**
@@ -130,6 +132,17 @@ public class DecacCompiler {
         // remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
+
+
+    /**
+     * Sert à la compilation parallèle
+     * Appelée automatiquement lorsqu'on soumet l'objet DecacCompiler au ExecutorService (via executor.submit())
+     */
+    @Override
+    public Boolean call() {
+        return compile();
+    }
+
 
     /**
      * Run the compiler (parse source file, generate code)

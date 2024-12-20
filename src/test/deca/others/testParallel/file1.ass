@@ -1,0 +1,7 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	WSTR """file1"""
+	WNL
+	HALT
+; end main program
