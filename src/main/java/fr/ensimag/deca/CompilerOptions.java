@@ -25,30 +25,29 @@ public class CompilerOptions {
     public static final int INFO  = 1;
     public static final int DEBUG = 2;
     public static final int TRACE = 3;
-    public int getDebug() {
-        return debug;
-    }
 
-    public boolean getParallel() {
-        return parallel;
-    }
+    public int getDebug() { return debug; }
 
-    public boolean getPrintBanner() {
-        return printBanner;
-    }
+    public boolean getParallel() { return parallel; }
+
+    public boolean getPrintBanner() { return printBanner; }
     
-    public List<File> getSourceFiles() {
-        return Collections.unmodifiableList(sourceFiles);
-    }
+    public List<File> getSourceFiles() { return Collections.unmodifiableList(sourceFiles); }
 
-    public boolean getParse() {
-        return parse;
-    }
+    public boolean getParse() { return parse; }
+
+    public boolean getSetRegister() { return setRegister; }
+
+    public int getNbRegister() { return nbRegister; }
+
+
 
     private int debug = 0;
+    private int nbRegister = 15;
     private boolean parallel = false;
     private boolean printBanner = false;
-    private boolean parse = false, verify = false, noCheck = false;
+    private boolean parse = false, verify = false, noCheck = false, setRegister = false;
+
     private List<File> sourceFiles = new ArrayList<File>();
 
     
@@ -86,7 +85,10 @@ public class CompilerOptions {
                     if (!argIterator.hasNext()) throw new CLIException("Option -r nécessite un argument (nombre de registres).");
                     try {
                         int registers = Integer.parseInt(argIterator.next());
-                        if (registers < 4 || registers > 16) throw new CLIException("Le nombre de registres doit être entre 4 et 16.");
+                        if (registers < 4 || registers > 16)
+                            throw new CLIException("Le nombre de registres doit être entre 4 et 16.");
+                        this.nbRegister = registers;
+                        this.setRegister = true;
                     } catch (NumberFormatException e) {
                         throw new CLIException("Argument de -r invalide : " + arg);
                     }
