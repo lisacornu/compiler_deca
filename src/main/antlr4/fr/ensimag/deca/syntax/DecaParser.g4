@@ -49,7 +49,6 @@ main returns[AbstractMain tree]
             $tree = new EmptyMain();
         }
     | block {
-            System.out.println("Block");
             assert($block.decls != null);
             assert($block.insts != null);
             $tree = new Main($block.decls, $block.insts);
@@ -155,12 +154,10 @@ if_then_else returns[IfThenElse tree]
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
         }
-      )?
-    ;
+      )?;
 
 list_expr returns[ListExpr tree]
 @init   {
-System.out.println("entrée dans la règle");
     $tree = new ListExpr();
         }
     : (e1=expr {

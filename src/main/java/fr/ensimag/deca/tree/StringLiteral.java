@@ -30,6 +30,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     public StringLiteral(String value) {
         Validate.notNull(value);
+        value = value.substring(1, value.length() - 1);
         this.value = value;
     }
 
