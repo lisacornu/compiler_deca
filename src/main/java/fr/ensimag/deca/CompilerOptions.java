@@ -42,6 +42,10 @@ public class CompilerOptions {
 
 
 
+    public boolean getVerify() {
+        return verify;
+    }
+
     private int debug = 0;
     private int nbRegister = 15;
     private boolean parallel = false;
