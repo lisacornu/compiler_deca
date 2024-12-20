@@ -1,0 +1,10 @@
+// Description:
+//    Programme minimaliste utilisant println.
+//
+//
+// Historique:
+//    cree le 01/01/2025
+
+{
+        println(6.);
+}

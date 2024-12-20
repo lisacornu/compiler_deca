@@ -2,11 +2,17 @@
 //    Programme minimaliste utilisant println.
 //
 // Resultats:
-//    Hello
+//    6
+//    true
+//    6.6
+//    false
 //
 // Historique:
 //    cree le 01/01/2025
 
 {
         println(6);
+        println(true);
+        println(6.6);
+        println(false);
 }

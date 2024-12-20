@@ -73,7 +73,7 @@ fragment EXP : ('E' | 'e') SIGN NUM;
 fragment FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
 fragment DIGITHEX : DIGIT | 'a' .. 'f' | 'A' .. 'F';
 fragment NUMHEX : DIGITHEX+;
-fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
+fragment FLOATHEX : ('0x' | '0X') NUMHEX DOT NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
 FLOAT : FLOATDEC | FLOATHEX;
 INT : SIGN? NUM;
 
