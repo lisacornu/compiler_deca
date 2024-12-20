@@ -75,6 +75,7 @@ fragment DIGITHEX : DIGIT | 'a' .. 'f' | 'A' .. 'F';
 fragment NUMHEX : DIGITHEX+;
 fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
 FLOAT : FLOATDEC | FLOATHEX;
+INT : SIGN? NUM;
 
 fragment EOL : '\n';
 fragment STRING_CAR : ~('\\'|'"') ;
