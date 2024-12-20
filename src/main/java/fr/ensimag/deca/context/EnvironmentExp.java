@@ -45,7 +45,12 @@ public class EnvironmentExp {
         }
         if (envMap.containsKey(key)){
             return (ExpDefinition) envMap.get(key);
-        } return null;
+        } 
+        // If not found, search in the parent environment (recursively)
+        if (this.parentEnvironment != null) {
+            return parentEnvironment.get(key);
+        }
+        return null;
         
     }
 
