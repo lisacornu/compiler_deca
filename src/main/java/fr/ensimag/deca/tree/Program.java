@@ -35,6 +35,8 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
+       // EnvironmentType envTypes = compiler.environmentType;
+        //classes.verifyListClass(compiler, envTypes);
         main.verifyMain(compiler);
         LOG.debug("verify program: end");
     }
