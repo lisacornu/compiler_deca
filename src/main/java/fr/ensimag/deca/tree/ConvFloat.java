@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.FloatType;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -19,7 +20,9 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type floatType = new FloatType(compiler.createSymbol("float"));
+        setType(floatType);
+        return floatType; 
     }
 
 

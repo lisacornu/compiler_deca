@@ -38,6 +38,7 @@ public class Program extends AbstractProgram {
        // EnvironmentType envTypes = compiler.environmentType;
         //classes.verifyListClass(compiler, envTypes);
         main.verifyMain(compiler);
+        
         LOG.debug("verify program: end");
     }
 

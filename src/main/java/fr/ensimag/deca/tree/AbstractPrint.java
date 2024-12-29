@@ -41,8 +41,9 @@ public abstract class AbstractPrint extends AbstractInst {
             throws ContextualError {
                 
                 for (AbstractExpr arg : getArguments().getList()){
-                    if (!arg.verifyExpr(compiler, localEnv, currentClass).isString()){
-                        throw new ContextualError("Type is not String", getLocation());
+                    Type argType = arg.verifyExpr(compiler, localEnv, currentClass);
+                    if (!(argType.isString() || argType.isFloat() || argType.isInt() )){
+                        throw new ContextualError("Type is not String or Int or Float", getLocation());
                     }
                 }
     }

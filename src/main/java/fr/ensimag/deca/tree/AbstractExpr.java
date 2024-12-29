@@ -90,7 +90,10 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+            verifyExpr(compiler, localEnv, currentClass);
+        // if (!(returnType.isBoolean() || returnType.isFloat() || returnType.isInt() || returnType.isString())){
+        //     throw new UnsupportedOperationException("This is not inst type");
+        // }
     }
 
     /**
@@ -105,7 +108,11 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+            Type type = verifyExpr(compiler, localEnv, currentClass);
+            if (!type.isBoolean()){
+                throw new ContextualError("This is not boolean",getLocation());
+            }
+        
     }
 
     /**

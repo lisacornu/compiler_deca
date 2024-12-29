@@ -2,8 +2,18 @@
 ; Main program
 ; Beginning of main instructions:
 	WSTR "ok"
+<<<<<<< Updated upstream
 	WNL
 	WSTR "ok"
+=======
+	WNL
+	WNL
+	WSTR "vrouem"
+	WNL
+	WSTR "ok"
+	WSTR "a"
+	WNL
+>>>>>>> Stashed changes
 	WNL
 	HALT
 ; end main program

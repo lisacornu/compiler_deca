@@ -20,7 +20,18 @@ public class Modulo extends AbstractOpArith {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        if (lefType.isInt() && righType.isInt()){
+            IntLiteral rightValue = (IntLiteral) getRightOperand();
+            if(rightValue.getValue()!=0){
+                throw new ContextualError("Divison par 0", getLocation());
+            }
+            setType(righType);
+            return righType;
+        }
+        throw new ContextualError("You cant divide things that are not int",getLocation());
     }
 
 

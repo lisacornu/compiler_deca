@@ -168,12 +168,14 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Definition expr = localEnv.get(this.getName());
-        if (!expr.isExpression()){
+        if (expr.isExpression()){
+            // this.setDefinition(expr);
+            this.setType(expr.getType());
+            return this.getType();
+        }else{
             throw new ContextualError("Ce n'est pas une expression", getLocation());
         }
-        this.setDefinition(expr);
-        this.setType(expr.getType());
-        return this.getType();
+        
     }
 
     /**

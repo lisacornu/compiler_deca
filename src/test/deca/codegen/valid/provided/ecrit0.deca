@@ -10,8 +10,11 @@
 
 {
    println("ok") ; 
+   println();
+   println("vrouem");
    print("ok") ; 
-   println() ; 
+   println("a") ; 
+   println();
 }
 
 
