@@ -72,4 +72,12 @@ public class IfThenElse extends AbstractInst {
         thenBranch.prettyPrint(s, prefix, false);
         elseBranch.prettyPrint(s, prefix, true);
     }
+
+    public void setElseBranch(ListInst elseBranch) {
+        this.elseBranch = elseBranch;
+    }
+
+    public void setElseBranch(AbstractInst elseBranch){
+        this.elseBranch.add(elseBranch);
+    }
 }

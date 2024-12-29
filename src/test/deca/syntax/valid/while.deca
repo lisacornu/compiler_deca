@@ -1,0 +1,16 @@
+// Description:
+//    Programme utilisant if else.
+//
+// Resultats:
+//      6 est supérieur à 5
+//      On rentre dans le else
+//
+//
+// Historique:
+//    cree le 01/01/2025
+
+{
+    while(true){
+        println("print infini");
+    }
+}
