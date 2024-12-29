@@ -213,7 +213,7 @@ public class DecacCompiler implements Callable<Boolean> {
         }
 
         prog.verifyProgram(this);
-        //assert(prog.checkAllDecorations());
+        assert(prog.checkAllDecorations());
 
         //Arrête decac après l'étape" de verification
         if (compilerOptions.getVerify()) {
