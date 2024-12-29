@@ -1,0 +1,26 @@
+// Description:
+//    Programme utilisant if else.
+//
+// Resultats:
+//      6 est supérieur à 5
+//      On rentre dans le else
+//
+//
+// Historique:
+//    cree le 01/01/2025
+
+{
+    if(5 < 4){
+        println("5 est inférieur à 4");
+    }
+    else if(6 > 5){
+        println("6 est supérieur à 5");
+    }
+
+    if(7 < 0){
+        println("7 est inférieur à 0");
+    }
+    else{
+        println("On rentre dans le else");
+    }
+}
