@@ -382,6 +382,7 @@ select_expr returns[AbstractExpr tree]
     ;
 
 primary_expr returns[AbstractExpr tree]
+    //TODO gérer les identificateurs
     : ident {
             assert($ident.tree != null);
         }
