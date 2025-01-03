@@ -17,5 +17,5 @@
     i=i>>1;
     boolean b1 = 3 > 1 && 1 < 4; // Et logique 
     boolean b2 = 7 < 3 || 3 > 1; // Ou logique
-    i=3&&1;//sa doit marcher aussi pour cette partie normalement
+   
 }
