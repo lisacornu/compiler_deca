@@ -1,0 +1,11 @@
+// Description:
+//    tests de programme incorrect( Cette valeur dépasse la limite de 32 bits pour un entier signé positif.).
+//
+// Resultats:
+//    Erreur depassement 
+//
+// Historique:
+//    cree le 04/01/2025
+{
+    int x = 2147483648;  
+}

@@ -2,9 +2,14 @@
 //    Programme minimaliste utilisant les mots reservées.
 //
 // Resultats:
-//    Hello
+//    
 //
 // Historique:
-//    cree le 17/12/2024
+//    cree le 04/01/2024
 
- #include "jsp.deca"
+#include "jsp.deca"
+#include "1"
+#include "-"
+#include "_"
+#include"fichiercoller.wow"
+#include                                                                                       "je_suis-la"

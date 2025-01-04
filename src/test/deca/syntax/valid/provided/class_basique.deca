@@ -12,7 +12,7 @@
 
 class A {
     
-    private int x;
+    int x;
     protected int y;
 
     public A(int a) {

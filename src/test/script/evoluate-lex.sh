@@ -37,3 +37,20 @@ fi
 
 # Nettoyer les fichiers temporaires
 rm -f sortie_actuelle.tokens diff_resultat.txt
+
+
+# Partie 3 : Tester les fichiers invalides
+for i in src/test/deca/syntax/invalid/provided/*.deca
+do
+    # Vérifie si le fichier commence par "lexi"
+    if echo "$(basename "$i")" | grep -q "^lexi"; then
+        test_lex "$i" > /dev/null 2>&1
+
+        if [ $? -ne 0 ]; then
+            echo "Échec attendu pour le fichier $i"
+        else
+            echo "Succès non attendu pour le fichier $i"
+            exit 1;
+        fi
+    fi
+done
