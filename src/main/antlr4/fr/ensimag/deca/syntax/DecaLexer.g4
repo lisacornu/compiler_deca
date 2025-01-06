@@ -58,7 +58,7 @@ PLUS : '+';
 MINUS : '-';
 TIMES : '*';
 SLASH : '/';
-PERCENT : '%;';
+PERCENT : '%';
 EXCLAM : '!';
 DOT : '.';
 
