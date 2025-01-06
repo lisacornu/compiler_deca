@@ -14,7 +14,7 @@
    println("vrouem");
    print("ok") ; 
    println("a") ; 
-   println();
+   println(1.5);
 }
 
 

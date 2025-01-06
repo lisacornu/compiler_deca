@@ -91,9 +91,9 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
             verifyExpr(compiler, localEnv, currentClass);
-        // if (!(returnType.isBoolean() || returnType.isFloat() || returnType.isInt() || returnType.isString())){
-        //     throw new UnsupportedOperationException("This is not inst type");
-        // }
+        if (!(returnType.isBoolean() || returnType.isFloat() || returnType.isInt() || returnType.isString())){
+            throw new UnsupportedOperationException("This is not inst type");
+        }
     }
 
     /**
