@@ -31,13 +31,13 @@ test_synt_invalide () {
     fi
 }    
 
-for cas_de_test in src/test/deca/syntax/invalid/provided/*.deca
+for cas_de_test in src/test/deca/syntax/invalid/*.deca
 do
     test_synt_invalide "$cas_de_test"
 done
 
 
-if test_synt src/test/deca/syntax/valid/provided/hello.deca 2>&1 | \
+if test_synt src/test/deca/syntax/valid/hello.deca 2>&1 | \
     grep -q -e ':[0-9][0-9]*:'
 then
     echo "Echec inattendu pour test_synt"

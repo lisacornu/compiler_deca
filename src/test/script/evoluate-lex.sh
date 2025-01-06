@@ -7,7 +7,7 @@ cd "$(dirname "$0")"/../../.. || exit 1
 PATH=./src/test/script/launchers:"$PATH"
 
 # Partie 1 : Tester les fichiers valides
-for i in src/test/deca/syntax/valid/provided/*.deca
+for i in src/test/deca/syntax/valid/*.deca
 do
     test_lex "$i" > /dev/null 2>&1
     
@@ -20,7 +20,7 @@ do
 done
 
 # Partie 2 : Capturer et comparer les tokens pour un fichier spécifique
-fichier_test="src/test/deca/syntax/invalid/provided/regarderqqtaken.deca"
+fichier_test="src/test/deca/syntax/invalid/regarderqqtaken.deca"
 resultat_attendu="src/test/deca/syntax/expected/regarderqqtaken.tokens"
 
 # Exécuter la commande pour capturer la sortie des tokens
@@ -40,7 +40,7 @@ rm -f sortie_actuelle.tokens diff_resultat.txt
 
 
 # Partie 3 : Tester les fichiers invalides
-for i in src/test/deca/syntax/invalid/provided/*.deca
+for i in src/test/deca/syntax/invalid/*.deca
 do
     # Vérifie si le fichier commence par "lexi"
     if echo "$(basename "$i")" | grep -q "^lexi"; then

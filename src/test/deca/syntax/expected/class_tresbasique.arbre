@@ -3,7 +3,7 @@
    `> [11, 0] DeclClass
       +> [11, 2] Identifier (A)
       +> [11, 6] ClassExtension
-         +> [11, 9] Identifier (B)
+      |  +> [11, 9] Identifier (B)
       +> ListDeclField [List with 0 elements]
       `> ListDeclMethod [List with 0 elements]
    `> [10, 0] Main
