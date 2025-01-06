@@ -1,0 +1,15 @@
+// Description:
+//    Programme minimaliste utilisant read pour l'induire a une erreur.
+//
+// Resultats:
+//erreur
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   boolean x;
+   readInt(x);
+
+}

@@ -1,0 +1,22 @@
+// Description:
+//    Programme minimaliste utilisant if et else.
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{
+    if(3==4){
+
+    }
+    else{
+
+    }
+    if(3==4){
+
+    }
+
+}

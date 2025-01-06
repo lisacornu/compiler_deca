@@ -1,0 +1,14 @@
+// Description:
+//    Programme minimaliste un type inconnue .
+//
+// Resultats:
+// zoro type not defined (un peu prés)
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   zoro nami;
+
+}

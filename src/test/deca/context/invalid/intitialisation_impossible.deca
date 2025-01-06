@@ -1,0 +1,15 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//    Ligne 15: Affectation de types incompatibles.
+// 
+// Historique:
+//    cree le 06/01/2025
+
+{
+    
+
+
+   int a = 3.4;
+}

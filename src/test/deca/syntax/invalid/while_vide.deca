@@ -1,0 +1,15 @@
+// Description:
+//    Programme minimaliste utilisant while(sans argument on va dire).
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{
+    while(){
+
+    } 
+}

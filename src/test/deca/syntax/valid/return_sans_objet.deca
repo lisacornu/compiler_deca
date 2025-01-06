@@ -1,0 +1,21 @@
+// Description:
+//    Programme minimaliste utilisant return dans tous ces cas possible sans objet.
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{  int x = 3;
+   return 3;
+   return false;
+   return 3.4;
+   return (int)3;
+   return null;
+   return x;
+   return 3*4; //sa devrait suffire pour rentrer dans le cas des expressions binaires
+   return !3; //syntaxiquement c correct 
+   return "3";
+
+}
