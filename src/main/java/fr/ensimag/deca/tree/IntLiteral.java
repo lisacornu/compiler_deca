@@ -34,6 +34,11 @@ public class IntLiteral extends AbstractExpr {
         return intType;
     }
 
+    @Override
+    public String toString () {
+        return "" + this.value;
+    }
+
 
     @Override
     String prettyPrintNode() {
