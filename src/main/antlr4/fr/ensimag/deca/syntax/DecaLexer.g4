@@ -11,6 +11,15 @@ options {
 @members {
 }
 
+WS  :   ( ' '
+        | '\t'
+        | '\r'
+        | '\n'
+        ) {
+              skip(); // avoid producing a token
+          }
+    ;
+
 OBRACE : '{';
 CBRACE : '}';
 
@@ -59,10 +68,6 @@ NEW : 'new';
 
 fragment SIGN : ('+' | '-')?;
 
-INT : SIGN DIGIT+;
-STRING : ~('"' | '\\');
-MULTI_LINE_STRING : '"'(STRING | '\n' | '\\"' | '\\\\')*'"';
-
 fragment NUM : DIGIT+;
 fragment DEC : NUM '.' NUM;
 fragment EXP : ('E' | 'e') SIGN NUM;
@@ -71,6 +76,12 @@ fragment DIGITHEX : DIGIT | 'a' .. 'f' | 'A' .. 'F';
 fragment NUMHEX : DIGITHEX+;
 fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
 FLOAT : FLOATDEC | FLOATHEX;
+
+fragment EOL : '\n';
+fragment STRING_CAR : ~('\\'|'"') ;
+STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
+MULTI_LINE_STRING : '"' (STRING_CAR | EOL |'\\"' | '\\\\')* '"';
+
 
 TRUE : 'true';
 FALSE : 'false';
@@ -91,12 +102,3 @@ ASM : 'asm';
 
 COMMENT : '//' (~('\n'))* '\n' {skip();};
 MULTI_LINE_COMMENT : '/*' .*? '*/' {skip();};
-
-WS  :   ( ' '
-        | '\t'
-        | '\r'
-        | '\n'
-        ) {
-              skip(); // avoid producing a token
-          }
-    ;
