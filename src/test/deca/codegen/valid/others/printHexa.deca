@@ -1,0 +1,29 @@
+// Description:
+//    Ecriture en utilisant printx et printlnxx
+//
+// Resultats:
+//    Bonjour
+//    true
+//    12
+//    2.3
+//    1 test 3.3
+//
+// Historique:
+//    cree le 06/01/2025
+
+{
+    printx("String : ");
+    printlnx("Bonjour");
+
+    printx("Boolean : ");
+    printlnx(true);
+
+    printx("Entier : ");
+    printlnx(12);
+
+    printx("Float : ");
+    printlnx(2.3);
+
+    printx("Plusieurs : ");
+    printlnx(1, " test ", 3.3);
+}

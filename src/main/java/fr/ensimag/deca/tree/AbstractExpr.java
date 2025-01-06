@@ -117,12 +117,15 @@ public abstract class AbstractExpr extends AbstractInst {
         
     }
 
+
+    protected boolean printHex = false;
     /**
      * Generate code to print the expression
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler) {
+    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
+        this.printHex = printHex;
         compiler.addInstruction(new WSTR(this.toString()));
     }
 

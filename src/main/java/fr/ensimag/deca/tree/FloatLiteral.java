@@ -42,7 +42,9 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     public String toString () {
-        return "" + this.value;
+        return this.printHex ?
+                Integer.toHexString(Float.floatToIntBits(this.value))
+                : "" + this.value;
     }
 
     @Override
