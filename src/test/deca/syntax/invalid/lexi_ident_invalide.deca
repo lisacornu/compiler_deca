@@ -1,0 +1,12 @@
+// Description:
+//    tests de programme incorrect.
+//
+// Resultats:
+//    Ligne 11 : Erreur lexico.
+//    test_lex  doit  donner une erreur (7inverse n est pas reconnu en deca).
+//
+// Historique:
+//    cree le 04/01/2025
+{
+    int 7inverse;
+}

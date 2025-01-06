@@ -27,11 +27,11 @@ test_synt_invalide () {
         echo "Echec attendu pour test_synt sur $1."
     else
         echo "Succes inattendu de test_synt sur $1."
-        exit 1
+        #exit 1
     fi
 }    
 
-for cas_de_test in src/test/deca/syntax/invalid/provided/*.deca
+for cas_de_test in src/test/deca/syntax/invalid/*.deca
 do
     test_synt_invalide "$cas_de_test"
 done

@@ -10,7 +10,7 @@
 
 1.4
 11
-1
+10
 class 
 int i
 boolean
@@ -63,3 +63,4 @@ protected
 asm
 //
 /*jsdjozdj*/
+#include "frite"

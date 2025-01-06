@@ -1,0 +1,85 @@
+`> [10,0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10,0] Main 
+      +> ListDeclVar [List with 16 elements]
+         []> DeclVar
+         || +> [12,4] Identifier (float)
+         || +> [12,10] Identifier (a)
+         || `> [12,12] Initialization
+         ||    `> [12,14] FloatLiteral (123.456)
+         []> DeclVar
+         || +> [13,4] Identifier (float)
+         || +> [13,10] Identifier (b)
+         || `> [13,12] Initialization
+         ||    `> [13,14] FloatLiteral (3.14e2)
+         []> DeclVar
+         || +> [14,4] Identifier (float)
+         || +> [14,10] Identifier (c)
+         || `> [14,12] Initialization
+         ||    `> [14,14] FloatLiteral (-0.987e-3)
+         []> DeclVar
+         || +> [15,4] Identifier (float)
+         || +> [15,10] Identifier (d)
+         || `> [15,12] Initialization
+         ||    `> [15,14] FloatLiteral (1.0)
+         []> DeclVar
+         || +> [16,4] Identifier (float)
+         || +> [16,10] Identifier (e)
+         || `> [16,12] Initialization
+         ||    `> [16,14] FloatLiteral (0.0)
+         []> DeclVar
+         || +> [19,4] Identifier (float)
+         || +> [19,10] Identifier (f)
+         || `> [19,12] Initialization
+         ||    `> [19,14] FloatLiteral (0x1.2p3f)
+         []> DeclVar
+         || +> [20,4] Identifier (float)
+         || +> [20,10] Identifier (g)
+         || `> [20,12] Initialization
+         ||    `> [20,14] FloatLiteral (0xA.1P-2F)
+         []> DeclVar
+         || +> [21,4] Identifier (float)
+         || +> [21,10] Identifier (h)
+         || `> [21,12] Initialization
+         ||    `> [21,14] FloatLiteral (0x0.5p4)
+         []> DeclVar
+         || +> [22,4] Identifier (float)
+         || +> [22,10] Identifier (i)
+         || `> [22,12] Initialization
+         ||    `> [22,14] FloatLiteral (0xFF.3p-1F)
+         []> DeclVar
+         || +> [23,4] Identifier (float)
+         || +> [23,10] Identifier (j)
+         || `> [23,12] Initialization
+         ||    `> [23,14] FloatLiteral (0x1.9p2F)
+         []> DeclVar
+         || +> [26,4] Identifier (float)
+         || +> [26,10] Identifier (k)
+         || `> [26,12] Initialization
+         ||    `> [26,14] FloatLiteral (123456789.987654321)
+         []> DeclVar
+         || +> [27,4] Identifier (float)
+         || +> [27,10] Identifier (l)
+         || `> [27,12] Initialization
+         ||    `> [27,14] FloatLiteral (0.000000123)
+         []> DeclVar
+         || +> [30,4] Identifier (float)
+         || +> [30,10] Identifier (m)
+         || `> [30,12] Initialization
+         ||    `> [30,14] FloatLiteral (1.23E30)
+         []> DeclVar
+         || +> [31,4] Identifier (float)
+         || +> [31,10] Identifier (n)
+         || `> [31,12] Initialization
+         ||    `> [31,14] FloatLiteral (4.56E-20)
+         []> DeclVar
+         || +> [34,4] Identifier (float)
+         || +> [34,10] Identifier (o)
+         || `> [34,12] Initialization
+         ||    `> [34,14] FloatLiteral (-1.2345e10)
+         []> DeclVar
+         || +> [35,4] Identifier (float)
+         || +> [35,10] Identifier (p)
+         || `> [35,12] Initialization
+         ||    `> [35,14] FloatLiteral (+1.2345e-10)
+      `> ListInst [List with 0 elements]

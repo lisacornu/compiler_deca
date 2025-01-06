@@ -1,0 +1,36 @@
+// Description:
+//    Programme minimaliste utilisant des flottant .
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 04/01/2025
+
+{
+    // Littéraux flottants décimaux
+    float a = 123.456;        // Littéral flottant simple
+    float b = 3.14e2;         // Littéral flottant avec exponentielle (3.14 * 10^2)
+    float c = -0.987e-3;      // Littéral flottant avec exponentielle et signe négatif
+    float d = 1.0;            // Littéral flottant entier
+    float e = 0.0;            // Littéral flottant zéro
+
+    // Littéraux flottants hexadécimaux
+    float f = 0x1.2p3f;       // Littéral hexadécimal avec exponentielle (0x1.2 * 2^3)
+    float g = 0xA.1P-2F;      // Littéral hexadécimal avec exponentielle et signe
+    float h = 0x0.5p4;        // Littéral hexadécimal avec exponentielle (0x0.5 * 2^4)
+    float i = 0xFF.3p-1F;     // Littéral hexadécimal avec exponentielle
+    float j = 0x1.9p2F;       // Littéral hexadécimal avec exponentielle (0x1.9 * 2^2)
+
+    // Littéraux flottants avec plusieurs chiffres
+    float k = 123456789.987654321;  // Un grand nombre flottant
+    float l = 0.000000123;           // Un petit nombre flottant
+
+    // Littéraux flottants avec des exposants grands
+    float m = 1.23E30;               // Exposant grand (1.23 * 10^30)
+    float n = 4.56E-20;              // Exposant petit (4.56 * 10^-20)
+    
+    // Littéraux flottants avec signes
+    float o = -1.2345e10;            // Littéral flottant négatif avec exponentielle (1.2345 * 10^10)
+    float p = +1.2345e-10;           // Littéral flottant positif avec exponentielle (1.2345 * 10^-10)
+}
