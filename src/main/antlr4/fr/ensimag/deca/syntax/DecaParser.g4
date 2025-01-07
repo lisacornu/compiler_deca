@@ -26,6 +26,9 @@ options {
 @header {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+
+    import fr.ensimag.deca.tools.SymbolTable;
+    import fr.ensimag.deca.tools.SymbolTable.Symbol;
 }
 
 @members {
@@ -86,12 +89,20 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
 
 decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
+        AbstractInitialization absInit = new NoInitialization();    //au cas ou il n'y a pas d'initialisation
         }
     : i=ident {
+        AbstractIdentifier name = $i.tree;  //défini ici pas dans @init car il y a forcement un ident
+        setLocation(name, $i.start);
         }
       (EQUALS e=expr {
+        absInit = new Initialization($e.tree);  //si il y a une initialisation
+        setLocation($tree, $EQUALS);
         }
       )? {
+
+        $tree = new DeclVar($t, name, absInit);
+        setLocation($tree, $i.start);
         }
     ;
 
@@ -101,7 +112,6 @@ list_inst returns[ListInst tree]
 }
     : (inst {
         $tree.add($inst.tree);
-        setLocation($tree, $inst.start);
         }
       )*
     ;
@@ -179,7 +189,6 @@ list_expr returns[ListExpr tree]
         }
     : (e1=expr {
         $tree.add($e1.tree);
-        setLocation($tree, $e1.start);
         }
        (COMMA e2=expr {
        $tree.add($e2.tree);
@@ -207,6 +216,9 @@ assign_expr returns[AbstractExpr tree]
         EQUALS e2=assign_expr {
             assert($e.tree != null);
             assert($e2.tree != null);
+            $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);  //cast car AbstractLValue est une sous classe de AbstractExpr
+            setLocation($tree, $EQUALS);
+
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -396,8 +408,12 @@ primary_expr returns[AbstractExpr tree]
             setLocation($tree, $expr.start);
         }
     | READINT OPARENT CPARENT {
+            $tree = new ReadInt();
+            setLocation($tree, $READINT);
         }
     | READFLOAT OPARENT CPARENT {
+            $tree = new ReadFloat();
+            setLocation($tree, $READFLOAT);
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
@@ -416,6 +432,8 @@ primary_expr returns[AbstractExpr tree]
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     ;
 
@@ -448,6 +466,10 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
+        SymbolTable symbTable = this.getDecacCompiler().symbolTable;
+        Symbol name = symbTable.create($IDENT.getText());
+        $tree = new Identifier(name);
+        setLocation($tree, $IDENT);
         }
     ;
 

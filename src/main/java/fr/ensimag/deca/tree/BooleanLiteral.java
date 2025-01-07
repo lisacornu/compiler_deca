@@ -34,6 +34,10 @@ public class BooleanLiteral extends AbstractExpr {
         return bool;
     }
 
+    @Override
+    public String toString () {
+        return "" + this.value;
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

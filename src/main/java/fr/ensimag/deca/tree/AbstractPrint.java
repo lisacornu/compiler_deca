@@ -42,8 +42,8 @@ public abstract class AbstractPrint extends AbstractInst {
                 
                 for (AbstractExpr arg : getArguments().getList()){
                     Type argType = arg.verifyExpr(compiler, localEnv, currentClass);
-                    if (!(argType.isString() || argType.isFloat() || argType.isInt() )){
-                        throw new ContextualError("Type is not String or Int or Float", getLocation());
+                    if (!(argType.isString() || argType.isFloat() || argType.isInt() || argType.isBoolean())){
+                        throw new ContextualError("Type is not String or Int or Float or Boolean", getLocation());
                     }
                 }
     }
@@ -51,11 +51,11 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            a.codeGenPrint(compiler, printHex);
         }
     }
 
-    private boolean getPrintHex() {
+    protected boolean getPrintHex() {
         return printHex;
     }
 

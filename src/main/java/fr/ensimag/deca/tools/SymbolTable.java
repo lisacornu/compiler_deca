@@ -25,7 +25,17 @@ public class SymbolTable {
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        return this.map.put(name, new Symbol(name));
+
+        //si le symbole n'existe pas déjà
+        if(this.map.get(name) == null){
+            Symbol symbol = new Symbol(name);
+            this.map.put(name, symbol);
+
+            return symbol;
+        }
+
+        //si il existe déjà        
+        return this.map.get(name);
     }
 
     public static class Symbol {

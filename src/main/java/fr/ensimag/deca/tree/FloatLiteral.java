@@ -40,6 +40,12 @@ public class FloatLiteral extends AbstractExpr {
         return floaType;
     }
 
+    @Override
+    public String toString () {
+        return this.printHex ?
+                Integer.toHexString(Float.floatToIntBits(this.value))
+                : "" + this.value;
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

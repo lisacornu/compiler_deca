@@ -1,0 +1,29 @@
+// Description:
+//    Ecriture des différents types dans la console
+//
+// Resultats:
+//    Bonjour
+//    true
+//    12
+//    2.3
+//    1 test 3.3
+//
+// Historique:
+//    cree le 06/01/2025
+
+{
+    print("String : ");
+    println("Bonjour");
+
+    print("Boolean : ");
+    println(true);
+
+    print("Entier : ");
+    println(12);
+
+    print("Float : ");
+    println(2.3);
+
+    print("Plusieurs : ");
+    println(1, " test ", 3.3);
+}
