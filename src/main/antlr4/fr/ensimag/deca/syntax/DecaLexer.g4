@@ -75,7 +75,9 @@ fragment DIGITHEX : DIGIT | 'a' .. 'f' | 'A' .. 'F';
 fragment NUMHEX : DIGITHEX+;
 fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
 FLOAT : FLOATDEC | FLOATHEX;
-INT : SIGN? NUM;
+
+fragment POSITIVE_DIGIT : '1' .. '9';
+INT : '0' | POSITIVE_DIGIT DIGIT*;
 TRUE : 'true';
 FALSE : 'false';
 THIS : 'this';
