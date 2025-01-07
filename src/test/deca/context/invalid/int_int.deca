@@ -1,0 +1,14 @@
+// Description:
+//    Programme minimaliste verifie si il distingue les identificateur de type et expression
+//
+// Resultats:
+//erreur
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   int int ;
+
+}

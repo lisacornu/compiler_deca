@@ -10,6 +10,6 @@
 
 {   
    boolean x;
-   readInt(x);
+   x=readInt();
 
 }
