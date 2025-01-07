@@ -26,6 +26,9 @@ options {
 @header {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+
+    import fr.ensimag.deca.tools.SymbolTable;
+    import fr.ensimag.deca.tools.SymbolTable.Symbol;
 }
 
 @members {
@@ -405,8 +408,12 @@ primary_expr returns[AbstractExpr tree]
             setLocation($tree, $expr.start);
         }
     | READINT OPARENT CPARENT {
+            $tree = new ReadInt();
+            setLocation($tree, $READINT);
         }
     | READFLOAT OPARENT CPARENT {
+            $tree = new ReadFloat();
+            setLocation($tree, $READFLOAT);
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
@@ -425,6 +432,8 @@ primary_expr returns[AbstractExpr tree]
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     ;
 
@@ -457,6 +466,10 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
+        SymbolTable symbTable = this.getDecacCompiler().symbolTable;
+        Symbol name = symbTable.create($IDENT.getText());
+        $tree = new Identifier(name);
+        setLocation($tree, $IDENT);
         }
     ;
 

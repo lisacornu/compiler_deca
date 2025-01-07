@@ -1,0 +1,13 @@
+// Description:
+//    Programme utilisant un idenetificateur non definie dans les enivironements d exp .
+//
+// Resultats:
+//erreur
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+    x = 3;
+}

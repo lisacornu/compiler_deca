@@ -1,5 +1,5 @@
 // Description:
-//    Programme declarant une variable 2 fois .
+//    conversion de void
 //
 // Resultats:
 //erreur
@@ -9,5 +9,5 @@
 //    cree le 06/01/2025
 
 {   
-   int x = 3.4;
+   
 }
