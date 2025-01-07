@@ -134,6 +134,7 @@ inst returns[AbstractInst tree]
             assert($list_expr.tree != null);
             $tree = new Println(false, $list_expr.tree);
             setLocation($tree, $PRINTLN);
+
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -217,7 +218,6 @@ assign_expr returns[AbstractExpr tree]
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);  //cast car AbstractLValue est une sous classe de AbstractExpr
             setLocation($tree, $EQUALS);
-
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -374,7 +374,6 @@ unary_expr returns[AbstractExpr tree]
 
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
-
             assert($e.tree != null);
             $tree = $e.tree;
             setLocation($tree, $e.start);

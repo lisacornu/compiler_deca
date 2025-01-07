@@ -88,8 +88,8 @@ EXTENDS : 'extends';
 PROTECTED : 'protected';
 
 ASM : 'asm';
-fragment EOL : '\n';
-fragment STRING_CAR : ~('\\'|'"' | '\n' ) ;
+EOL : '\\n';
+fragment STRING_CAR : ~["\\\r\n];
 STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING : '"' (STRING_CAR | EOL |'\\"' | '\\\\')* '"';
 
