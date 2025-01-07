@@ -83,6 +83,7 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
+            $l.add($dv2.tree);
         }
       )*
     ;
@@ -92,15 +93,13 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         AbstractInitialization absInit = new NoInitialization();    //au cas ou il n'y a pas d'initialisation
         }
     : i=ident {
+        assert($i.tree != null);
         AbstractIdentifier name = $i.tree;  //défini ici pas dans @init car il y a forcement un ident
-        setLocation(name, $i.start);
         }
       (EQUALS e=expr {
         absInit = new Initialization($e.tree);  //si il y a une initialisation
-        setLocation($tree, $EQUALS);
         }
       )? {
-
         $tree = new DeclVar($t, name, absInit);
         setLocation($tree, $i.start);
         }
@@ -375,6 +374,7 @@ unary_expr returns[AbstractExpr tree]
 
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
+
             assert($e.tree != null);
             $tree = $e.tree;
             setLocation($tree, $e.start);
