@@ -366,7 +366,7 @@ unary_expr returns[AbstractExpr tree]
             setLocation($tree, $op);
         }
     | select_expr {
-            assert($select_expr.tree != null); //c'est lui qui est nul ?
+            assert($select_expr.tree != null);
             $tree = $select_expr.tree;
             setLocation($tree, $select_expr.start);
         }

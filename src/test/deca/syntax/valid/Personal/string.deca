@@ -1,4 +1,4 @@
 {
-    //string aled="\n\n\n";
-    string multiligne="aaaaaaaaaaaaaaaaaaaaaaaa\n bbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+    string aled="\n\n\n";
+    string multiligne="aaaaaaaaaaaaaaaaaaaaaaaa\n bbbbbbbbbbb\nbbbbbbbbbbbbbbbbb";
 }
