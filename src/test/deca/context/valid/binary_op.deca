@@ -1,0 +1,20 @@
+// Description:
+//   utilisation des oprations 
+//
+// Resultats:
+//    
+// 
+// Historique:
+//    cree le 07/01/2025
+
+{
+   //int a = 3+ 4;
+   float b = 3.4 - 3;
+   b= 3 ;
+   b = readInt();
+   //b=3.4 + 3.4 ;
+   //b= 3.4/3;
+   //b= 3 * 3.4 ;
+   //a=3%4;
+   
+}

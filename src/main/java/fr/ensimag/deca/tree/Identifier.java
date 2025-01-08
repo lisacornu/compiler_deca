@@ -169,7 +169,7 @@ public class Identifier extends AbstractIdentifier {
             ClassDefinition currentClass) throws ContextualError {
         Definition expr = localEnv.get(this.getName());
         if (expr.isExpression()){
-            // this.setDefinition(expr);
+            this.setDefinition(expr);
             this.setType(expr.getType());
             return this.getType();
         }else{

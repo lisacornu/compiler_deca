@@ -12,6 +12,9 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -44,9 +47,9 @@ public class DeclVar extends AbstractDeclVar {
         }
         type.setType(typeType);
         try{
+            varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
             localEnv.declare(varName.getName(),(ExpDefinition) type.getDefinition());
-
-        } catch(DoubleDefException e){
+        }catch(DoubleDefException e){
             throw new ContextualError("The type as already been define " + varName, getLocation());
         }
         
@@ -80,6 +83,10 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
-        //TODO: à l'aide je comprend rien
+
+        //Ajout à la pile dans GB
+        RegisterOffset GB_Stack = new RegisterOffset(3, Register.GB);
+        varName.getExpDefinition().setOperand(GB_Stack);
+
     }
 }

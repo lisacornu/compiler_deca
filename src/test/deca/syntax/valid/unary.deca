@@ -1,0 +1,13 @@
+// Description:
+//    Programme minimaliste utilisant des flottant .
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 07/01/2025
+
+{
+    int a= 1;
+    int b = -a;
+}

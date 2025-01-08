@@ -1,0 +1,14 @@
+// Description:
+//    Programme declarant une variable 2 fois .
+//
+// Resultats:
+//erreur
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   int x;
+   int x;
+}

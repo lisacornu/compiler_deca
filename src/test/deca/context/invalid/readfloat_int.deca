@@ -10,6 +10,6 @@
 
 {   
    float x;
-   readFloat(x);
+   x=readFloat();
 
 }

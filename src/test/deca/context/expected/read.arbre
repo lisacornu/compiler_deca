@@ -10,7 +10,7 @@
 {   
    int x;
    float y;
-   x=readInt();
-   y=readFloat();
+   readInt(x);
+   readFloat(y);
 
 }

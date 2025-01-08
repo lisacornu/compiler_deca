@@ -1,5 +1,5 @@
 // Description:
-//    Programme declarant une variable 2 fois .
+//    conversion de int 
 //
 // Resultats:
 //erreur
@@ -9,5 +9,6 @@
 //    cree le 06/01/2025
 
 {   
-   int x = 3.4;
-}
+   float a = (float) 3;
+   int b = (int) 3.0;
+   }

@@ -1,8 +1,8 @@
 ; start main program
 ; Main program
 ; Beginning of main instructions:
-	WSTR """Hello world ! (avec print)"""
-	WSTR """Hello world ! (avec println)"""
+	WSTR "Hello world ! (avec print)"
+	WSTR "Hello world ! (avec println)"
 	WNL
 	HALT
 ; end main program

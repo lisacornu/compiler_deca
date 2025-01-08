@@ -1,0 +1,14 @@
+// Description:
+//  Programme returun qqchose d inconnue 
+//
+// Resultats:
+//erreur
+//
+//
+// Historique:
+//    cree le 07/01/2025
+
+{   
+   return x;
+
+}

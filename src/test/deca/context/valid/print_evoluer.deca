@@ -1,0 +1,13 @@
+// Description:
+//    print  couvre pas mal de chose 
+//
+// Resultats:
+//    
+// 
+// Historique:
+//    cree le 07/01/2025
+
+{
+    print();
+    println(3 + "d" + 3.0);
+}

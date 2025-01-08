@@ -83,6 +83,7 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
+            $l.add($dv2.tree);
         }
       )*
     ;
@@ -92,15 +93,13 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         AbstractInitialization absInit = new NoInitialization();    //au cas ou il n'y a pas d'initialisation
         }
     : i=ident {
+        assert($i.tree != null);
         AbstractIdentifier name = $i.tree;  //défini ici pas dans @init car il y a forcement un ident
-        setLocation(name, $i.start);
         }
       (EQUALS e=expr {
         absInit = new Initialization($e.tree);  //si il y a une initialisation
-        setLocation($tree, $EQUALS);
         }
       )? {
-
         $tree = new DeclVar($t, name, absInit);
         setLocation($tree, $i.start);
         }
@@ -135,6 +134,7 @@ inst returns[AbstractInst tree]
             assert($list_expr.tree != null);
             $tree = new Println(false, $list_expr.tree);
             setLocation($tree, $PRINTLN);
+
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -218,7 +218,6 @@ assign_expr returns[AbstractExpr tree]
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);  //cast car AbstractLValue est une sous classe de AbstractExpr
             setLocation($tree, $EQUALS);
-
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -394,9 +393,11 @@ select_expr returns[AbstractExpr tree]
     ;
 
 primary_expr returns[AbstractExpr tree]
-    //TODO gérer les identificateurs
+    //TODO gérer les identificateurs 
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
