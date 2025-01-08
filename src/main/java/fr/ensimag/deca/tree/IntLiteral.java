@@ -7,6 +7,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 
 /**
@@ -32,6 +36,11 @@ public class IntLiteral extends AbstractExpr {
         Type intType = new IntType(compiler.createSymbol("int"));
         setType(intType);
         return intType;
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        compiler.addInstruction(new LOAD(new ImmediateFloat(value), GPRegister.getR(2)));
     }
 
     @Override

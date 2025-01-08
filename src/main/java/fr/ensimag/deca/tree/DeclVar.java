@@ -16,6 +16,7 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -88,16 +89,22 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
 
-
-        //Ajout de l'operand de GB
+        //Ajout de l'operand à GB
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
-        compiler.headOfGBStack++;
 
-        if (initialization instanceof NoInitialization) return;
+        if (initialization instanceof NoInitialization) {
+            compiler.headOfGBStack++;
+            return;
+        }
+
         Initialization initExpression = (Initialization) initialization;
 
-        initExpression.
+
+
+        //STORE R2 k(GB)
+        compiler.addInstruction(new STORE(Register.getR(2),GB_Stack));
+        compiler.headOfGBStack++;
 
 
     }
