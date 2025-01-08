@@ -8,13 +8,14 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.context.VariableDefinition;
 
 import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.io.PrintStream;
 
- import org.apache.commons.lang.Validate;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import org.apache.commons.lang.Validate;
 
 /**
  * @author gl31
@@ -42,10 +43,9 @@ public class DeclVar extends AbstractDeclVar {
             throws ContextualError {
         Type typeType = type.verifyType(compiler);
         if (typeType.isVoid()){
-            throw new ContextualError("Type is void and it can't", getLocation());
+            throw new ContextualError("type is void", getLocation());
         }
         type.setType(typeType);
-
         try{
             varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
             localEnv.declare(varName.getName(),(ExpDefinition) type.getDefinition());
@@ -79,5 +79,14 @@ public class DeclVar extends AbstractDeclVar {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenDeclVar(DecacCompiler compiler) {
+
+        //Ajout à la pile dans GB
+        RegisterOffset GB_Stack = new RegisterOffset(3, Register.GB);
+        varName.getExpDefinition().setOperand(GB_Stack);
+
     }
 }
