@@ -1,7 +1,7 @@
 ; start main program
 ; Main program
 ; Beginning of main instructions:
-	WSTR "Hello, world!"
+	WSTR "fr.ensimag.deca.tree.Plus@7225790e"
 	WNL
 	HALT
 ; end main program
