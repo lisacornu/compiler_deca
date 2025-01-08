@@ -1,7 +1,13 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -64,6 +70,19 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         leftOperand.prettyPrint(s, prefix, false);
         rightOperand.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        getLeftOperand().codeGenInst(compiler); // POP exp1
+        compiler.addInstruction(new POP(Register.R0)); //R0 <- exp1
+
+        getLeftOperand().codeGenInst(compiler); // POP exp2
+        compiler.addInstruction(new POP(Register.getR(2))); // R2 <- exp2
+
+        compiler.addInstruction(new ADD(Register.R0, Register.getR(2))); // R2 <- R0 opp R2
+        compiler.addInstruction(new PUSH(Register.getR(2))); // PUSH R2
+
     }
 
 }

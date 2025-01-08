@@ -1,0 +1,12 @@
+// Description:
+//    test
+//
+// Resultats:
+//
+// Historique:
+//    cree le 08/01/2025
+
+{
+    int x = 1 + 2 + 3 + 4 + 5;
+    print(x);
+}
