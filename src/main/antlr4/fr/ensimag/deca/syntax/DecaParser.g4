@@ -366,7 +366,7 @@ unary_expr returns[AbstractExpr tree]
             setLocation($tree, $op);
         }
     | select_expr {
-            assert($select_expr.tree != null);
+            assert($select_expr.tree != null); //c'est lui qui est nul ?
             $tree = $select_expr.tree;
             setLocation($tree, $select_expr.start);
         }
@@ -396,6 +396,8 @@ primary_expr returns[AbstractExpr tree]
     //TODO gérer les identificateurs
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
