@@ -39,6 +39,10 @@ import org.apache.log4j.Logger;
  * @date 01/01/2025
  */
 public class DecacCompiler implements Callable<Boolean> {
+
+    public int headOfGBStack = 3;
+
+
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     
     /**

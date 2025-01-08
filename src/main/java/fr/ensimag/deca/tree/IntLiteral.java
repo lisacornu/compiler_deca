@@ -60,4 +60,7 @@ public class IntLiteral extends AbstractExpr {
         // leaf node => nothing to do
     }
 
+    protected void codeGenIntLiteral(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD());
+    }
 }
