@@ -101,8 +101,10 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-            verifyExpr(compiler, localEnv, currentClass);
-        if (!(returnType.isBoolean() || returnType.isFloat() || returnType.isInt() || returnType.isString())){
+            Type type2 = verifyExpr(compiler, localEnv, currentClass);
+            // System.out.println(type2);
+            // System.out.println(returnType);
+        if (!(type2.isBoolean() || type2.isFloat() || type2.isInt() || type2.isString())){
             throw new UnsupportedOperationException("This is not inst type");
         }
     }
