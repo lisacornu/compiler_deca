@@ -1,0 +1,15 @@
+// Description:
+//    Programme minimaliste utilisant read pour l'induire a une erreur(mettre un argument).
+//
+// Resultats:
+//erreur
+//
+//
+// Historique:
+//    cree le 07/01/2025
+
+{   
+   float f;
+   f=readFloat(3.4);
+
+}

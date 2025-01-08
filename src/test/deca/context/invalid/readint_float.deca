@@ -9,6 +9,6 @@
 
 {   
    int x;
-   readFloat(x);
+   x=readFloat();
 
 }
