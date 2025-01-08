@@ -1,0 +1,12 @@
+// Description:
+//    Programme utilisant println et print d'une somme.
+//
+// Resultats:
+//   2
+//
+// Historique:
+//    cree le 08/01/2025
+
+{
+        println(1 + 1);
+}
