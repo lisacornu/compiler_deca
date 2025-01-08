@@ -25,7 +25,7 @@ public class Modulo extends AbstractOpArith {
 
         if (lefType.isInt() && righType.isInt()){
             IntLiteral rightValue = (IntLiteral) getRightOperand();
-            if(rightValue.getValue()!=0){
+            if(rightValue.getValue() == 0){
                 throw new ContextualError("Divison par 0", getLocation());
             }
             setType(righType);
