@@ -43,7 +43,6 @@ public class DecacCompiler implements Callable<Boolean> {
     public int headOfGBStack = 3;
     public int tempRegisterIndex = 2;
 
-    public
 
 
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
