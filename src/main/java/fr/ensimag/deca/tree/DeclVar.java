@@ -10,12 +10,16 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.context.VariableDefinition;
 
+
 import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -60,6 +64,8 @@ public class DeclVar extends AbstractDeclVar {
         initialization.verifyInitialization(compiler, typeType, localEnv, currentClass);
     }
 
+
+
     
     @Override
     public void decompile(IndentPrintStream s) {
@@ -85,12 +91,17 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
-    @Override
-    protected void codeGenDeclVar(DecacCompiler compiler) {
+   // @Override
+    //protected void codeGenDeclVar(DecacCompiler compiler) {
 
         //Ajout à la pile dans GB
-        RegisterOffset GB_Stack = new RegisterOffset(3, Register.GB);
-        varName.getExpDefinition().setOperand(GB_Stack);
+      //  RegisterOffset GB_Stack = new RegisterOffset(3, Register.GB);
+       // varName.getExpDefinition().setOperand(GB_Stack);
 
-    }
+    //}
+
+     public void codeGenDeclVar(DecacCompiler compiler){
+         initialization.codeGenInit(compiler);
+         compiler.addInstruction(new STORE(GPRegister.getR(2), new RegisterOffset(2, Register.GB)));
+     }
 }

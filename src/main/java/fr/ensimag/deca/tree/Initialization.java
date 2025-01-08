@@ -38,7 +38,9 @@ public class Initialization extends AbstractInitialization {
         // on vérifie rvalue (si je comprends bien, on regarde si meme type ou si flaot int)
         setExpression(getExpression().verifyRValue(compiler, localEnv, currentClass, t));
     }
-
+    public void codeGenInit(DecacCompiler compiler){
+        expression.codeGenInst(compiler);
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
