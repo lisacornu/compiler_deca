@@ -36,7 +36,7 @@ public class Initialization extends AbstractInitialization {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         // on vérifie rvalue (si je comprends bien, on regarde si meme type ou si flaot int)
-        throw new UnsupportedOperationException("not yet implemented");
+        setExpression(getExpression().verifyRValue(compiler, localEnv, currentClass, t));
     }
 
 

@@ -84,7 +84,16 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        
+        Type type2 = verifyExpr(compiler, localEnv, currentClass);
+        if(type2.sameType(expectedType)){
+            return this;
+        }else if ((type2.isInt() && expectedType.isFloat()) || (type2.isFloat() && expectedType.isInt()) ){
+            setType(expectedType);
+            return this;
+        }else{
+            throw new ContextualError("They are not compatible (not same type or float/int)", getLocation());
+        }
     }
     
     

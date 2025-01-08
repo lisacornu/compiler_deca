@@ -41,14 +41,17 @@ public class DeclVar extends AbstractDeclVar {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type typeType = type.verifyType(compiler);
+        
         if (typeType.isVoid()){
             throw new ContextualError("Type is void and it can't", getLocation());
         }
         type.setType(typeType);
 
         try{
+
             varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
-            localEnv.declare(varName.getName(),(ExpDefinition) type.getDefinition());
+            localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
+
         }catch(DoubleDefException e){
             throw new ContextualError("The type as already been define " + varName, getLocation());
         }

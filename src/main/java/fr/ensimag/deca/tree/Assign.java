@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -29,12 +30,10 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        if (getLeftOperand().getType().equals(getRightOperand().getType())){
-            throw new ContextualError("Both types are not the same", getLocation());
-        }
-        Type type = getLeftOperand().getType();
-        setType(type);
-        return type;
+        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        AbstractExpr rightExpDefinition = getRightOperand().verifyRValue(compiler, localEnv, currentClass, lefType);
+        setRightOperand(rightExpDefinition);
+        return lefType;
         
     }
 

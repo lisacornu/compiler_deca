@@ -2,10 +2,12 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.omg.CORBA.Environment;
 
 /**
  * @author gl31
@@ -29,8 +31,10 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
-        this.insts.verifyListInst(compiler, null, null, null);
-        this.declVariables.verifyListDeclVariable(compiler, null, null);
+        EnvironmentExp localenv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
+        this.declVariables.verifyListDeclVariable(compiler, localenv, null); // on verifie en premier les variable 
+        this.insts.verifyListInst(compiler, localenv, null, null); //on vérifie les inst
+
         LOG.debug("verify Main: end");
     }
 
