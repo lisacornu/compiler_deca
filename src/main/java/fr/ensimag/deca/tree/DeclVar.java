@@ -44,8 +44,9 @@ public class DeclVar extends AbstractDeclVar {
         }
         type.setType(typeType);
         try{
-        localEnv.declare(varName.getName(),(ExpDefinition) type.getDefinition());
-        }catch(DoubleDefException e){
+            localEnv.declare(varName.getName(),(ExpDefinition) type.getDefinition());
+
+        } catch(DoubleDefException e){
             throw new ContextualError("The type as already been define " + varName, getLocation());
         }
         
@@ -75,5 +76,10 @@ public class DeclVar extends AbstractDeclVar {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenDeclVar(DecacCompiler compiler) {
+        //TODO: à l'aide je comprend rien
     }
 }
