@@ -3,7 +3,6 @@
 //
 // Resultats:
 //    Bonjour
-//    true
 //    12
 //    2.3
 //    1 test 3.3
@@ -14,9 +13,6 @@
 {
     print("String : ");
     println("Bonjour");
-
-    print("Boolean : ");
-    println(true);
 
     print("Entier : ");
     println(12);
