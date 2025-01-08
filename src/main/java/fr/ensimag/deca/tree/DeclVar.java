@@ -8,11 +8,13 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.context.VariableDefinition;
 
 import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.io.PrintStream;
-import org.apache.commons.lang.Validate;
+
+ import org.apache.commons.lang.Validate;
 
 /**
  * @author gl31
@@ -40,11 +42,13 @@ public class DeclVar extends AbstractDeclVar {
             throws ContextualError {
         Type typeType = type.verifyType(compiler);
         if (typeType.isVoid()){
-            throw new ContextualError("type is void", getLocation());
+            throw new ContextualError("Type is void and it can't", getLocation());
         }
         type.setType(typeType);
+
         try{
-        localEnv.declare(varName.getName(),(ExpDefinition) type.getDefinition());
+            varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
+            localEnv.declare(varName.getName(),(ExpDefinition) type.getDefinition());
         }catch(DoubleDefException e){
             throw new ContextualError("The type as already been define " + varName, getLocation());
         }
