@@ -89,6 +89,7 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
 
+
         //Ajout de l'operand à GB
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
@@ -99,8 +100,7 @@ public class DeclVar extends AbstractDeclVar {
         }
 
         Initialization initExpression = (Initialization) initialization;
-
-
+        initExpression.codeGenInit(compiler);
 
         //STORE R2 k(GB)
         compiler.addInstruction(new STORE(Register.getR(2),GB_Stack));

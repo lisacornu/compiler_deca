@@ -9,6 +9,7 @@ import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
@@ -69,7 +70,4 @@ public class IntLiteral extends AbstractExpr {
         // leaf node => nothing to do
     }
 
-    protected void codeGenIntLiteral(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD());
-    }
 }
