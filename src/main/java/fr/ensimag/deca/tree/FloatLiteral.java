@@ -41,10 +41,10 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    public String toString () {
+    public String getExprValue (DecacCompiler compiler) {
         return this.printHex ?
                 Integer.toHexString(Float.floatToIntBits(this.value))
-                : "" + this.value;
+                : String.valueOf(this.value);
     }
 
     @Override

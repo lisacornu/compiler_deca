@@ -15,6 +15,12 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -199,7 +205,18 @@ public class Identifier extends AbstractIdentifier {
         setType(type.getType());
         return getType();
     }
-    
+
+    @Override
+    public String getExprValue(DecacCompiler compiler) {
+        if (this.getExpDefinition().getNature().equals("variable")) {
+            compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
+            if (this.getExpDefinition().getType().isFloat())
+                compiler.addInstruction(new WFLOAT());
+            else if (this.getExpDefinition().getType().isInt())
+                compiler.addInstruction(new WINT());
+        }
+        return "";
+    }
     
     private Definition definition;
 

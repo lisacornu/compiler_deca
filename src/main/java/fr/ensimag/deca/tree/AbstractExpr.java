@@ -145,16 +145,25 @@ public abstract class AbstractExpr extends AbstractInst {
         this.printHex = printHex;
 
         if (this instanceof AbstractIdentifier) {
-
-            DAddr temp = ((AbstractIdentifier) this).getExpDefinition().getOperand();
-            compiler.addInstruction(new LOAD(temp, Register.getR(1)));
-            compiler.addInstruction(new WINT());
-
-        } else {
-
-            compiler.addInstruction(new WSTR(this.toString()));
+            this.getExprValue(compiler);
         }
+        else {
+            String exprValue = this.getExprValue(compiler);
+            compiler.addInstruction(new WSTR(exprValue));
+        }
+
+//        if (this instanceof AbstractIdentifier) {
+//            DAddr temp = ((AbstractIdentifier) this).getExpDefinition().getOperand();
+//            compiler.addInstruction(new LOAD(temp, Register.getR(1)));
+//            compiler.addInstruction(new WINT());
+//
+//        } else {
+//            compiler.addInstruction(new WSTR(this.toString()));
+//        }
     }
+
+    abstract String getExprValue (DecacCompiler compiler);
+
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

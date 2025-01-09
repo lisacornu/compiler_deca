@@ -1,0 +1,17 @@
+// Description:
+//    Ecriture de variable dans la console
+//
+// Resultats:
+//    2
+//    2.3
+//
+// Historique:
+//    cree le 09/01/2025
+
+{
+    int x = 2;
+    float y = 2.3;
+
+    println(x);
+    println
+}
