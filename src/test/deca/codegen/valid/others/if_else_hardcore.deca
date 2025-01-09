@@ -1,0 +1,33 @@
+// Description:
+//    Test compliqué d'imbrication de if then else
+//
+// Resultats:
+//    123456
+//
+// Historique:
+//    cree le 09/01/2025
+
+{
+    if (true) {
+        print("1");
+        if (false) {
+            print("*");
+        } else if (true) {
+            print("2");
+            if (true) {
+                print("3");
+            } else {
+                print("*");
+            }
+            print("4");
+        } else {
+            print("*");
+        }
+        print("5");
+    } else if (false) {
+        print("*");
+    } else {
+       print("*");
+    }
+    print("6");
+}
