@@ -124,9 +124,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
 
     /*
-     * Première operand est dans R0, deuxième operand est dans R2
-     * Doit return dans R2
-     * De la forme (OP R0 R2)
+     Génère l'expression binaire entre op1 et op2
      */
     abstract protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2);
 
