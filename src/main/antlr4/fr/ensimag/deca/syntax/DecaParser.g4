@@ -176,7 +176,7 @@ if_then_else returns[IfThenElse tree]
         IfThenElse elif = new IfThenElse($elsif_cond.tree, $elsif_li.tree, new ListInst());
         lastBranch.setElseBranch(elif);
         setLocation(elif, $elsif);
-        lastBranch = $tree;
+        lastBranch = elif;  //deviens la dernière branche
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
