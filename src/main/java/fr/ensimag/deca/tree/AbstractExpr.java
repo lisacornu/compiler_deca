@@ -162,12 +162,12 @@ public abstract class AbstractExpr extends AbstractInst {
 //        }
     }
 
-    abstract String getExprValue (DecacCompiler compiler);
+    public abstract String getExprValue(DecacCompiler compiler);
 
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        throw new UnsupportedOperationException("aaa");
     }
 
 
