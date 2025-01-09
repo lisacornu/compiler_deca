@@ -29,6 +29,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             Type booleanType = new BooleanType(compiler.createSymbol("boolean"));
             this.setType(booleanType);
             return booleanType;
+        }else if (lefType.isBoolean() && righType.isBoolean()){
+            setType(righType);
+            return righType;
         }else{
             throw new ContextualError("Both are not same thing",getLocation());
         }
