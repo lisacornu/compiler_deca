@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DVal;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -38,8 +40,9 @@ public class Initialization extends AbstractInitialization {
         // on vérifie rvalue (si je comprends bien, on regarde si meme type ou si flaot int)
         setExpression(getExpression().verifyRValue(compiler, localEnv, currentClass, t));
     }
+
     public void codeGenInit(DecacCompiler compiler){
-        expression.codeGenInst(compiler);
+        expression.codeGenExpr(compiler);
     }
 
     @Override

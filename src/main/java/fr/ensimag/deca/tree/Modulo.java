@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
  *
@@ -41,7 +43,7 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    protected void codeGenBinaryExpr(DecacCompiler compiler) {
+    protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 }

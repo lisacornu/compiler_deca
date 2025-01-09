@@ -9,6 +9,7 @@ import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
@@ -74,9 +75,20 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), GPRegister.getR(2)));
-        compiler.addInstruction(new PUSH(GPRegister.getR(2)));
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+
+        GPRegister freeReg = compiler.registerHandler.Get();
+
+        //Pas de registres disponibles (push dans pile)
+        if (freeReg == null) {
+            compiler.addInstruction(new LOAD(new ImmediateFloat(value), GPRegister.R0)); //LOAD dans R0
+            compiler.addInstruction(new PUSH(GPRegister.R0)); //PUSH R0
+            return null; // On indique qu'on a push dans la pile
+        }
+
+        //Registre disponibles (on return le registre occupé)
+        compiler.addInstruction(new LOAD(new ImmediateFloat(value), freeReg));
+        return freeReg;
     }
 
 }

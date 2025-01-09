@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -8,15 +9,15 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Stack;
+import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 import org.antlr.v4.runtime.CharStreams;
@@ -42,9 +43,7 @@ public class DecacCompiler implements Callable<Boolean> {
 
     public int headOfGBStack = 3;
     public int tempRegisterIndex = 2;
-
-    public void TempRegisterIndexRefresh() { tempRegisterIndex = 2; }
-
+    public RegisterHandler registerHandler;
 
 
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
@@ -58,6 +57,7 @@ public class DecacCompiler implements Callable<Boolean> {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.registerHandler = new RegisterHandler(16);
     }
 
     /**

@@ -92,15 +92,12 @@ public class DeclVar extends AbstractDeclVar {
         //Ajout de l'operand à GB
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
+        compiler.headOfGBStack++;
 
-        if (initialization instanceof NoInitialization) {
-            compiler.headOfGBStack++;
-            return;
-        }
+        if (initialization instanceof NoInitialization) return;
 
         Initialization initExpression = (Initialization) initialization;
         initExpression.codeGenInit(compiler);
-        compiler.TempRegisterIndexRefresh();
 
         //STORE R2 k(GB)
         compiler.addInstruction(new STORE(Register.getR(compiler.tempRegisterIndex),GB_Stack));

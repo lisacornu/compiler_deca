@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+
 import java.io.PrintStream;
 
 /**
@@ -39,6 +41,11 @@ public class ReadFloat extends AbstractReadExpr {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
+    }
+
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
 }

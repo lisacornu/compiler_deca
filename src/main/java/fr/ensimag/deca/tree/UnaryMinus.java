@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
 
 /**
  * @author gl31
@@ -31,6 +32,11 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     protected String getOperatorName() {
         return "-";
+    }
+
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
 }

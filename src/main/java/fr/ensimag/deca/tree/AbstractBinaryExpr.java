@@ -5,6 +5,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -77,27 +78,56 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return "temp";
     }
 
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
 
-
-        getLeftOperand().codeGenInst(compiler); // POP exp1
-        compiler.addInstruction(new POP(Register.R0)); //R0 <- exp1
-
-        getRightOperand().codeGenInst(compiler); // POP exp2
-        compiler.addInstruction(new POP(Register.getR(2))); //R0 <- exp1
-
-        codeGenBinaryExpr(compiler);
-
-        compiler.addInstruction(new PUSH(Register.getR(2))); // PUSH R2
-
+    private GPRegister loadFromStack(DecacCompiler compiler, GPRegister tempRegister) {
+        compiler.addInstruction(new POP(tempRegister));
+        return tempRegister;
     }
+
+    private GPRegister loadIntoRegister(DecacCompiler compiler, DVal addr, GPRegister tempRegister) {
+        if (addr instanceof GPRegister) { // addr est un registre
+            return (GPRegister)addr;
+        } else { // addr est dans GB
+            compiler.addInstruction(new LOAD(addr, tempRegister));
+            return tempRegister;
+        }
+    }
+
+
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+
+        // Generation du codes des branches
+        DVal exp1Addr = getLeftOperand().codeGenExpr(compiler);
+        DVal exp2Addr = getRightOperand().codeGenExpr(compiler); // POP exp2
+
+        // Selection des bonnes adresses en fonction de leur emplacement mémoire
+        GPRegister op2 = (exp2Addr == null) ? loadFromStack(compiler, Register.R1)
+                : loadIntoRegister(compiler, exp2Addr, Register.R1);
+
+        DVal op1 = (exp1Addr == null) ? loadFromStack(compiler, Register.R0)
+                : exp1Addr;
+
+        // Generation du code de l'expression (résultat enregistré dans op2)
+        codeGenBinaryExpr(compiler, op1, op2);
+        compiler.registerHandler.SetFree(op1); //On libère op1
+
+        //Renvoi du résultat
+        if (op2.getIndex() == 1) { //Dans la pile si les registres sont plein
+            compiler.addInstruction(new POP(op2));
+            return null;
+        } else {
+            return op2;
+        }
+    }
+
+
 
     /*
      * Première operand est dans R0, deuxième operand est dans R2
      * Doit return dans R2
      * De la forme (OP R0 R2)
      */
-    abstract protected void codeGenBinaryExpr(DecacCompiler compiler);
+    abstract protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2);
 
 }
