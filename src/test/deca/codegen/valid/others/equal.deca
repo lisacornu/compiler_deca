@@ -1,0 +1,15 @@
+// Description:
+//    test
+//
+// Resultats:
+//
+// Historique:
+//    cree le 09/01/2025
+
+{
+    if(false == true){
+        printf(3);
+    }
+
+    
+}
