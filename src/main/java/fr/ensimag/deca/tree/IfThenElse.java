@@ -51,10 +51,10 @@ public class IfThenElse extends AbstractInst {
        //BRA saute peu importe la condition et BNE saute si c pas egale a true donc faut combiner les 2 
         condition.codeGenInst(compiler);//fait la condition sa doit retourner 1 ou 0
         Label fin_if_else=new Label ("end_if_else"+i);
-        i++;
+       // i++;
         compiler.addInstruction(new POP(Register.getR(2)));//comparer la valeur push
         compiler.addInstruction(new CMP(1,Register.getR(2)) );//il compare 1 au resultat d'avant je suppose pr l 'instant qu on utilise que R2'
-        Label my_label=new Label("my_label"+i);//label doit avoir un nom unique et la regle du nom est decrit dans label 
+        Label my_label=new Label("if_else"+i);//label doit avoir un nom unique et la regle du nom est decrit dans label 
         i++; 
         compiler.addInstruction(new BNE(my_label));//je cree un jmp quand c faux
         thenBranch.codeGenListInst(compiler);
