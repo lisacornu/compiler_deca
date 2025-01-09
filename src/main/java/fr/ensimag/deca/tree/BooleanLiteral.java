@@ -8,6 +8,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
  *
@@ -33,7 +38,13 @@ public class BooleanLiteral extends AbstractExpr {
         setType(bool);
         return bool;
     }
-
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        int boolValue = value ? 1 : 0;//1 si true 0 sinon 
+        //grace a l'arbre on gartentit le fait de ne pas comparer 1 et true 
+        compiler.addInstruction(new LOAD(new ImmediateInteger(boolValue), GPRegister.getR(2)));
+        compiler.addInstruction(new PUSH(GPRegister.getR(2)));
+    }
     @Override
     public String toString () {
         return "" + this.value;
