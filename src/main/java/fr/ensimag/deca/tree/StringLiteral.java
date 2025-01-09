@@ -43,11 +43,15 @@ public class StringLiteral extends AbstractStringLiteral {
         return string;
     }
 
-
     @Override
-    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
-        compiler.addInstruction(new WSTR(new ImmediateString(value)));
+    public String getExprValue(DecacCompiler compiler) {
+        return value;
     }
+
+//    @Override
+//    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
+//        compiler.addInstruction(new WSTR(new ImmediateString(value)));
+//    }
 
     @Override
     public void decompile(IndentPrintStream s) {

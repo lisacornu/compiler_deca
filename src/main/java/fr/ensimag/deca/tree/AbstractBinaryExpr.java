@@ -73,6 +73,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
     @Override
+    public String getExprValue(DecacCompiler compiler) {
+        return "temp";
+    }
+
+    @Override
     protected void codeGenInst(DecacCompiler compiler) {
 
 

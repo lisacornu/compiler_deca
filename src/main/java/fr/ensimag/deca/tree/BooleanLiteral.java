@@ -46,8 +46,8 @@ public class BooleanLiteral extends AbstractExpr {
         compiler.addInstruction(new PUSH(GPRegister.getR(2)));
     }
     @Override
-    public String toString () {
-        return "" + this.value;
+    public String getExprValue(DecacCompiler compiler) {
+        return String.valueOf(this.value);
     }
 
     @Override

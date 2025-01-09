@@ -32,6 +32,9 @@ public class TestPlusWithoutMock {
         boolean hasBeenVerified = false;
 
         @Override
+        public String getExprValue(DecacCompiler compiler) {return "";}
+
+        @Override
         public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                 ClassDefinition currentClass) throws ContextualError {
             hasBeenVerified = true;

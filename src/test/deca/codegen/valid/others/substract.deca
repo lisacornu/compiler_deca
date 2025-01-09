@@ -1,0 +1,12 @@
+// Description:
+//    ecriture du résultat d'une opération
+//
+// Resultats:
+//    4
+//
+// Historique:
+//    cree le 07/01/2025
+
+{
+    println(2 - 2);
+}

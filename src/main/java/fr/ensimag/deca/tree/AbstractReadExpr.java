@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+
 /**
  * read...() statement.
  *
@@ -13,5 +15,9 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         super();
     }
 
+    @Override
+    public String getExprValue(DecacCompiler compiler) {
+        return "temp";
+    }
 
 }

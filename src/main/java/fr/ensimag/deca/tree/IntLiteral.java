@@ -47,8 +47,8 @@ public class IntLiteral extends AbstractExpr {
 
 
     @Override
-    public String toString () {
-        return "" + this.value;
+    public String getExprValue (DecacCompiler compiler) {
+        return String.valueOf(this.value);
     }
 
 
