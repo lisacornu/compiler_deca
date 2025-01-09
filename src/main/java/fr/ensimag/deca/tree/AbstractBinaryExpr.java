@@ -74,15 +74,20 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+
         getLeftOperand().codeGenInst(compiler); // POP exp1
         compiler.addInstruction(new POP(Register.R0)); //R0 <- exp1
 
-        getLeftOperand().codeGenInst(compiler); // POP exp2
+        getRightOperand().codeGenInst(compiler); // POP exp2
         compiler.addInstruction(new POP(Register.getR(2))); // R2 <- exp2
 
-        compiler.addInstruction(new ADD(Register.R0, Register.getR(2))); // R2 <- R0 opp R2
+        //compiler.addInstruction(new ADD(Register.R0, Register.getR(2))); // R2 <- R0 opp R2
+        codeGenBinaryExpr(compiler);
+
         compiler.addInstruction(new PUSH(Register.getR(2))); // PUSH R2
 
     }
+
+    abstract protected void codeGenBinaryExpr(DecacCompiler compiler);
 
 }
