@@ -67,4 +67,8 @@ public class Divide extends AbstractOpArith {
         return "/";
     }
 
+    @Override
+    protected void codeGenBinaryExpr(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

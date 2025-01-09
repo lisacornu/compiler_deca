@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+
 /**
  *
  * @author gl31
@@ -17,4 +21,8 @@ public class LowerOrEqual extends AbstractOpIneq {
         return "<=";
     }
 
+    @Override
+    protected void codeGenBinaryExpr(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }
