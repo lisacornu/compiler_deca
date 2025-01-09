@@ -1,0 +1,12 @@
+// Description:
+//    ecriture du résultat d'une opération
+//
+// Resultats:
+//   erreur de type
+//
+// Historique:
+//    cree le 07/01/2025
+
+{
+    println(true);
+}
