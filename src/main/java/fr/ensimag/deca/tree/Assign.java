@@ -7,6 +7,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -49,7 +52,8 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
+        compiler.addInstruction(new STORE(Register.getR(2),varAddress));
     }
 
 }
