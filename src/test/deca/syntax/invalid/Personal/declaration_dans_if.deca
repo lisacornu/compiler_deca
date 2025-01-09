@@ -1,0 +1,19 @@
+// Description:
+//    test
+//
+// Resultats:
+//
+// Historique:
+//    cree le 09/01/2025
+
+{
+    if(false == true){
+        print(3);
+    }else if(2==2){
+        print("ggr");
+    } else{
+        int a = 2;
+    }
+
+    
+}
