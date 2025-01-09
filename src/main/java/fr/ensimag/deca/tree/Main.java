@@ -32,9 +32,12 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp localenv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
+        LOG.debug("verify Variable : start");
         this.declVariables.verifyListDeclVariable(compiler, localenv, null); // on verifie en premier les variable 
+        LOG.debug("verify Variable : end");
+        LOG.debug("verify Inst : start");
         this.insts.verifyListInst(compiler, localenv, null, null); //on vérifie les inst
-
+        LOG.debug("verify Inst : end");
         LOG.debug("verify Main: end");
     }
 
