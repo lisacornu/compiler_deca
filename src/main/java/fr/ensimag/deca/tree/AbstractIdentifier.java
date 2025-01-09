@@ -99,7 +99,7 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(),  Register.getR(2))); //  R2 <- x
-        compiler.addInstruction(new POP(Register.getR(2)));
+        compiler.addInstruction(new PUSH(Register.getR(2)));
     }
 
 }

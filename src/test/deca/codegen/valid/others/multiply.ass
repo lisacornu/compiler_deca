@@ -1,0 +1,7 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	WSTR "fr.ensimag.deca.tree.Multiply@54a097cc"
+	WNL
+	HALT
+; end main program
