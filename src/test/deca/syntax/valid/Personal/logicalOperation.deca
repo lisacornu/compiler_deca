@@ -1,0 +1,25 @@
+// Description:
+//    ecriture du résultat d'une opération
+//
+// Resultats:
+//    test passed !
+//
+// Historique:
+//    cree le 07/01/2025
+
+{
+    boolean a1 = true || false;
+    boolean a2 = true && false;
+    boolean a3 = false || false;
+    boolean a4 = false && true;
+
+    if(a1){
+        if(!a2){
+            if(!a3){
+                if(!a4){
+                    print("test passed !");
+                }
+            }
+        }
+    }
+}
