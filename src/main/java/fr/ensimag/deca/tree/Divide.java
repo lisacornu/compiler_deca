@@ -5,6 +5,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.DIV;
+import fr.ensimag.ima.pseudocode.instructions.MUL;
+import fr.ensimag.ima.pseudocode.instructions.QUO;
 
 /**
  *
@@ -42,7 +46,7 @@ public class Divide extends AbstractOpArith {
     //     if ((lefType.isInt() || lefType.isFloat()) && (righType.isFloat()||righType.isInt())){
     //         if (lefType.isFloat() && righType.isInt()){
     //             AbstractExpr intTypeExpr = getRightOperand();
-    //             setRightOperand(new ConvFloat(intTypeExpr)); 
+    //             setRightOperand(new ConvFloat(intTypeExpr));
     //             this.setType(lefType);
     //             return lefType;
 
@@ -70,6 +74,11 @@ public class Divide extends AbstractOpArith {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        if(getLeftOperand().getType().isFloat()){
+            compiler.addInstruction(new DIV(Register.R0, Register.getR(2))); // R2 <- R0 / R2 avec des flottants
+        }
+        else{
+            compiler.addInstruction(new QUO(Register.R0, Register.getR(2))); // R2 <- R0 / R2 avec des entiers
+        }
     }
 }

@@ -80,7 +80,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
 
-
         getLeftOperand().codeGenInst(compiler); // POP exp1
         compiler.addInstruction(new POP(Register.R0)); //R0 <- exp1
 

@@ -6,8 +6,15 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.POP;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -18,6 +25,7 @@ import org.apache.commons.lang.Validate;
 public class While extends AbstractInst {
     private AbstractExpr condition;
     private ListInst body;
+    private static int nbNestedWhiles = 0;
 
     public AbstractExpr getCondition() {
         return condition;
@@ -36,7 +44,24 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        nbNestedWhiles++;
+        Label debutWhile = new Label ("while" + nbNestedWhiles);
+        Label finWhile = new Label ("fin_while" + nbNestedWhiles);
+
+        compiler.addLabel(debutWhile);
+
+        condition.codeGenInst(compiler);    //recupère la condition
+        compiler.addInstruction(new POP(Register.getR(2)));
+
+        compiler.addInstruction(new CMP(new ImmediateInteger(1),Register.getR(2))); //compare la condition avec vrai
+        compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
+
+        body.codeGenListInst(compiler); //génère le code du corps de la boucle
+
+        compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
+
+        compiler.addLabel(finWhile);
     }
 
     @Override

@@ -30,26 +30,15 @@ public class Equals extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler) {
-          //  this.getLeftOperand().codeGenInst(compiler);
-            //pop  dans R0 par exemple
-            //compiler.addInstruction(new POP(Register.getR(0)));
-            //this.getRightOperand().codeGenInst(compiler);
-            //pop dans R2
-            //compiler.addInstruction(new POP(Register.getR(2)));
             compiler.addInstruction(new CMP(Register.getR(0),Register.getR(2)));
             Label case1=new Label ("true_"+i);
             Label case2=new Label("false"+i);
             i++;
-            compiler.addInstruction(new BNE(case2));//si la comparaison est fausse sa saute 
+            compiler.addInstruction(new BNE(case2));    //si la comparaison est fausse --> on va a case2
             compiler.addInstruction(new LOAD(new ImmediateInteger(1),Register.getR(2)));
             compiler.addInstruction(new BRA(case1));
             compiler.addLabel(case2);
             compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.getR(2)));
             compiler.addLabel(case1);
-            //compiler.addInstruction(new PUSH(Register.getR(2)));
-
-
-
-
     }
 }
