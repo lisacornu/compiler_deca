@@ -14,6 +14,8 @@ import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+
 /**
  * Full if/else if/else statement.
  *
@@ -53,8 +55,8 @@ public class IfThenElse extends AbstractInst {
         Label fin_if_else=new Label ("end_if_else"+i);
        // i++;
         compiler.addInstruction(new POP(Register.getR(2)));//comparer la valeur push
-        compiler.addInstruction(new CMP(1,Register.getR(2)) );//il compare 1 au resultat d'avant je suppose pr l 'instant qu on utilise que R2'
-        Label my_label=new Label("if_else"+i);//label doit avoir un nom unique et la regle du nom est decrit dans label 
+        compiler.addInstruction(new CMP(new ImmediateInteger(1),Register.getR(2)) );//il compare 1 au resultat d'avant je suppose pr l 'instant qu on utilise que R2'
+        Label my_label=new Label("else"+i);//label doit avoir un nom unique et la regle du nom est decrit dans label 
         i++; 
         compiler.addInstruction(new BNE(my_label));//je cree un jmp quand c faux
         thenBranch.codeGenListInst(compiler);
