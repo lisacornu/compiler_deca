@@ -9,5 +9,5 @@
 
 {
     print();
-    println(3 + "d" + 3.0);
+    println(3, 3.0, "voiture");
 }

@@ -1,4 +1,11 @@
-// affichage en flottant de la moitié du carré d'un entier
+// Description:
+//    Exemple sans objet
+//
+// Resultats:
+//    0.5*valeur_rentree**2
+// 
+// Historique:
+//    cree le 09/01/2025
 {
 int x ;
 x=readInt() ;

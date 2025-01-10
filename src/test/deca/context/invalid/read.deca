@@ -1,0 +1,16 @@
+// Description:
+//    Programme minimaliste utilisant les fonction de base read.
+//
+// Resultats:
+// Error
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   int x;
+   float y;
+   readInt(x);
+   readFloat(y);
+
+}
