@@ -1,0 +1,12 @@
+// Description:
+//    Affectation d'un type flaot a un int 
+//
+// Resultats:
+//    Ligne 11 : They are not compatible (not same type or float->int) float is not int
+// 
+// Historique:
+//    cree le 06/01/2025
+
+{
+   int a = 3.4;
+}

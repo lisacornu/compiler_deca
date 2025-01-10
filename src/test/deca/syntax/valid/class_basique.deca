@@ -8,7 +8,7 @@
 //    cree le 17/12/2024
 
 
-#include "qqchose.deca"
+#include "float.deca"
 
 class A {
     

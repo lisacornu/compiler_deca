@@ -1,9 +1,9 @@
 // Description:
-//  Programme min utilisant un bool 
+//  Print d'un booleen
 //
 // Resultats:
-//erreur
-//
+//    Erreur contextuelle
+//    Ligne 12 : Type is not String or Int or Float, you have boolean
 //
 // Historique:
 //    cree le 06/01/2025

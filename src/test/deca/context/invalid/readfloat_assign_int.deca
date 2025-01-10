@@ -9,7 +9,7 @@
 //    cree le 06/01/2025
 
 {   
-   float x;
+   int x;
    x=readFloat();
 
 }

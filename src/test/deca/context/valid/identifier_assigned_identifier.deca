@@ -1,13 +1,13 @@
 // Description:
-//    comparer 2 type diff 
+//    Definition d'un identifier avec un nom d'identifier
 //
 // Resultats:
-//erreur
+//    Passed
 //
 //
 // Historique:
 //    cree le 06/01/2025
 
 {   
-    boolean b = 3<false;
+   int float ;
 }

@@ -1,0 +1,16 @@
+// Description:
+//  Programme qui teste l'assignation de String et une somme de String
+//
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 14 : Both are not float or int
+//
+// Historique:
+//    cree le 10/01/2025
+
+
+{   
+   String a = "voiture";
+   a = a + "grrr";
+
+}
