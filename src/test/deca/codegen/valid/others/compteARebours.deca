@@ -12,7 +12,7 @@
 //    cree le 07/01/2025
 
 {
-    int i = 5;
+    int i = 0;
 
     while(i != 10){
         println(i);

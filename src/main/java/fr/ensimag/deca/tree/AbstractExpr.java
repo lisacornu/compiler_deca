@@ -7,14 +7,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 
@@ -91,8 +87,6 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
         
         Type type2 = verifyExpr(compiler, localEnv, currentClass);
-        System.out.println(type2);
-        System.out.println(expectedType);
         if(type2.sameType(expectedType)){
             return this;
         }else if ((type2.isInt() && expectedType.isFloat()) ){ // || (type2.isFloat() && expectedType.isInt()) 
@@ -109,8 +103,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
             Type type2 = verifyExpr(compiler, localEnv, currentClass);
-            // System.out.println(type2);
-            // System.out.println(returnType);
+
         if (!(type2.isBoolean() || type2.isFloat() || type2.isInt() || type2.isString())){
             throw new UnsupportedOperationException("This is not inst type");
         }
@@ -144,26 +137,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
         this.printHex = printHex;
-
-        if (this instanceof AbstractIdentifier) {
-            this.getExprValue(compiler);
-        }
-        else {
-            String exprValue = this.getExprValue(compiler);
-            compiler.addInstruction(new WSTR(exprValue));
-        }
-
-//        if (this instanceof AbstractIdentifier) {
-//            DAddr temp = ((AbstractIdentifier) this).getExpDefinition().getOperand();
-//            compiler.addInstruction(new LOAD(temp, Register.getR(1)));
-//            compiler.addInstruction(new WINT());
-//
-//        } else {
-//            compiler.addInstruction(new WSTR(this.toString()));
-//        }
+        this.printExprValue(compiler);
     }
 
-    public abstract String getExprValue(DecacCompiler compiler);
+    public abstract void printExprValue(DecacCompiler compiler);
 
 
     @Override

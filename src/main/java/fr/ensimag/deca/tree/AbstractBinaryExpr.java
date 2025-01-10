@@ -4,7 +4,6 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
@@ -74,8 +73,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
     @Override
-    public String getExprValue(DecacCompiler compiler) {
-        return "temp";
+    public void printExprValue(DecacCompiler compiler) {
+        DVal result = this.codeGenExpr(compiler);
+        compiler.addInstruction(new LOAD(result, GPRegister.R1));
+        if (this.getLeftOperand().getType().isFloat() || this.getRightOperand().getType().isFloat())
+            compiler.addInstruction(new WFLOAT());
+        else
+            compiler.addInstruction(new WINT());
     }
 
 
