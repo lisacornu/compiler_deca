@@ -6,6 +6,8 @@ import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Plus;
 import fr.ensimag.deca.tree.TreeFunction;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DVal;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +35,11 @@ public class TestPlusWithoutMock {
 
         @Override
         public String getExprValue(DecacCompiler compiler) {return "";}
+
+        @Override
+        protected DVal codeGenExpr(DecacCompiler compiler) {
+            throw new UnsupportedOperationException("Not yet implemented");
+        }
 
         @Override
         public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,

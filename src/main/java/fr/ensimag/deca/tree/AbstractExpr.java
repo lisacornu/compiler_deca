@@ -171,7 +171,7 @@ public abstract class AbstractExpr extends AbstractInst {
         codeGenExpr(compiler);
     }
 
-    abstract DVal codeGenExpr(DecacCompiler compiler);
+    protected abstract DVal codeGenExpr(DecacCompiler compiler);
 
 
 
