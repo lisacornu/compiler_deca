@@ -46,7 +46,6 @@ public class EnvironmentType {
     private final Map<Symbol, TypeDefinition> envTypes;
 
     public TypeDefinition defOfType(Symbol s) {
-        System.out.println(s);
         return envTypes.get(s);
     }
 

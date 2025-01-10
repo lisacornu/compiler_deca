@@ -20,7 +20,8 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type type = getOperand().getType();
+        
+        Type type = getOperand().verifyExpr(compiler, localEnv, currentClass);
         if(type.isFloat() || type.isInt()){
             setType(type);
             return type;
