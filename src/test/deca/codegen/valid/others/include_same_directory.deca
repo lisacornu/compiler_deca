@@ -1,0 +1,12 @@
+// Description:
+//    Test de l'import d'un fichier
+//
+// Resultats:
+//   ok
+//
+// Historique:
+//    cree le 10/01/2025
+
+// Un exemple de programme Deca utilisant la classe Math
+
+#include "assign.deca"

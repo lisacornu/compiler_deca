@@ -9,6 +9,34 @@
 #
 #-----------------------------------------------------------------------------------------------
 
+# Fonction pour afficher un message en rouge gras
+function print_red_bold {
+    echo -e "\033[1;31m$1\033[0m"
+}
+
+# Répertoire actuel
+current_dir=$(pwd)
+
+# Aller à la racine du projet
+cd "$(dirname "$0")/../../../" || exit 1
+
+# Vérifier si on est bien dans la racine du projet
+if [ -f "pom.xml" ]; then
+    echo "Racine du projet détectée. Exécution des commandes Maven."
+
+    # Exécution des commandes Maven et vérification des erreurs
+    mvn clean || { print_red_bold "Erreur lors de l'exécution de mvn clean"; exit 1; }
+    mvn compile || { print_red_bold "Erreur lors de l'exécution de mvn compile"; exit 1; }
+    mvn test-compile || { print_red_bold "Erreur lors de l'exécution de mvn test-compile"; exit 1; }
+
+else
+    echo "Erreur : Impossible de détecter la racine du projet (pom.xml introuvable)."
+    exit 1
+fi
+
+# Revenir au répertoire d'origine
+cd "$current_dir" || exit 1
+
 
 # Dossiers contenant les fichiers à tester
 VALID_DIR="../deca/codegen/valid"
