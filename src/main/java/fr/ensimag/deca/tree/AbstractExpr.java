@@ -94,7 +94,7 @@ public abstract class AbstractExpr extends AbstractInst {
             setType(expectedType);
             return this;
         }else{
-            throw new ContextualError("They are not compatible (not same type or float/int)", getLocation());
+            throw new ContextualError("They are not compatible (not same type or float->int) " + type2 + " is not " + expectedType, getLocation());
         }
     }
     

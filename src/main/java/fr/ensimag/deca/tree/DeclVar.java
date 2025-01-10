@@ -58,7 +58,7 @@ public class DeclVar extends AbstractDeclVar {
             localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
 
         }catch(DoubleDefException e){
-            throw new ContextualError("The type as already been define " + varName, getLocation());
+            throw new ContextualError("The type as already been define for the variable " + varName.getName(), getLocation());
         }
         
         initialization.verifyInitialization(compiler, typeType, localEnv, currentClass);
