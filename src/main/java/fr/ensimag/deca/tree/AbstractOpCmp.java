@@ -33,7 +33,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             setType(righType);
             return righType;
         }else{
-            throw new ContextualError("Both are not same thing",getLocation());
+            throw new ContextualError("Both are not same type : " + lefType + " and " + righType,getLocation());
         }
     }
 
