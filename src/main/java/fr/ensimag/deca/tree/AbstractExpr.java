@@ -88,6 +88,7 @@ public abstract class AbstractExpr extends AbstractInst {
         
         Type type2 = verifyExpr(compiler, localEnv, currentClass);
         if(type2.sameType(expectedType)){
+            setType(type2);
             return this;
         }else if ((type2.isInt() && expectedType.isFloat()) ){ // || (type2.isFloat() && expectedType.isInt()) 
             setType(expectedType);
