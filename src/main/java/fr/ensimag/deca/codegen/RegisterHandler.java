@@ -37,7 +37,7 @@ public class RegisterHandler {
 
     public void SetFree(DVal addr) {
         if (!(addr instanceof GPRegister)) return;
-        int index = ((GPRegister)addr).getIndex();
+        int index = ((GPRegister)addr).getNumber();
         if (index == -1) return;
         freeRegisters[index] = true;
     }

@@ -12,13 +12,6 @@ public class Register extends DVal {
         this.name = name;
     }
 
-    public int getIndex() {
-        if (name.matches("R\\d{1,2}"))
-            return Integer.parseInt(name.substring(1));
-        else
-            return -1;
-    }
-
     @Override
     public String toString() {
         return name;
