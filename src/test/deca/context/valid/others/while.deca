@@ -1,0 +1,16 @@
+// Description:
+//    Test du while avec assignation 
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 07/01/2025
+
+{   
+   int x;   
+   while(1){
+        x=x+1; 
+   }
+
+}
