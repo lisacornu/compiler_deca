@@ -105,4 +105,4 @@ COMMENT : '//' (~('\n'))* '\n' {skip();};
 MULTI_LINE_COMMENT : '/*' .*? '*/' {skip();};
 
 fragment FILENAME : ( LETTER | DIGIT | '.' | '-' | '_' )+;
-INCLUDE : '#include'  (' ')* '"' FILENAME '"';
+INCLUDE : ('#include'  (' ')* '"' FILENAME '"') { doInclude(getText()); };
