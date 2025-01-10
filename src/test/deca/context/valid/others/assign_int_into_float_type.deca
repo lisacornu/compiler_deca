@@ -1,0 +1,14 @@
+// Description:
+//    Assignation d'un int a un flaot donc test de convfloat
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 07/01/2025
+
+{   
+    float x;
+    x=3;
+}

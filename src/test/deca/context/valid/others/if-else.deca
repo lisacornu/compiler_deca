@@ -1,0 +1,18 @@
+// Description:
+//    Definition de x sans assignation
+//
+// Resultats:
+//    
+//
+//
+// Historique:
+//    cree le 07/01/2025
+
+{   
+   int x;
+   if(3==4){
+      x=3;
+   }
+
+   print(x) ; 
+}

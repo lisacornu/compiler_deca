@@ -1,0 +1,13 @@
+// Description:
+//    print de plusieurs variables de types differents
+//
+// Resultats:
+//    
+// 
+// Historique:
+//    cree le 07/01/2025
+
+{
+    print();
+    println(3, 3.0, "voiture");
+}

@@ -1,0 +1,13 @@
+// Description:
+//    Exemple sans objet sorti du poly
+//
+// Resultats:
+//    
+// 
+// Historique:
+//    cree le 09/01/2025
+{
+int x ;
+x=readInt() ;
+println(0.5*(x*x)) ;
+}
