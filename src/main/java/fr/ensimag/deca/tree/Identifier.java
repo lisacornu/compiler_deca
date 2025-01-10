@@ -177,10 +177,10 @@ public class Identifier extends AbstractIdentifier {
                 setType(expr.getType());
                 return getType();
             }else{
-                throw new ContextualError("This is not an expression", getLocation());
+                throw new ContextualError("This is not an expression.", getLocation());
             }
         }else{
-            throw new ContextualError("Name not defined", getLocation());
+            throw new ContextualError("There is no definition for this name : "+getName(), getLocation());
         }
         
     }

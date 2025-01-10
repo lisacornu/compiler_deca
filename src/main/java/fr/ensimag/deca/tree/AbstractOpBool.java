@@ -26,7 +26,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             this.setType(righType);
             return righType;
         }else{
-            throw new ContextualError("Both are not boolean",getLocation());
+            throw new ContextualError("Both are not boolean : "+lefType +" and "+righType,getLocation());
         }
     }
 
