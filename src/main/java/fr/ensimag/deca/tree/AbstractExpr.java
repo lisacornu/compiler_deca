@@ -91,8 +91,6 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
         
         Type type2 = verifyExpr(compiler, localEnv, currentClass);
-        System.out.println(type2);
-        System.out.println(expectedType);
         if(type2.sameType(expectedType)){
             return this;
         }else if ((type2.isInt() && expectedType.isFloat()) ){ // || (type2.isFloat() && expectedType.isInt()) 
@@ -109,8 +107,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
             Type type2 = verifyExpr(compiler, localEnv, currentClass);
-            // System.out.println(type2);
-            // System.out.println(returnType);
+
         if (!(type2.isBoolean() || type2.isFloat() || type2.isInt() || type2.isString())){
             throw new UnsupportedOperationException("This is not inst type");
         }
