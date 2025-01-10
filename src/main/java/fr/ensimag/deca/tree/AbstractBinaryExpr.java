@@ -79,12 +79,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
 
-    private GPRegister loadFromStack(DecacCompiler compiler, GPRegister tempRegister) {
+    protected GPRegister loadFromStack(DecacCompiler compiler, GPRegister tempRegister) {
         compiler.addInstruction(new POP(tempRegister));
         return tempRegister;
     }
 
-    private GPRegister loadIntoRegister(DecacCompiler compiler, DVal addr, GPRegister tempRegister) {
+    protected GPRegister loadIntoRegister(DecacCompiler compiler, DVal addr, GPRegister tempRegister) {
         if (addr instanceof GPRegister) { // addr est un registre
             return (GPRegister)addr;
         } else { // addr est dans GB
@@ -102,18 +102,18 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         DVal exp2Addr = getRightOperand().codeGenExpr(compiler); // POP exp2
 
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
-        GPRegister op2 = (exp2Addr == null) ? loadFromStack(compiler, Register.R1)
-                : loadIntoRegister(compiler, exp2Addr, Register.R1);
+        DVal op1 = (exp2Addr == null) ? loadFromStack(compiler, Register.R1)
+                : exp2Addr;
 
-        DVal op1 = (exp1Addr == null) ? loadFromStack(compiler, Register.R0)
-                : exp1Addr;
+        GPRegister op2= (exp1Addr == null) ? loadFromStack(compiler, Register.R0)
+                : loadIntoRegister(compiler, exp1Addr, Register.R0);
 
         // Generation du code de l'expression (résultat enregistré dans op2)
         codeGenBinaryExpr(compiler, op1, op2);
         compiler.registerHandler.SetFree(op1); //On libère op1
 
         //Renvoi du résultat
-        if (op2.getIndex() == 1) { //Dans la pile si les registres sont plein
+        if (exp1Addr == null) { //Dans la pile si les registres sont plein
             compiler.addInstruction(new POP(op2));
             return null;
         } else {

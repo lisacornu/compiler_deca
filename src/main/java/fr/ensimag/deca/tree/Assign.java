@@ -53,6 +53,34 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+
+        // Generation du codes des branches
+        DVal exp1Addr = getLeftOperand().codeGenExpr(compiler);
+        DVal exp2Addr = getRightOperand().codeGenExpr(compiler);
+
+        // Selection des bonnes adresses en fonction de leur emplacement mémoire
+        GPRegister op2 = (exp2Addr == null) ? loadFromStack(compiler, Register.R1)
+                : loadIntoRegister(compiler, exp2Addr, Register.R1);
+
+        DVal op1 = (exp1Addr == null) ? loadFromStack(compiler, Register.R0)
+                : exp1Addr;
+
+        // Generation du code de l'expression (résultat enregistré dans op2)
+        codeGenBinaryExpr(compiler, op1, op2);
+        compiler.registerHandler.SetFree(op1); //On libère op1
+
+        //Renvoi du résultat
+        if (exp2Addr == null) { //Dans la pile si les registres sont plein
+            compiler.addInstruction(new POP(op2));
+            return null;
+        } else {
+            return op2;
+        }
+    }
+
+
+    @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));

@@ -76,6 +76,7 @@ public class IfThenElse extends AbstractInst {
         elseBranch.codeGenListInst(compiler); // Exécution du else
         compiler.addLabel(endLabel); //Fin du if-else
 
+        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
     }
 
     @Override

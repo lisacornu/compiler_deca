@@ -41,8 +41,8 @@ public class Initialization extends AbstractInitialization {
         setExpression(getExpression().verifyRValue(compiler, localEnv, currentClass, t));
     }
 
-    public void codeGenInit(DecacCompiler compiler){
-        expression.codeGenExpr(compiler);
+    public DVal codeGenInit(DecacCompiler compiler){
+        return expression.codeGenExpr(compiler);
     }
 
     @Override

@@ -69,6 +69,8 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
 
         compiler.addLabel(finWhile);
+
+        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
     }
 
     @Override

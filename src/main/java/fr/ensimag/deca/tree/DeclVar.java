@@ -14,8 +14,11 @@ import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
@@ -97,10 +100,22 @@ public class DeclVar extends AbstractDeclVar {
         if (initialization instanceof NoInitialization) return;
 
         Initialization initExpression = (Initialization) initialization;
-        initExpression.codeGenInit(compiler);
+
+        DVal addrInit = initExpression.codeGenInit(compiler);
+        GPRegister regInit;
+
+        //Renvoi du résultat
+        if (addrInit == null) { //Dans la pile si les registres sont plein
+            compiler.addInstruction(new POP(Register.R0));
+            regInit = Register.R0;
+        } else {
+            regInit = (GPRegister) addrInit;
+        }
 
         //STORE R2 k(GB)
-        compiler.addInstruction(new STORE(Register.getR(compiler.tempRegisterIndex),GB_Stack));
+        compiler.addInstruction(new STORE(regInit, GB_Stack));
+
+        compiler.registerHandler.SetFree(regInit);
         compiler.headOfGBStack++;
 
 
