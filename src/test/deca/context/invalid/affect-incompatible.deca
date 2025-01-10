@@ -1,13 +1,16 @@
 // Description:
-//    Programme declarant une variable 2 fois .
+//    Affectation et typage
 //
 // Resultats:
-//erreur
-//
-//
+//    Ligne 15: Affectation de types incompatibles.
+// 
 // Historique:
-//    cree le 06/01/2025
+//    cree le 01/01/2025
 
-{   
-   int x = 3.4;
+{
+   int a;
+   boolean b;
+
+   // Doit etre refuse.
+   a = b;
 }
