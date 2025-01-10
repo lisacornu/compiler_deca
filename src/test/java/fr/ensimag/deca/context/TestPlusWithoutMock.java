@@ -34,9 +34,6 @@ public class TestPlusWithoutMock {
         boolean hasBeenVerified = false;
 
         @Override
-        public String getExprValue(DecacCompiler compiler) {return "";}
-
-        @Override
         protected DVal codeGenExpr(DecacCompiler compiler) {
             throw new UnsupportedOperationException("Not yet implemented");
         }
@@ -46,6 +43,11 @@ public class TestPlusWithoutMock {
                 ClassDefinition currentClass) throws ContextualError {
             hasBeenVerified = true;
             return INT;
+        }
+
+        @Override
+        public void printExprValue(DecacCompiler compiler) {
+            throw new UnsupportedOperationException("Not yet implemented");
         }
 
         @Override

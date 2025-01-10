@@ -8,5 +8,6 @@
 //    cree le 07/01/2025
 
 {
-    println(2 - 2);
+    int i = 10 - 1;
+    println(i);
 }
