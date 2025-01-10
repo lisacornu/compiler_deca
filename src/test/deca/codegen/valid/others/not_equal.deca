@@ -2,22 +2,24 @@
 //    test
 //
 // Resultats:
+//  normal
+//  normal
 //
 // Historique:
 //    cree le 09/01/2025
 
 {
     if(3!=3){
-        println("pas noraml");
+        println("pas normal");
     }
     else{
         println("normal");
     }
     if(1!=3){
-        println("noraml");
+        println("normal");
     }
     else{
-        println("pas noraml");
+        println("pas normal");
     }
 
 }

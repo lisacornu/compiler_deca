@@ -1,23 +1,25 @@
 // Description:
-//    test
+//    test des conditions == avec des if / else
 //
 // Resultats:
+//  normal
+//  normal
 //
 // Historique:
 //    cree le 09/01/2025
 
 {
     if(false==true){
-        println("pas noraml");
+        println("pas normal");
     }
     else{
         println("normal");
     }
     if(true==true){
-        println("noraml");
+        println("normal");
     }
     else{
-        println("pas noraml");
+        println("pas normal");
     }
 
 }

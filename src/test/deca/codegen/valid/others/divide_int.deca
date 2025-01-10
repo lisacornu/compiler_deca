@@ -10,5 +10,5 @@
 {
     int a = 4;
     int b = 2;
-    println(a % b);
+    println(a / b);
 }
