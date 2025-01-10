@@ -1,5 +1,5 @@
 // Description:
-//    Ecriture de variable dans la console
+//    Ecriture de variable (type int et float) dans la console
 //
 // Resultats:
 //    2
@@ -11,9 +11,7 @@
 {
     int x = 2;
     float y = 2.3;
-    String a = "bonjour";
 
     println(x);
     println(y);
-    println(a);
 }

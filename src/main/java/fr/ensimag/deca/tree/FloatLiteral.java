@@ -12,9 +12,9 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -48,10 +48,11 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    public String getExprValue (DecacCompiler compiler) {
-        return this.printHex ?
+    public void printExprValue(DecacCompiler compiler) {
+        String toPrint =  this.printHex ?
                 Integer.toHexString(Float.floatToIntBits(this.value))
                 : String.valueOf(this.value);
+        compiler.addInstruction(new WSTR(toPrint));
     }
 
     @Override

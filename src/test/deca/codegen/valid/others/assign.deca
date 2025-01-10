@@ -1,0 +1,17 @@
+// Description:
+//   assign puis print
+//
+// Resultats:
+//    2
+//    5
+//
+// Historique:
+//    cree le 10/01/2025
+
+{
+    int x;
+    x = 2;
+    println(x);
+    x = 5;
+    println(x);
+}

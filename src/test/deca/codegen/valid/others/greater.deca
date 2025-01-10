@@ -4,20 +4,21 @@
 // Resultats:
 //
 // Historique:
-//    cree le 09/01/2025
+//    cree le 10/01/2025
 
 {
-    if(3!=3){
+    if(3>4){
         println("pas noraml");
     }
     else{
         println("normal");
     }
-    if(1!=3){
+    if(3>2){
         println("noraml");
     }
     else{
         println("pas noraml");
     }
+
 
 }

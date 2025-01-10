@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -20,9 +19,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -207,7 +204,7 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    public String getExprValue(DecacCompiler compiler) {
+    public void printExprValue(DecacCompiler compiler) {
         if (this.getExpDefinition().getNature().equals("variable")) {
             compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
             if (this.getExpDefinition().getType().isFloat())
@@ -215,7 +212,6 @@ public class Identifier extends AbstractIdentifier {
             else if (this.getExpDefinition().getType().isInt())
                 compiler.addInstruction(new WINT());
         }
-        return "";
     }
     
     private Definition definition;

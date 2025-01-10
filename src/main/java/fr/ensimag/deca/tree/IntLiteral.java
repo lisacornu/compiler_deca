@@ -9,7 +9,6 @@ import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -59,8 +58,8 @@ public class IntLiteral extends AbstractExpr {
 
 
     @Override
-    public String getExprValue (DecacCompiler compiler) {
-        return String.valueOf(this.value);
+    public void printExprValue(DecacCompiler compiler) {
+        compiler.addInstruction(new WSTR(String.valueOf(value)));
     }
 
 

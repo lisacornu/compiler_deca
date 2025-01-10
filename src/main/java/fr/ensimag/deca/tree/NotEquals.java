@@ -38,8 +38,8 @@ public class NotEquals extends AbstractOpExactCmp {
         compiler.addInstruction(new CMP(Register.getR(0),Register.getR(2)));
        // compiler.addInstruction(new BNE(ImmediateInteger(0),))*/
        compiler.addInstruction(new CMP(op1, op2));
-        Label case1=new Label ("true_"+i);
-        Label case2=new Label("false"+i);
+        Label case1=new Label ("notequal_"+i);
+        Label case2=new Label("equal"+i);
         i++;
         compiler.addInstruction(new BNE(case2));//si la comparaison est fausse sa saute 
         compiler.addInstruction(new LOAD(new ImmediateInteger(0),op2));

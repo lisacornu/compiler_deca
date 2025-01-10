@@ -27,8 +27,8 @@ public class Equals extends AbstractOpExactCmp {
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
             compiler.addInstruction(new CMP(op1, op2));
-            Label case1=new Label ("true_"+i);
-            Label case2=new Label("false"+i);
+            Label case1=new Label ("equal_"+i);
+            Label case2=new Label("not_equal"+i);
             i++;
             compiler.addInstruction(new BNE(case2));    //si la comparaison est fausse --> on va a case2
             compiler.addInstruction(new LOAD(new ImmediateInteger(1),op2));

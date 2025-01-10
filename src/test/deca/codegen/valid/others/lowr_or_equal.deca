@@ -1,0 +1,36 @@
+// Description:
+//    test
+//
+// Resultats:
+//
+// Historique:
+//    cree le 10/01/2025
+
+{
+    if(3<=2){
+        println("pas noraml");
+    }
+    else{
+        println("normal");
+    }
+    if(3<=4){
+        println("noraml");
+    }
+    else{
+        println("pas noraml");
+    }
+    if(3<=3){
+        println("noraml");
+    }
+    else{
+        println("pas noraml");
+    }
+    if(2.4<=3.0){
+        println("noraml");
+    }
+    else{
+        println("pas noraml");
+    }
+
+
+}
