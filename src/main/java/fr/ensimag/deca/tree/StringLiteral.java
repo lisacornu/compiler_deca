@@ -7,11 +7,12 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DVal;
+
+import java.io.PrintStream;
+
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
-import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -45,14 +46,10 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
-    public String getExprValue(DecacCompiler compiler) {
-        return value;
+    public void printExprValue(DecacCompiler compiler) {
+        compiler.addInstruction(new WSTR(new ImmediateString(value)));
     }
 
-//    @Override
-//    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
-//        compiler.addInstruction(new WSTR(new ImmediateString(value)));
-//    }
 
     @Override
     public void decompile(IndentPrintStream s) {
