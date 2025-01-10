@@ -4,6 +4,8 @@
 # Version initiale : 10/01/2025
 
 # Test couverture contextuelle.
+set +e
+
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
