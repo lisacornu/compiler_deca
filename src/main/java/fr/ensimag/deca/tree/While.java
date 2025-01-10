@@ -6,11 +6,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -45,16 +44,24 @@ public class While extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
 
+
         nbNestedWhiles++;
         Label debutWhile = new Label ("while" + nbNestedWhiles);
-        Label finWhile = new Label ("fin_while" + nbNestedWhiles);
-
+        Label finWhile = new Label ("whileExit" + nbNestedWhiles);
         compiler.addLabel(debutWhile);
 
-        condition.codeGenInst(compiler);    //recupère la condition
-        compiler.addInstruction(new POP(Register.getR(2)));
+        // On récupère le résultat de la condition (qui était dans la pile/un registre)
+        DVal condAddr = condition.codeGenExpr(compiler);
 
-        compiler.addInstruction(new CMP(new ImmediateInteger(1),Register.getR(2))); //compare la condition avec vrai
+        GPRegister condReg;
+        if (condAddr == null) {
+            compiler.addInstruction(new POP(Register.R0));
+            condReg = Register.R0;
+        } else {
+            condReg = (GPRegister) condAddr;
+        }
+
+        compiler.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
         compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
 
         body.codeGenListInst(compiler); //génère le code du corps de la boucle

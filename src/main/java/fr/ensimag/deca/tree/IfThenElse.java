@@ -49,8 +49,7 @@ public class IfThenElse extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
 
-       //BRA saute peu importe la condition et BNE saute si c pas egale a true donc faut combiner les 2
-
+       // On récupère le résultat de la condition (qui était dans la pile/un registre)
         DVal condAddr = condition.codeGenExpr(compiler);
         GPRegister condReg;
         if (condAddr == null) {
@@ -60,7 +59,7 @@ public class IfThenElse extends AbstractInst {
             condReg = (GPRegister) condAddr;
         }
 
-        Label startLabel = new Label("elseBranchStart" + branchIndex);
+        Label startLabel = new Label("elseStart" + branchIndex);
         Label endLabel = new Label ("ifThenElseExit" + branchIndex);
 
         //On compare la condition dans la pile à 1 (true)
