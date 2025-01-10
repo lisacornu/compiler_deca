@@ -72,12 +72,26 @@ public class Assign extends AbstractBinaryExpr {
         compiler.registerHandler.SetFree(op1); //On libère op1
 
         //Renvoi du résultat
-        if (exp2Addr == null) { //Dans la pile si les registres sont plein
-            compiler.addInstruction(new POP(op2));
+        if (exp2Addr == null || op2 == null) { //Dans la pile si les registres sont plein
+            compiler.addInstruction(new PUSH(op2));
             return null;
-        } else {
-            return op2;
         }
+
+        //Si op2 est un registre temporaire on transfert dans un nouveau registre
+        if (op2.getNumber() == 0 || op2.getNumber() == 1) {
+            GPRegister saveReg = compiler.registerHandler.Get();
+
+            if (saveReg == null) { //On envoi dans la pile si les registres sont pleins
+                compiler.addInstruction(new PUSH(op2));
+                return null;
+            }
+            compiler.addInstruction(new LOAD(op2, saveReg));
+            return saveReg;
+        }
+
+        //Sinon on renvoi op2
+        return op2;
+
     }
 
 
