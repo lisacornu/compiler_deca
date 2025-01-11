@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.OPP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 /**
  * @author gl31
@@ -37,7 +40,18 @@ public class UnaryMinus extends AbstractUnaryExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        DVal result = this.getOperand().codeGenExpr(compiler);
+        GPRegister reg = compiler.registerHandler.Get();
+
+        if (reg != null) {
+            compiler.addInstruction(new OPP(result, reg));
+            return reg;
+        }
+        else {
+            compiler. addInstruction(new OPP(result, GPRegister.R0));
+            compiler.addInstruction(new PUSH(GPRegister.R0));
+            return null;
+        }
     }
 
 }
