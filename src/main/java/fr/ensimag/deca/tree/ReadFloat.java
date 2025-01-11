@@ -6,9 +6,12 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FloatType;
-import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 
 import java.io.PrintStream;
 
@@ -45,7 +48,13 @@ public class ReadFloat extends AbstractReadExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addInstruction(new RFLOAT());
+        GPRegister resultLocation = compiler.registerHandler.Get();
+        if (resultLocation != null)
+            compiler.addInstruction(new LOAD(GPRegister.R1, resultLocation));
+        else
+            compiler.addInstruction(new PUSH(GPRegister.R1));
+        return resultLocation;
     }
 
 }

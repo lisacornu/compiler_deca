@@ -1,0 +1,15 @@
+// Description:
+//    test de readInt et readFloat
+//
+// Resultats:
+//   3
+//
+// Historique:
+//    cree le 11/01/2025
+
+{
+
+
+    float b = readFloat();
+    println(b);
+}
