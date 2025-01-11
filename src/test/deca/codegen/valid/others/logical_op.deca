@@ -1,0 +1,42 @@
+// Description:
+//    test des conditions logiques and et or
+//
+// Resultats:
+//   ok
+//
+// Historique:
+//    cree le 11/01/2025
+
+{
+    println("TEST AND");
+    println("Devrait print : true");
+
+    if (true && true) {
+        println("true");
+    }
+    if (false && true) {
+        println("false");
+    }
+    if (true && false) {
+        println("false");
+    }
+    if (false && false) {
+        println("false");
+    }
+
+    println("TEST OR");
+    println("Devrait print : true true true");
+
+    if (true || true) {
+        println("true");
+    }
+    if (false || true) {
+        println("true");
+    }
+    if (true || false) {
+        println("true");
+    }
+    if (false || false) {
+        println("false");
+    }
+}
