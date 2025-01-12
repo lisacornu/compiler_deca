@@ -1,0 +1,14 @@
+// Description:
+//   prend en entrée une valeur assigne x à cette valeur et affiche x
+//
+// Resultats:
+//    le nombre passé en entrée
+//
+// Historique:
+//    cree le 12/01/2025
+
+{
+    int x;
+    x = readInt();
+    println(x);
+}
