@@ -4,7 +4,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.BLE;
+import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -35,7 +35,7 @@ public class GreaterOrEqual extends AbstractOpIneq {
             Label case1=new Label ("greater_or_equal"+i);
             Label case2=new Label("not_greater_or_equal"+i);
             i++;
-            compiler.addInstruction(new BLE(case1));    //si la comparaison est vrai(cad l'op est sup ) --> on va a case2
+            compiler.addInstruction(new BGE(case1));    //si la comparaison est vrai(cad l'op est sup ou  egal ) --> on va a case2
             compiler.addInstruction(new LOAD(new ImmediateInteger(0),op2));
             compiler.addInstruction(new BRA(case2));
             compiler.addLabel(case1);
