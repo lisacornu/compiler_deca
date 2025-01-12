@@ -436,7 +436,7 @@ literal returns[AbstractExpr tree]
             setLocation($tree, $INT);
         }
         catch (NumberFormatException numFormEx) {
-            throw new ArithmeticException("Dépassement de la taille maximale d'un int");
+            throw new NumberFormatException(this, $ctx);
         }
         }
     | FLOAT {
@@ -445,7 +445,7 @@ literal returns[AbstractExpr tree]
             setLocation($tree, $FLOAT);
         }
         catch (NumberFormatException numFormEx) {
-            throw new ArithmeticException("Dépassement de la taille maximale d'un float");
+            throw new NumberFormatException(this, $ctx);
         }
         }
     | STRING {
