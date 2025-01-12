@@ -431,12 +431,22 @@ type returns[AbstractIdentifier tree]
 
 literal returns[AbstractExpr tree]
     : INT {
-        $tree = new IntLiteral(Integer.parseInt($INT.text));
-        setLocation($tree, $INT);
+        try {
+            $tree = new IntLiteral(Integer.parseInt($INT.text));
+            setLocation($tree, $INT);
+        }
+        catch (NumberFormatException numFormEx) {
+            throw new ArithmeticException("Dépassement de la taille maximale d'un int");
+        }
         }
     | FLOAT {
-        $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
-        setLocation($tree, $FLOAT);
+        try {
+            $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+            setLocation($tree, $FLOAT);
+        }
+        catch (NumberFormatException numFormEx) {
+            throw new ArithmeticException("Dépassement de la taille maximale d'un float");
+        }
         }
     | STRING {
         $tree = new StringLiteral($STRING.text);
