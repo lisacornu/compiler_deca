@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -52,14 +53,7 @@ public class While extends AbstractInst {
 
         // On récupère le résultat de la condition (qui était dans la pile/un registre)
         DVal condAddr = condition.codeGenExpr(compiler);
-
-        GPRegister condReg;
-        if (condAddr == null) {
-            compiler.addInstruction(new POP(Register.R0));
-            condReg = Register.R0;
-        } else {
-            condReg = (GPRegister) condAddr;
-        }
+        GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
 
         compiler.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
         compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
