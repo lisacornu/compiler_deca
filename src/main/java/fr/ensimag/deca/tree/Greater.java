@@ -40,10 +40,5 @@ public class Greater extends AbstractOpIneq {
             compiler.addLabel(case2);
             compiler.addInstruction(new LOAD(new ImmediateInteger(0),op2));
             compiler.addLabel(case1);
-            //compiler.addInstruction(new PUSH(Register.getR(2)));
-
-
-
-
     }
 }

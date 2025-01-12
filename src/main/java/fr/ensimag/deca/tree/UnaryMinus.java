@@ -42,11 +42,11 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
-        DVal result = this.getOperand().codeGenExpr(compiler);
+        GPRegister result = RegisterHandler.popIntoRegister(compiler, this.getOperand().codeGenExpr(compiler), GPRegister.R0);
 
-        compiler.addInstruction(new OPP(result, GPRegister.R0));
+        compiler.addInstruction(new OPP(result, result));
 
-        return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
+        return RegisterHandler.pushFromRegister(compiler, result);
     }
 
 }

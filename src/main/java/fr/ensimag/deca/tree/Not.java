@@ -41,24 +41,24 @@ public class Not extends AbstractUnaryExpr {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
-        DVal result = this.getOperand().codeGenExpr(compiler);
-        compiler.addInstruction(new LOAD(result, GPRegister.R0));
+        DVal operandAddr = this.getOperand().codeGenExpr(compiler);
+        GPRegister op = RegisterHandler.popIntoRegister(compiler,operandAddr , GPRegister.R0);
 
-        compiler.addInstruction(new CMP(0, GPRegister.R0));
+        compiler.addInstruction(new CMP(0, op));
         compiler.addInstruction(new BEQ(new Label("not_is_true" + not_cpt)));
 
         // si on est ici, cond == true donc !cond == false
-        compiler.addInstruction(new LOAD(0, GPRegister.R0));
+        compiler.addInstruction(new LOAD(0, op));
 
         compiler.addInstruction(new BRA(new Label("not_end_case" + not_cpt)));
 
         // cond == false donc !cond == true
         compiler.addLabel(new Label("not_is_true" + not_cpt));
-        compiler.addInstruction(new LOAD(1, GPRegister.R0));
+        compiler.addInstruction(new LOAD(1, op));
 
         compiler.addLabel(new Label("not_end_case" + not_cpt));
 
-        GPRegister resultLocation = RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
+        GPRegister resultLocation = RegisterHandler.pushFromRegister(compiler, op);
         not_cpt++;
         return resultLocation;
     }

@@ -65,12 +65,12 @@ public class Assign extends AbstractBinaryExpr {
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
         DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);;
 
-        // Generation du code de l'expression (résultat enregistré dans op2)
+        // Generation du code de l'expression (résultat enregistré dans op1)
         codeGenBinaryExpr(compiler, op1, op2);
-        compiler.registerHandler.SetFree(op1); //On libère op1
+        compiler.registerHandler.SetFree(op2);
 
-        //Renvoi du résultat
-        return RegisterHandler.pushFromRegister(compiler, op2);
+        //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
+        return op1;
     }
 
 

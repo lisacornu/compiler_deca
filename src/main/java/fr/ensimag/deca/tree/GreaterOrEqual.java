@@ -41,10 +41,5 @@ public class GreaterOrEqual extends AbstractOpIneq {
             compiler.addLabel(case1);
             compiler.addInstruction(new LOAD(new ImmediateInteger(1),op2));
             compiler.addLabel(case2);
-            //compiler.addInstruction(new PUSH(Register.getR(2)));
-
-
-
-
     }
 }

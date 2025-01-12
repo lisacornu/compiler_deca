@@ -36,10 +36,5 @@ public class Equals extends AbstractOpExactCmp {
             compiler.addLabel(case2);
             compiler.addInstruction(new LOAD(0,op2));
             compiler.addLabel(case1);
-            //compiler.addInstruction(new PUSH(Register.getR(2)));
-
-
-
-
     }
 }
