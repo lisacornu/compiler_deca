@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -83,60 +84,23 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
 
-    protected GPRegister loadFromStack(DecacCompiler compiler, GPRegister tempRegister) {
-        compiler.addInstruction(new POP(tempRegister));
-        return tempRegister;
-    }
-
-    protected GPRegister loadIntoRegister(DecacCompiler compiler, DVal addr, GPRegister tempRegister) {
-        if (addr instanceof GPRegister) { // addr est un registre
-            return (GPRegister)addr;
-        } else { // addr est dans GB
-            compiler.addInstruction(new LOAD(addr, tempRegister));
-            return tempRegister;
-        }
-    }
-
-
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
         // Generation du codes des branches
-        DVal exp1Addr = getLeftOperand().codeGenExpr(compiler);
-        DVal exp2Addr = getRightOperand().codeGenExpr(compiler); // POP exp2
+        DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
+        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler); // POP exp2
 
-        // Selection des bonnes adresses en fonction de leur emplacement mémoire
-        DVal op1 = (exp2Addr == null) ? loadFromStack(compiler, Register.R1)
-                : exp2Addr;
-
-        GPRegister op2 = (exp1Addr == null) ? loadFromStack(compiler, Register.R0)
-                : loadIntoRegister(compiler, exp1Addr, Register.R0);
+        // On pop de la pile si besoin
+        DVal op1 = RegisterHandler.popIntoDVal(compiler, rightOperandResult, Register.R1);
+        GPRegister op2 = RegisterHandler.popIntoRegister(compiler, leftOperandResult, Register.R0);
 
         // Generation du code de l'expression (résultat enregistré dans op2)
         codeGenBinaryExpr(compiler, op1, op2);
         compiler.registerHandler.SetFree(op1); //On libère op1
 
-        //Renvoi du résultat
-        if (exp1Addr == null || op2 == null) { //Dans la pile si les registres sont plein
-            compiler.addInstruction(new PUSH(op2));
-            return null;
-        }
-
-        //Si op2 est un registre temporaire on transfert dans un nouveau registre
-        if (op2.getNumber() == 0 || op2.getNumber() == 1) {
-            GPRegister saveReg = compiler.registerHandler.Get();
-
-            if (saveReg == null) { //On envoi dans la pile si les registres sont pleins
-                compiler.addInstruction(new PUSH(op2));
-                return null;
-            }
-            compiler.addInstruction(new LOAD(op2, saveReg));
-            return saveReg;
-        }
-
-        //Sinon on renvoi op2
-        return op2;
-
+        // On push dans la pile si besoin
+        return RegisterHandler.pushFromRegister(compiler, op2);
     }
 
 

@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -57,41 +58,19 @@ public class Assign extends AbstractBinaryExpr {
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
         // Generation du codes des branches
-        DVal exp1Addr = getLeftOperand().codeGenExpr(compiler);
-        DVal exp2Addr = getRightOperand().codeGenExpr(compiler);
+        DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
+        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
-        GPRegister op2 = (exp2Addr == null) ? loadFromStack(compiler, Register.R1)
-                : loadIntoRegister(compiler, exp2Addr, Register.R1);
-
-        DVal op1 = (exp1Addr == null) ? loadFromStack(compiler, Register.R0)
-                : exp1Addr;
+        GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
+        DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);;
 
         // Generation du code de l'expression (résultat enregistré dans op2)
         codeGenBinaryExpr(compiler, op1, op2);
         compiler.registerHandler.SetFree(op1); //On libère op1
 
         //Renvoi du résultat
-        if (exp2Addr == null || op2 == null) { //Dans la pile si les registres sont plein
-            compiler.addInstruction(new PUSH(op2));
-            return null;
-        }
-
-        //Si op2 est un registre temporaire on transfert dans un nouveau registre
-        if (op2.getNumber() == 0 || op2.getNumber() == 1) {
-            GPRegister saveReg = compiler.registerHandler.Get();
-
-            if (saveReg == null) { //On envoi dans la pile si les registres sont pleins
-                compiler.addInstruction(new PUSH(op2));
-                return null;
-            }
-            compiler.addInstruction(new LOAD(op2, saveReg));
-            return saveReg;
-        }
-
-        //Sinon on renvoi op2
-        return op2;
-
+        return RegisterHandler.pushFromRegister(compiler, op2);
     }
 
 

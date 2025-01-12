@@ -41,6 +41,7 @@ public class BooleanLiteral extends AbstractExpr {
     }
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
+
         int boolValue = value ? 1 : 0;//1 si true 0 sinon 
         //grace a l'arbre on gartentit le fait de ne pas comparer 1 et true
 

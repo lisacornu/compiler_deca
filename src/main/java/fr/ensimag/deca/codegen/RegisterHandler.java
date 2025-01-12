@@ -1,8 +1,12 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 public class RegisterHandler {
 
@@ -41,6 +45,58 @@ public class RegisterHandler {
         if (index == -1) return;
         freeRegisters[index] = true;
     }
+
+    // Vérifie que addr (renvoyé par un codegen) n'est pas dans la pile
+    // sinon pop le résultat dans un registre temporaire
+    // Renvoi l'adresse/le registre concerné
+    public static DVal popIntoDVal(DecacCompiler compiler, DVal addr, GPRegister tempRegister) {
+
+        if (addr != null) return addr;
+        //Si la pile est pleine (= addr est null) on pop dans un registre temporaire
+        compiler.addInstruction(new POP(tempRegister));
+        return tempRegister;
+    }
+
+    // Vérifie que addr n'est pas dans la pile et le place dans un registre si nécessaire
+    // sinon pop le résultat dans un registre temporaire
+    // Renvoi le registre concerné
+    public static GPRegister popIntoRegister(DecacCompiler compiler, DVal addr, GPRegister tempRegister) {
+
+        if (addr == null) { // addr est dans la pile
+            compiler.addInstruction(new POP(tempRegister));
+            return tempRegister;
+        }
+
+        if (addr instanceof GPRegister) // addr est dans un registre
+            return (GPRegister)addr;
+
+        //addr est dans GB
+        compiler.addInstruction(new LOAD(addr, tempRegister));
+        return tempRegister;
+
+    }
+
+    // Vérifie si reg n'est pas temporaire
+    // Sinon place le résultat dans un registre ou le push dans la pile
+    // Renvoi le registre concerné (ou null si le résultat est push dans la pile)
+    public static GPRegister pushFromRegister(DecacCompiler compiler, GPRegister reg) {
+
+        if (reg.getNumber() == 0 || reg.getNumber() == 1) { // reg est temporaire
+            GPRegister saveReg = compiler.registerHandler.Get();
+
+            if (saveReg == null) { // Les registres sont pleins
+                compiler.addInstruction(new PUSH(reg));
+                return null;
+            }
+            compiler.addInstruction(new LOAD(reg, saveReg)); //Un registre est disponible
+            return saveReg;
+        }
+        return reg; //reg n'est pas temporaire
+    }
+
+
+
+
 
 
 }

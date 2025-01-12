@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.DecacCompiler;
@@ -98,26 +99,12 @@ public class DeclVar extends AbstractDeclVar {
         compiler.headOfGBStack++;
 
         if (initialization instanceof NoInitialization) return;
-
         Initialization initExpression = (Initialization) initialization;
 
         DVal addrInit = initExpression.codeGenInit(compiler);
-        GPRegister regInit;
+        GPRegister regInit = RegisterHandler.popIntoRegister(compiler, addrInit, Register.R0);
 
-        //Renvoi du résultat
-        if (addrInit == null) { //Dans la pile si les registres sont plein
-            compiler.addInstruction(new POP(Register.R0));
-            regInit = Register.R0;
-        } else {
-            regInit = (GPRegister) addrInit;
-        }
-
-        //STORE R2 k(GB)
         compiler.addInstruction(new STORE(regInit, GB_Stack));
-
         compiler.registerHandler.SetFree(regInit);
-        compiler.headOfGBStack++;
-
-
     }
 }
