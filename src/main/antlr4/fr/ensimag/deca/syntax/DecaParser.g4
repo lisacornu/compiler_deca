@@ -435,8 +435,8 @@ literal returns[AbstractExpr tree]
             $tree = new IntLiteral(Integer.parseInt($INT.text));
             setLocation($tree, $INT);
         }
-        catch (NumberFormatException numFormEx) {
-            throw new NumberFormatException(this, $ctx);
+        catch (NumberFormatException nfe) {
+            throw new NumberOverflow(this, $ctx);
         }
         }
     | FLOAT {
@@ -444,8 +444,8 @@ literal returns[AbstractExpr tree]
             $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
             setLocation($tree, $FLOAT);
         }
-        catch (NumberFormatException numFormEx) {
-            throw new NumberFormatException(this, $ctx);
+        catch (NumberFormatException nfe) {
+            throw new NumberOverflow(this, $ctx);
         }
         }
     | STRING {
