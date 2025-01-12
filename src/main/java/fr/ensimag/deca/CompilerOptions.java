@@ -47,7 +47,7 @@ public class CompilerOptions {
     }
 
     private int debug = 0;
-    private int nbRegister = 15;
+    private int nbRegister = 16;
     private boolean parallel = false;
     private boolean printBanner = false;
     private boolean parse = false, verify = false, noCheck = false, setRegister = false;
