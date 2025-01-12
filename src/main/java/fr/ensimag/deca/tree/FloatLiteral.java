@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -77,19 +78,7 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-
-        GPRegister freeReg = compiler.registerHandler.Get();
-
-        //Pas de registres disponibles (push dans pile)
-        if (freeReg == null) {
-            compiler.addInstruction(new LOAD(new ImmediateFloat(value), GPRegister.R0)); //LOAD dans R0
-            compiler.addInstruction(new PUSH(GPRegister.R0)); //PUSH R0
-            return null; // On indique qu'on a push dans la pile
-        }
-
-        //Registre disponibles (on return le registre occupé)
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), freeReg));
-        return freeReg;
+        return RegisterHandler.pushFromDVal(compiler, new ImmediateFloat(value), GPRegister.R0);
     }
 
 }

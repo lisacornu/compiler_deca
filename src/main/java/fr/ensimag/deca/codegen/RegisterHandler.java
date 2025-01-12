@@ -3,6 +3,7 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
@@ -92,6 +93,23 @@ public class RegisterHandler {
             return saveReg;
         }
         return reg; //reg n'est pas temporaire
+    }
+
+
+    //Cherche un registre pour stocker addr
+    //Si aucun registre n'est disponible, stock addr dans tempRegister, et push le résultat dans la pile
+    // Renvoi le registre concerné (ou null si le résultat est push dans la pile)
+    public static GPRegister pushFromDVal(DecacCompiler compiler, DVal addr, GPRegister tempRegister) {
+
+        GPRegister saveReg = compiler.registerHandler.Get();
+
+        if (saveReg == null) { // Les registres sont pleins
+            compiler.addInstruction(new LOAD(addr, tempRegister));
+            compiler.addInstruction(new PUSH(tempRegister));
+            return null;
+        }
+        compiler.addInstruction(new LOAD(addr, saveReg)); //Un registre est disponible
+        return saveReg;
     }
 
 
