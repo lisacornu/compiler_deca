@@ -20,6 +20,7 @@ import java.util.Stack;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -229,6 +230,10 @@ public class DecacCompiler implements Callable<Boolean> {
 
         addComment("start main program");
         prog.codeGenProgram(this);
+
+        // ajouté par lisa !! gestion du débordement de la pile
+        program.addFirst(new TSTO(1024));
+
         addComment("end main program");
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);

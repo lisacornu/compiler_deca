@@ -27,6 +27,8 @@ public class Multiply extends AbstractOpArith {
         if (this.getLeftOperand().getType().isInt() && this.getRightOperand().getType().isInt()) {
 
         }
-        compiler.addInstruction(new MUL(op1, op2)); // R2 <- R0 * R2
+        else {
+            compiler.addInstruction(new MUL(op1, op2)); // R2 <- R0 * R2
+        }
     }
 }
