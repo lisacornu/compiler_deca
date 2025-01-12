@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -38,13 +39,7 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
         DVal result = this.getOperand().codeGenExpr(compiler);
-        GPRegister resultLocation = compiler.registerHandler.Get();
-        if (resultLocation != null)
-            compiler.addInstruction(new FLOAT(result, resultLocation));
-        else {
-            compiler.addInstruction(new FLOAT(result, GPRegister.R0));
-            compiler.addInstruction(new PUSH(GPRegister.R0));
-        }
-        return resultLocation;
+        compiler.addInstruction(new FLOAT(result, GPRegister.R0));
+        return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
     }
 }

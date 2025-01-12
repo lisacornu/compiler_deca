@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -39,33 +40,27 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
+
         DVal result = this.getOperand().codeGenExpr(compiler);
         compiler.addInstruction(new LOAD(result, GPRegister.R0));
 
         compiler.addInstruction(new CMP(0, GPRegister.R0));
         compiler.addInstruction(new BEQ(new Label("not_is_true" + not_cpt)));
 
-        // cond == true => !cond == false
-        if (result instanceof GPRegister)
-            compiler.addInstruction(new LOAD(0, (GPRegister) result));
-        else {
-            compiler.addInstruction(new LOAD(0, GPRegister.R1));
-            compiler.addInstruction(new STORE(GPRegister.R1, (DAddr) result));
-        }
+        // si on est ici, cond == true donc !cond == false
+        compiler.addInstruction(new LOAD(0, GPRegister.R0));
+
         compiler.addInstruction(new BRA(new Label("not_end_case" + not_cpt)));
 
         // cond == false donc !cond == true
         compiler.addLabel(new Label("not_is_true" + not_cpt));
-        if (result instanceof GPRegister)
-            compiler.addInstruction(new LOAD(1, (GPRegister) result));
-        else {
-            compiler.addInstruction(new LOAD(1, GPRegister.R1));
-            compiler.addInstruction(new STORE(GPRegister.R1, (DAddr) result));
-        }
+        compiler.addInstruction(new LOAD(1, GPRegister.R0));
 
         compiler.addLabel(new Label("not_end_case" + not_cpt));
+
+        GPRegister resultLocation = RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
         not_cpt++;
-        return result;
+        return resultLocation;
     }
 
     @Override
