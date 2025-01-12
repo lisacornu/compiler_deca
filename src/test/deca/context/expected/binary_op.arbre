@@ -1,19 +1,85 @@
-// Description:
-//   utilisation des oprations 
-//
-// Resultats:
-//    
-// 
-// Historique:
-//    cree le 07/01/2025
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 2 elements]
+      |  []> [11, 7] DeclVar
+      |  ||  +> [11, 3] Identifier (int)
+      |  ||  |  definition: type (builtin), type=int
+      |  ||  +> [11, 7] Identifier (a)
+      |  ||  |  definition: variable defined at [11, 7], type=int
+      |  ||  `> [11, 9] Initialization
+      |  ||     `> [11, 11] ReadInt
+      |  ||        type: int
+      |  []> [12, 9] DeclVar
+      |      +> [12, 3] Identifier (float)
+      |      |  definition: type (builtin), type=float
+      |      +> [12, 9] Identifier (b)
+      |      |  definition: variable defined at [12, 9], type=float
+      |      `> [12, 11] Initialization
+      |         `> [12, 13] Minus
+      |            type: float
+      |            +> [12, 13] Float (3.4)
+      |            |  type: float
+      |            `> ConvFloat
+      |               `> [12, 19] Int (3)
+      |                  type: int
+      `> ListInst [List with 6 elements]
+         []> [13, 3] Assign
+         ||  type: float
+         ||  +> [13, 3] Identifier (b)
+         ||  |  definition: variable defined at [12, 9], type=float
+         ||  `> ConvFloat
+         ||     `> [13, 6] Int (3)
+         ||        type: int
+         []> [14, 3] Assign
+         ||  type: float
+         ||  +> [14, 3] Identifier (b)
+         ||  |  definition: variable defined at [12, 9], type=float
+         ||  `> ConvFloat
+         ||     `> [14, 7] ReadInt
+         ||        type: int
+         []> [15, 3] Assign
+         ||  type: float
+         ||  +> [15, 3] Identifier (b)
+         ||  |  definition: variable defined at [12, 9], type=float
+         ||  `> [15, 5] Plus
+         ||     type: float
+         ||     +> [15, 5] Float (3.4)
+         ||     |  type: float
+         ||     `> [15, 11] Float (3.4)
+         ||        type: float
+         []> [16, 3] Assign
+         ||  type: float
+         ||  +> [16, 3] Identifier (b)
+         ||  |  definition: variable defined at [12, 9], type=float
+         ||  `> [16, 6] Divide
+         ||     type: float
+         ||     +> ConvFloat
+         ||     |  type: float
+         ||     |  `> [16, 6] Int (3)
+         ||     |     type: int
+         ||     `> [16, 8] Float (1.2)
+         ||        type: float
+         []> [17, 3] Assign
+         ||  type: float
+         ||  +> [17, 3] Identifier (b)
+         ||  |  definition: variable defined at [12, 9], type=float
+         ||  `> [17, 6] Multiply
+         ||     type: float
+         ||     +> ConvFloat
+         ||     |  type: float
+         ||     |  `> [17, 6] Int (3)
+         ||     |     type: int
+         ||     `> [17, 10] Float (3.4)
+         ||        type: float
+         []> [18, 3] Assign
+             type: int
+             +> [18, 3] Identifier (a)
+             |  definition: variable defined at [11, 7], type=int
+             `> [18, 5] Modulo
+                type: int
+                +> [18, 5] Int (3)
+                |  type: int
+                `> [18, 7] Int (1)
+                   type: int
 
-{
-   int a = 3+ 4;
-   float b = 3.4 - 3;
-   b= 3 + 3.4 ;
-   b=3.4 + 3.4 ;
-   b= 3.4/3;
-   b= 3 * 3.4 ;
-   a=3%4;
-   
-}
