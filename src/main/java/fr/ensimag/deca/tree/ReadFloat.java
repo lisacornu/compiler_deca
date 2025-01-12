@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -9,9 +10,11 @@ import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
@@ -49,12 +52,7 @@ public class ReadFloat extends AbstractReadExpr {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
         compiler.addInstruction(new RFLOAT());
-        GPRegister resultLocation = compiler.registerHandler.Get();
-        if (resultLocation != null)
-            compiler.addInstruction(new LOAD(GPRegister.R1, resultLocation));
-        else
-            compiler.addInstruction(new PUSH(GPRegister.R1));
-        return resultLocation;
+        return RegisterHandler.pushFromRegister(compiler, Register.R1);
     }
 
 }
