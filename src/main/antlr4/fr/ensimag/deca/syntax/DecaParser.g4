@@ -214,7 +214,7 @@ assign_expr returns[AbstractExpr tree]
         EQUALS e2=assign_expr {
             assert($e.tree != null);
             assert($e2.tree != null);
-            $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);  //cast car AbstractLValue est une sous classe de AbstractExpr
+            $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);  //on cast car AbstractLValue est une sous classe de AbstractExpr
             setLocation($tree, $EQUALS);
         }
       | /* epsilon */ {
