@@ -1,0 +1,40 @@
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 1 elements]
+      |  []> [11, 11] DeclVar
+      |      +> [11, 3] Identifier (boolean)
+      |      |  definition: type (builtin), type=boolean
+      |      +> [11, 11] Identifier (b)
+      |      |  definition: variable defined at [11, 11], type=boolean
+      |      `> [11, 13] Initialization
+      |         `> [11, 15] Lower
+      |            type: boolean
+      |            +> [11, 15] Int (3)
+      |            |  type: int
+      |            `> [11, 17] Int (4)
+      |               type: int
+      `> ListInst [List with 2 elements]
+         []> [12, 3] Assign
+         ||  type: boolean
+         ||  +> [12, 3] Identifier (b)
+         ||  |  definition: variable defined at [11, 11], type=boolean
+         ||  `> [12, 5] Lower
+         ||     type: boolean
+         ||     +> [12, 5] Float (3.4)
+         ||     |  type: float
+         ||     '> [12, 9] ConvFloat  
+         ||        `> [12, 9] Int (4)
+         ||           type: int
+         []> [13, 3] Assign
+             type: boolean
+             +> [13, 3] Identifier (b)
+             |  definition: variable defined at [11, 11], type=boolean
+             `> [13, 5] Greater
+                type: boolean
+                +> [13, 5] ConvFloat
+                |  '> [13, 5] Int (3)
+                |     type: int
+                `> [13, 7] Float (3.4)
+                   type: float
+

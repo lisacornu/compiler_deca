@@ -2,52 +2,52 @@
    +> ListDeclClass [List with 0 elements]
    `> [10, 0] Main
       +> ListDeclVar [List with 7 elements]
-      |  []> [11, 4] DeclVar
-      |  || +> [11, 3] Identifier (boolean)
-      |  ||  +>  [11, 7] Identifier (result1)
-      |  ||  `> [11, 11] Initialization
-      |  ||     `> [11, 11] Equals
-      |  ||        +> [11, 9] IntLiteral (3)
-      |  ||        `> [11, 10] IntLiteral (3)
-      |  []> [12, 4] DeclVar
-      |  ||  +> [12, 3] Identifier (boolean)
-      |  ||  +>  [12, 7] Identifier (result2)
-      |  ||  `> [12, 11] Initialization
-      |  ||     `> [12, 11] NotEquals
-      |  ||        +> [12, 9] IntLiteral (3)
-      |  ||        `> [12, 10] IntLiteral (4)
-      |  []> [12, 4] DeclVar
-      |  ||  +> [13, 3] Identifier (boolean)
-      |  ||  +> [13, 7] Identifier (result3)
-      |  ||  `> [13, 11] Initialization
-      |  ||     `> [13, 11] LowerOrEqual
-      |  ||        +> [13, 9] IntLiteral (3)
-      |  ||        `> [13, 10] IntLiteral (4)
-      |  []> [14, 4] DeclVar
-      |  ||  +> [14, 3] Identifier (boolean)
-      |  ||  +> [14, 7] Identifier (result4)
-      |  ||    `> [14, 11] Initialization
-      |  ||       `> [14, 11] GreaterOrEqual
-      |  ||          +> [14, 9] IntLiteral (4)
-      |  ||          `> [14, 10] IntLiteral (3)
-      |  []> [15, 4] DeclVar
-      |  ||  +> [15, 3] Identifier (boolean)
-      |  ||  +>  [15, 7] Identifier (result5)
-      |  ||  `> [15, 11] Initialization
-      |  ||     `> [15, 11] Greater
-      |  ||        +> [15, 9] IntLiteral (4)
-      |  ||        `> [15, 10] IntLiteral (3)
-      |  []> [16, 4] DeclVar
-      |  ||  +> [16, 3] Identifier (boolean)
-      |  ||  +> [16, 7] Identifier (result6)
-      |  ||  `> [16, 11] Initialization
-      |  ||     `> [16, 11] Lower
-      |  ||        +> [16, 9] IntLiteral (3)
-      |  ||        `> [16, 10] IntLiteral (4)
-      |  []> [17, 4] DeclVar
-      |     +> [17, 3] Identifier (boolean)
-      |     +> [17, 7] Identifier (result7)
-      |     `> [17, 11] Initialization
-      |        `> [17, 11] Not
-      |           `> [17, 12] Ident (result6)
+      |  []> [11, 12] DeclVar
+      |  ||  +> [11, 4] Identifier (boolean)
+      |  ||  +> [11, 12] Identifier (result1)
+      |  ||  `> [11, 20] Initialization
+      |  ||     `> [11, 22] Equals
+      |  ||        +> [11, 23] Int (3)
+      |  ||        `> [11, 28] Int (3)
+      |  []> [12, 12] DeclVar
+      |  ||  +> [12, 4] Identifier (boolean)
+      |  ||  +> [12, 12] Identifier (result2)
+      |  ||  `> [12, 20] Initialization
+      |  ||     `> [12, 22] NotEquals
+      |  ||        +> [12, 23] Int (3)
+      |  ||        `> [12, 28] Int (4)
+      |  []> [13, 12] DeclVar
+      |  ||  +> [13, 4] Identifier (boolean)
+      |  ||  +> [13, 12] Identifier (result3)
+      |  ||  `> [13, 20] Initialization
+      |  ||     `> [13, 22] LowerOrEqual
+      |  ||        +> [13, 23] Int (3)
+      |  ||        `> [13, 28] Int (4)
+      |  []> [14, 12] DeclVar
+      |  ||  +> [14, 4] Identifier (boolean)
+      |  ||  +> [14, 12] Identifier (result4)
+      |  ||  `> [14, 20] Initialization
+      |  ||     `> [14, 22] GreaterOrEqual
+      |  ||        +> [14, 23] Int (4)
+      |  ||        `> [14, 28] Int (3)
+      |  []> [15, 12] DeclVar
+      |  ||  +> [15, 4] Identifier (boolean)
+      |  ||  +> [15, 12] Identifier (result5)
+      |  ||  `> [15, 20] Initialization
+      |  ||     `> [15, 22] Greater
+      |  ||        +> [15, 23] Int (4)
+      |  ||        `> [15, 27] Int (3)
+      |  []> [16, 12] DeclVar
+      |  ||  +> [16, 4] Identifier (boolean)
+      |  ||  +> [16, 12] Identifier (result6)
+      |  ||  `> [16, 20] Initialization
+      |  ||     `> [16, 22] Lower
+      |  ||        +> [16, 23] Int (3)
+      |  ||        `> [16, 27] Int (4)
+      |  []> [17, 12] DeclVar
+      |      +> [17, 4] Identifier (boolean)
+      |      +> [17, 12] Identifier (result7)
+      |      `> [17, 20] Initialization
+      |         `> [17, 22] Not
+      |            `> [17, 23] Identifier (result6)
       `> ListInst [List with 0 elements]

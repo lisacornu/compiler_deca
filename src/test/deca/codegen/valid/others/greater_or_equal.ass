@@ -1,0 +1,59 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	LOAD #3, R2
+	LOAD #4, R3
+	CMP R3, R2
+	BGE greater_or_equal0
+	LOAD #0, R2
+	BRA not_greater_or_equal0
+greater_or_equal0:
+	LOAD #1, R2
+not_greater_or_equal0:
+	CMP #1, R2
+	BNE elseStart0
+	WSTR "pas noraml"
+	WNL
+	BRA ifThenElseExit0
+elseStart0:
+	WSTR "normal"
+	WNL
+ifThenElseExit0:
+	LOAD #3, R2
+	LOAD #2, R3
+	CMP R3, R2
+	BGE greater_or_equal1
+	LOAD #0, R2
+	BRA not_greater_or_equal1
+greater_or_equal1:
+	LOAD #1, R2
+not_greater_or_equal1:
+	CMP #1, R2
+	BNE elseStart1
+	WSTR "noraml"
+	WNL
+	BRA ifThenElseExit1
+elseStart1:
+	WSTR "pas noraml"
+	WNL
+ifThenElseExit1:
+	LOAD #3, R2
+	LOAD #3, R3
+	CMP R3, R2
+	BGE greater_or_equal2
+	LOAD #0, R2
+	BRA not_greater_or_equal2
+greater_or_equal2:
+	LOAD #1, R2
+not_greater_or_equal2:
+	CMP #1, R2
+	BNE elseStart2
+	WSTR "noraml"
+	WNL
+	BRA ifThenElseExit2
+elseStart2:
+	WSTR "pas noraml"
+	WNL
+ifThenElseExit2:
+	HALT
+; end main program

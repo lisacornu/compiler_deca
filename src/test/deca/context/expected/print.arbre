@@ -1,14 +1,17 @@
-// Description:
-//    print simple mais couvre pas mal de chose 
-//
-// Resultats:
-//    
-// 
-// Historique:
-//    cree le 07/01/2025
-
-{
-    println(3);
-    println("3");
-    println("3.0");
-}
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> ListInst [List with 3 elements]
+         []> [11, 4] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [11, 12] Int (3)
+         ||         type: int
+         []> [12, 4] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [12, 12] StringLiteral (3)
+         ||         type: string
+         []> [13, 4] Println
+             `> ListExpr [List with 1 elements]
+                []> [13, 12] StringLiteral (3.0)
+                    type: string

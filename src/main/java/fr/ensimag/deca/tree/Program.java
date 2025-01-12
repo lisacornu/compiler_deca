@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -44,11 +45,21 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+
+        // si dépassement de pile
+        compiler.addInstruction(new BOV(new Label("pile_pleine")));
+
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
-    }
+
+        // gestion de dépassement de pile
+        compiler.addComment("Erreur : dépassement de pile");
+        compiler.addLabel(new Label("pile_pleine"));
+        compiler.addInstruction(new WSTR("Erreur : dépassement de la taille de pile autorisée"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());    }
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -1,16 +1,29 @@
-// Description:
-//    Programme minimaliste utilisant les fonction de base read.
-//
-// Resultats:
-//
-//
-// Historique:
-//    cree le 06/01/2025
-
-{   
-   int x;
-   float y;
-   readInt(x);
-   readFloat(y);
-
-}
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 2 elements]
+      |  []> [11, 7] DeclVar
+      |  ||  +> [11, 3] Identifier (int)
+      |  ||  |  definition: type (builtin), type=int
+      |  ||  +> [11, 7] Identifier (x)
+      |  ||  |  definition: variable defined at [11, 7], type=int
+      |  ||  `> NoInitialization
+      |  []> [12, 9] DeclVar
+      |      +> [12, 3] Identifier (float)
+      |      |  definition: type (builtin), type=float
+      |      +> [12, 9] Identifier (y)
+      |      |  definition: variable defined at [12, 9], type=float
+      |      `> NoInitialization
+      `> ListInst [List with 2 elements]
+         []> [13, 3] Assign
+         ||  type: int
+         ||  +> [13, 3] Identifier (x)
+         ||  |  definition: variable defined at [11, 7], type=int
+         ||  `> [13, 5] ReadInt
+         ||     type: int
+         []> [14, 3] Assign
+             type: float
+             +> [14, 3] Identifier (y)
+             |  definition: variable defined at [12, 9], type=float
+             `> [14, 5] ReadFloat
+                type: float

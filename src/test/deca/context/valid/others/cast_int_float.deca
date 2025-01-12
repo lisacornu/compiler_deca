@@ -9,6 +9,5 @@
 //    cree le 06/01/2025
 
 {   
-   float a = (float) 3;
-   int b = (int) 3.0;
+   float a = 3;
    }

@@ -32,5 +32,5 @@
     
     // Littéraux flottants avec signes
     float o = -1.2345e10;            // Littéral flottant négatif avec exponentielle (1.2345 * 10^10)
-    float p = +1.2345e-10;           // Littéral flottant positif avec exponentielle (1.2345 * 10^-10)
+    float p = 1.2345e-10;           // Littéral flottant positif avec exponentielle (1.2345 * 10^-10)
 }

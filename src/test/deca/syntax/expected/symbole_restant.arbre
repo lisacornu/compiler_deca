@@ -2,63 +2,53 @@
    +> ListDeclClass [List with 0 elements]
    `> [10, 0] Main
       +> ListDeclVar [List with 3 elements]
-      |  []> DeclVar
-      |  || +> [11, 3] Identifier (int)
-      |  || +> [11, 7] Identifier (i)
-      |  || `> [11, 9] Initialization
-      |  ||    `> [11, 9] Modulo
-      |  ||       +> [11, 9] IntLiteral (7)
-      |  ||       `> [11, 11] IntLiteral (4)
-      |  []> DeclVar
-      |  || +> [18, 3] Identifier (boolean)
-      |  || +> [18, 12] Identifier (b1)
-      |  || `> [18, 16] Initialization
-      |  ||    `> [18, 16] And
-      |  ||       +> [18, 16] Greater
-      |  ||          +> [18, 12] IntLiteral (3)
-      |  ||          `> [18, 14] IntLiteral (1)
-      |  ||       `> [18, 24] Lower
-      |  ||          +> [18, 20] IntLiteral (1)
-      |  ||          `> [18, 22] IntLiteral (4)
-      |  []> DeclVar
-      |  || +> [19, 3] Identifier (boolean)
-      |  || +> [19, 12] Identifier (b2)
-      |  || `> [19, 16] Initialization
-      |  ||    `> [19, 16] Or
-      |  ||       +> [19, 16] Lower
-      |  ||          +> [19, 12] IntLiteral (7)
-      |  ||          `> [19, 14] IntLiteral (3)
-      |  ||       `> [19, 24] Greater
-      |  ||          +> [19, 20] IntLiteral (3)
-      |  ||          `> [19, 22] IntLiteral (1)
-      `> ListInst [List with 6 elements]
-         []> Assign
-         || +> [12, 3] Identifier (i)
-         || `> [12, 5] Plus
-         ||    +> [12, 5] IntLiteral (3)
-         ||    `> [12, 7] IntLiteral (4)
-         []> Assign
-         || +> [13, 3] Identifier (i)
-         || `> [13, 5] Multiply
-         ||    +> [13, 5] IntLiteral (8)
-         ||    `> [13, 7] IntLiteral (4)
-         []> Assign
-         || +> [14, 3] Identifier (i)
-         || `> [14, 5] Minus
-         ||    +> [14, 5] IntLiteral (7)
-         ||    `> [14, 7] IntLiteral (1)
-         []> Assign
-         || +> [15, 3] Identifier (i)
-         || `> [15, 5] Divide
-         ||    +> [15, 5] Identifier (i)
-         ||    `> [15, 7] IntLiteral (4)
-         []> Assign
-         || +> [16, 3] Identifier (i)
-         || `> [16, 5] LeftShift
-         ||    +> [16, 5] Identifier (i)
-         ||    `> [16, 9] IntLiteral (1)
-         []> Assign
-         || +> [17, 3] Identifier (i)
-         || `> [17, 5] RightShift
-         ||    +> [17, 5] Identifier (i)
-         ||    `> [17, 9] IntLiteral (1)
+      |  []> [11, 12] DeclVar
+      |  ||  +> [11, 4] Identifier (boolean)
+      |  ||  +> [11, 12] Identifier (b1)
+      |  ||  `> [11, 15] Initialization
+      |  ||     `> [11, 17] And
+      |  ||        +> [11, 17] Greater
+      |  ||        |  +> [11, 17] Int (3)
+      |  ||        |  `> [11, 21] Int (1)
+      |  ||        `> [11, 26] Lower
+      |  ||           +> [11, 26] Int (1)
+      |  ||           `> [11, 30] Int (4)
+      |  []> [12, 12] DeclVar
+      |  ||  +> [12, 4] Identifier (boolean)
+      |  ||  +> [12, 12] Identifier (b2)
+      |  ||  `> [12, 15] Initialization
+      |  ||     `> [12, 17] Or
+      |  ||        +> [12, 17] Lower
+      |  ||        |  +> [12, 17] Int (7)
+      |  ||        |  `> [12, 21] Int (3)
+      |  ||        `> [12, 26] Greater
+      |  ||           +> [12, 26] Int (3)
+      |  ||           `> [12, 30] Int (1)
+      |  []> [13, 8] DeclVar
+      |      +> [13, 4] Identifier (int)
+      |      +> [13, 8] Identifier (i)
+      |      `> [13, 9] Initialization
+      |         `> [13, 10] Modulo
+      |            +> [13, 10] Int (7)
+      |            `> [13, 12] Int (4)
+      `> ListInst [List with 4 elements]
+         []> [14, 4] Assign
+         ||  +> [14, 4] Identifier (i)
+         ||  `> [14, 6] Plus
+         ||     +> [14, 6] Int (3)
+         ||     `> [14, 8] Int (4)
+         []> [15, 4] Assign
+         ||  +> [15, 4] Identifier (i)
+         ||  `> [15, 6] Multiply
+         ||     +> [15, 6] Int (8)
+         ||     `> [15, 8] Int (4)
+         []> [16, 4] Assign
+         ||  +> [16, 4] Identifier (i)
+         ||  `> [16, 6] Minus
+         ||     +> [16, 6] Int (7)
+         ||     `> [16, 8] Int (1)
+         []> [17, 4] Assign
+             +> [17, 4] Identifier (i)
+             `> [17, 6] Divide
+                +> [17, 6] Identifier (i)
+                `> [17, 8] Int (4)
