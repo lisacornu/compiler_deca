@@ -1,16 +1,15 @@
 // Description:
-//    Programme utilisant if else.
+//    Programme minimaliste utilisant while.
 //
 // Resultats:
-//      print infini
-//      ...
+//
 //
 //
 // Historique:
-//    cree le 01/01/2025
+//    cree le 06/01/2025
 
 {
-    while(true){
-        println("print infini");
-    }
+    while(1){
+
+    } 
 }
