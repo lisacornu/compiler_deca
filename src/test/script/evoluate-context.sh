@@ -55,7 +55,7 @@ test_contexte_valide () {
 }
 
 # Parcourir tous les fichiers dans le répertoire des tests valides et les tester
-for cas_de_test in src/test/deca/context/valid/others/*.deca
+for cas_de_test in src/test/deca/context/valid/personal/*.deca
 do
     # Appeler la fonction test_contexte_valide pour chaque fichier trouvé
     test_contexte_valide "$cas_de_test"
