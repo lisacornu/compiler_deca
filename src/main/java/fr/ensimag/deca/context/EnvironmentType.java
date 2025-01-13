@@ -41,8 +41,13 @@ public class EnvironmentType {
 
         // not added to envTypes, it's not visible for the user.
         
+    
     }
-
+    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass){
+        Symbol newSymb = compiler.createSymbol(nameOfClass);
+        NEWTYPE = new ClassType(newSymb);
+        envTypes.put(newSymb, new TypeDefinition(NEWTYPE, null));
+    }
     private final Map<Symbol, TypeDefinition> envTypes;
 
     public TypeDefinition defOfType(Symbol s) {
@@ -54,4 +59,6 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
+    public       ClassType   NEWTYPE;
+
 }
