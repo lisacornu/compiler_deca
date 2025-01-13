@@ -10,6 +10,7 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
+import fr.ensimag.deca.tree.Program;
 import fr.ensimag.ima.pseudocode.*;
 
 import java.io.File;
@@ -59,6 +60,7 @@ public class DecacCompiler implements Callable<Boolean> {
         this.compilerOptions = compilerOptions;
         this.source = source;
         this.registerHandler = new RegisterHandler(compilerOptions.getNbRegister());
+        this.stackUsageWatcher = new StackUsageWatcher();
     }
 
     /**
@@ -233,6 +235,9 @@ public class DecacCompiler implements Callable<Boolean> {
         prog.codeGenProgram(this);
 
         // ajouté par lisa !! gestion du débordement de la pile
+        int methodTableSize = 2; // dans le cas du sans objet
+        program.addFirst(new ADDSP(stackUsageWatcher.getNbVariables() + methodTableSize));
+        program.addFirst(new BOV(new Label("pile_pleine")));
         program.addFirst(new TSTO(1024));
 
         addComment("end main program");
