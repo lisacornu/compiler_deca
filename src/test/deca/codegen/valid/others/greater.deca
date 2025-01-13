@@ -19,6 +19,13 @@
     else{
         println("pas noraml");
     }
+    if(3>3){
+        println("pas noraml");
+    }
+    else{
+        println("normal");
+    }
+    
 
 
 }
