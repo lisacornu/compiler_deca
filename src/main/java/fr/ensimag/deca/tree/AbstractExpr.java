@@ -90,8 +90,7 @@ public abstract class AbstractExpr extends AbstractInst {
         if(type2.sameType(expectedType)){
             setType(type2);
             return this;
-        }else if ((type2.isInt() && expectedType.isFloat()) ){ // || (type2.isFloat() && expectedType.isInt()) 
-            setType(expectedType);
+        }else if ((type2.isInt() && expectedType.isFloat()) || (type2.isFloat() && expectedType.isInt()) ){ 
             return this;
         }else{
             throw new ContextualError("They are not compatible (not same type or float->int) " + type2 + " is not " + expectedType, getLocation());
