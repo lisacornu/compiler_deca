@@ -39,8 +39,10 @@ public class Assign extends AbstractBinaryExpr {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);        
         AbstractExpr rightExpDefinition = getRightOperand().verifyRValue(compiler, localEnv, currentClass, lefType);
         this.setType(lefType);
-        if (lefType.isFloat() && rightExpDefinition.verifyExpr(compiler, localEnv, currentClass).isInt()){
-            setRightOperand(new ConvFloat(rightExpDefinition));
+        if (lefType.isFloat() && rightExpDefinition.getType().isInt()){
+            ConvFloat conversionFloat = new ConvFloat(rightExpDefinition);
+            conversionFloat.verifyExpr(compiler, localEnv, currentClass);
+            setRightOperand(conversionFloat);
         }else{
             setRightOperand(rightExpDefinition);
         }
