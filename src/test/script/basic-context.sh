@@ -9,8 +9,8 @@ cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
 
-if test_context src/test/deca/context/invalid/affect-incompatible.deca 2>&1 | \
-    grep -q -e 'affect-incompatible.deca:15:'
+if test_context src/test/deca/context/invalid/affect_incompatible.deca 2>&1 | \
+    grep -q -e 'affect_incompatible.deca:15:'
 then
     echo "Echec attendu pour test_context"
 else

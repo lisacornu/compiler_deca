@@ -14,9 +14,6 @@ function print_red_bold {
     echo -e "\033[1;31m$1\033[0m"
 }
 
-# Répertoire actuel
-current_dir=$(pwd)
-
 # Aller à la racine du projet
 cd "$(dirname "$0")/../../../" || exit 1
 
@@ -35,12 +32,12 @@ else
 fi
 
 # Revenir au répertoire d'origine
-cd "$current_dir" || exit 1
+cd "src/test"
 
 
 # Dossiers contenant les fichiers à tester
-VALID_DIR="../deca/codegen/valid"
-INVALID_DIR="../deca/codegen/invalid"
+VALID_DIR="deca/codegen/valid"
+INVALID_DIR="deca/codegen/invalid"
 
 # Vérification si les répertoires existent et contiennent des fichiers .deca
 if [ ! -d "$VALID_DIR" ]; then
