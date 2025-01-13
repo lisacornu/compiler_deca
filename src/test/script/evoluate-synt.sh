@@ -15,7 +15,7 @@ test_synt_invalide () {
 }    
 
 # Parcourir et tester les fichiers invalides
-for cas_de_test in src/test/deca/syntax/invalid/*.deca
+for cas_de_test in src/test/deca/syntax/invalid/personal/*.deca
 do
     test_synt_invalide "$cas_de_test"
 done
@@ -44,7 +44,7 @@ test_synt_valide () {
 }
 
 # Parcourir et tester les fichiers valides
-for cas_de_test in src/test/deca/syntax/valid/*.deca
+for cas_de_test in src/test/deca/syntax/valid/personal/*.deca
 do
     test_synt_valide "$cas_de_test"
 done

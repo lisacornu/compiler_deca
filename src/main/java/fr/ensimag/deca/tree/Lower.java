@@ -35,10 +35,10 @@ public class Lower extends AbstractOpIneq {
             Label case2=new Label("not_lower"+i);
             i++;
             compiler.addInstruction(new BLT(case2));    //si la comparaison est vrai(cad l'op est sup ) --> on va a case2
-            compiler.addInstruction(new LOAD(new ImmediateInteger(1),op2));
+            compiler.addInstruction(new LOAD(new ImmediateInteger(0),op2));
             compiler.addInstruction(new BRA(case1));
             compiler.addLabel(case2);
-            compiler.addInstruction(new LOAD(new ImmediateInteger(0),op2));
+            compiler.addInstruction(new LOAD(new ImmediateInteger(1),op2));
             compiler.addLabel(case1);
             //compiler.addInstruction(new PUSH(Register.getR(2)));
 

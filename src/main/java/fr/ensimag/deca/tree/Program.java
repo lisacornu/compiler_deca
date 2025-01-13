@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -36,8 +37,8 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-       // EnvironmentType envTypes = compiler.environmentType;
-        //classes.verifyListClass(compiler, envTypes);
+        // EnvironmentType envTypes = compiler.environmentType;
+        classes.verifyListClass(compiler);
         main.verifyMain(compiler);
         
         LOG.debug("verify program: end");
@@ -45,9 +46,6 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-
-        // si dépassement de pile
-        compiler.addInstruction(new BOV(new Label("pile_pleine")));
 
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
@@ -59,7 +57,9 @@ public class Program extends AbstractProgram {
         compiler.addLabel(new Label("pile_pleine"));
         compiler.addInstruction(new WSTR("Erreur : dépassement de la taille de pile autorisée"));
         compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());    }
+        compiler.addInstruction(new ERROR());
+
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -31,14 +31,16 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         if ((lefType.isInt() || lefType.isFloat()) && (righType.isFloat()||righType.isInt())){
             if (lefType.isFloat() && righType.isInt()){
-                AbstractExpr intTypeExpr = getRightOperand();
-                setRightOperand(new ConvFloat(intTypeExpr)); 
+                ConvFloat FloatTypeExpr = new ConvFloat(getRightOperand());
+                FloatTypeExpr.setType(righType);
+                setRightOperand(FloatTypeExpr); 
                 this.setType(lefType);
                 return lefType;
 
             }else if (righType.isFloat() && lefType.isInt()){
-                AbstractExpr intTypeExpr = getLeftOperand();
-                setLeftOperand(new ConvFloat(intTypeExpr));
+                ConvFloat FloatTypeExpr = new ConvFloat(getLeftOperand());
+                FloatTypeExpr.setType(righType);
+                setRightOperand(FloatTypeExpr); 
                 this.setType(righType);
                 return righType;
 

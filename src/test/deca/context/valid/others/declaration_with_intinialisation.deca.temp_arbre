@@ -1,0 +1,37 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:38) - verify program: start
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:30) - verify Main: start
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:35) - verify Variable : start
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:37) - verify Variable : end
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:38) - verify Inst : start
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:40) - verify Inst : end
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:41) - verify Main: end
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:43) - verify program: end
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 3 elements]
+      |  []> [11, 8] DeclVar
+      |  ||  +> [11, 4] Identifier (int)
+      |  ||  |  definition: type (builtin), type=int
+      |  ||  +> [11, 8] Identifier (a)
+      |  ||  |  definition: variable defined at [11, 8], type=int
+      |  ||  `> [11, 9] Initialization
+      |  ||     `> [11, 10] Int (1)
+      |  ||        type: int
+      |  []> [12, 10] DeclVar
+      |  ||  +> [12, 4] Identifier (float)
+      |  ||  |  definition: type (builtin), type=float
+      |  ||  +> [12, 10] Identifier (b)
+      |  ||  |  definition: variable defined at [12, 10], type=float
+      |  ||  `> [12, 11] Initialization
+      |  ||     `> [12, 12] Float (1.0)
+      |  ||        type: float
+      |  []> [13, 12] DeclVar
+      |      +> [13, 4] Identifier (boolean)
+      |      |  definition: type (builtin), type=boolean
+      |      +> [13, 12] Identifier (l)
+      |      |  definition: variable defined at [13, 12], type=boolean
+      |      `> [13, 13] Initialization
+      |         `> [13, 14] BooleanLiteral (false)
+      |            type: boolean
+      `> ListInst [List with 0 elements]

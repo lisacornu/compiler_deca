@@ -3,8 +3,13 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+import java.lang.instrument.ClassDefinition;
+
+import org.apache.commons.lang.Validate;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -14,14 +19,45 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
 
+    final private AbstractIdentifier parentClass;
+    final private AbstractIdentifier className;
+    // TODO : ListeMethodes et ListeField
+    
+
+    public DeclClass(AbstractIdentifier parentClass, AbstractIdentifier className) {
+        Validate.notNull(className);
+        this.parentClass = parentClass;
+        this.className = className;
+        
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        s.println("class extends " + this.parentClass.getClass().getName());
+        // TODO : print pour les methodes et field
+        
     }
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
+        if (parentClass.verifyType(compiler).isClass()){
+            try{
+                compiler.environmentType.addOfTypeClass(compiler, className.getName().getName());
+                ClassType classType = new ClassType(className.getName(), getLocation(), parentClass.getClassDefinition());
+                // if (parentClass.getName().equals("Object")){
+                //     classType = new ClassType(className, getLocation(), (fr.ensimag.deca.context.ClassDefinition) compiler.environmentType.defOfType(compiler.createSymbol("Object")));
+                // }
+                fr.ensimag.deca.context.ClassDefinition classDef = classType.getDefinition();
+                className.setDefinition(classDef);
+                className.setType(classType);
+            } catch (DoubleDefException e){
+                throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
+            }
+        } throw new ContextualError("The superClass is not a class", getLocation());
+        
+        
+        
     }
 
     @Override
@@ -38,12 +74,14 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not yet supported");
+        className.prettyPrint(s,prefix, false);
+        parentClass.prettyPrint(s, prefix,false);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        className.iter(f);
+        parentClass.iter(f);
     }
 
 }

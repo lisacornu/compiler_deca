@@ -39,8 +39,10 @@ public class Assign extends AbstractBinaryExpr {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);        
         AbstractExpr rightExpDefinition = getRightOperand().verifyRValue(compiler, localEnv, currentClass, lefType);
         this.setType(lefType);
-        if (lefType.isFloat() && rightExpDefinition.verifyExpr(compiler, localEnv, currentClass).isInt()){
-            setRightOperand(new ConvFloat(rightExpDefinition));
+        if (lefType.isFloat() && rightExpDefinition.getType().isInt()){
+            ConvFloat conversionFloat = new ConvFloat(rightExpDefinition);
+            conversionFloat.verifyExpr(compiler, localEnv, currentClass);
+            setRightOperand(conversionFloat);
         }else{
             setRightOperand(rightExpDefinition);
         }
@@ -76,6 +78,7 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
+        compiler.stackUsageWatcher.addToNbVariables();
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
