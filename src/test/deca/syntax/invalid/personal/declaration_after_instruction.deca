@@ -1,0 +1,13 @@
+// Description:
+//    Programme avec des déclarations après les instructions
+//
+// Resultats:
+//  ko : erreur de syntax
+//
+// Historique:
+//    cree le 13/01/2025
+
+{
+        print("l'erreur va arriver ...");
+        int x=4;
+}
