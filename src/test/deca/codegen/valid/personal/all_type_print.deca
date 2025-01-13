@@ -1,0 +1,15 @@
+// Description:
+//    Programme minimaliste utilisant println et print pour tout type + test affectation d'un entier .
+//
+// Resultats:
+//4
+//4.5
+// Historique:
+//    cree le 06/01/2025
+
+{       
+        int x=4;
+        print(x);
+        print("Salut salut");
+        println(4.5);
+}

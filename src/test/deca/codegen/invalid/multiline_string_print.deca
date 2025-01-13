@@ -4,14 +4,12 @@
 // Resultats:
 //4
 //4.5
-//false
 // Historique:
 //    cree le 06/01/2025
 
-{       
+{
         int x=4;
         print(x);
-        print("\n");
+        print("test\n");
         println(4.5);
-        println(false);
 }
