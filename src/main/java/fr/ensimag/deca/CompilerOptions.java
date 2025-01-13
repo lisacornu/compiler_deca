@@ -89,7 +89,7 @@ public class CompilerOptions {
                     if (!argIterator.hasNext()) throw new CLIException("Option -r nécessite un argument (nombre de registres).");
                     try {
                         int registers = Integer.parseInt(argIterator.next());
-                        if (registers < 4 || registers > 16)
+                        if (registers < 2 || registers > 16)
                             throw new CLIException("Le nombre de registres doit être entre 4 et 16.");
                         this.nbRegister = registers;
                         this.setRegister = true;

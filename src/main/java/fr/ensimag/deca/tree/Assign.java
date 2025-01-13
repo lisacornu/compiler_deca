@@ -63,7 +63,7 @@ public class Assign extends AbstractBinaryExpr {
 
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
-        DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);;
+        DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);
 
         // Generation du code de l'expression (résultat enregistré dans op1)
         codeGenBinaryExpr(compiler, op1, op2);

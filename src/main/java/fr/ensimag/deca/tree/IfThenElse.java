@@ -60,6 +60,7 @@ public class IfThenElse extends AbstractInst {
         //On compare la condition dans la pile à 1 (true)
 
         compiler.addInstruction(new CMP(new ImmediateInteger(1),condReg));
+        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
 
         compiler.addInstruction(new BNE(startLabel));//On saute à startLabel quand la condition est false (else)
         branchIndex++; //Incrémentation de l'index
@@ -70,8 +71,6 @@ public class IfThenElse extends AbstractInst {
         compiler.addLabel(startLabel);// Début du else
         elseBranch.codeGenListInst(compiler); // Exécution du else
         compiler.addLabel(endLabel); //Fin du if-else
-
-        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
     }
 
     @Override

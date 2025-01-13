@@ -31,15 +31,16 @@ public class And extends AbstractOpBool {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        compiler.addInstruction(new LOAD(op1, GPRegister.R0));
-
-        // si op1 est nulle (=false), AND est faux
-        compiler.addInstruction(new CMP(0, GPRegister.R0));
-        compiler.addInstruction(new BEQ(new Label("and_false_case" + and_cpt)));
 
         // si op2 est nulle, AND est faux
         compiler.addInstruction(new CMP(0, op2));
         compiler.addInstruction(new BEQ(new Label("and_false_case" + and_cpt)));
+
+        // si op1 est nulle (=false), AND est faux
+        compiler.addInstruction(new LOAD(op1, GPRegister.R0));
+        compiler.addInstruction(new CMP(0, GPRegister.R0));
+        compiler.addInstruction(new BEQ(new Label("and_false_case" + and_cpt)));
+
 
         // les deux opérandes sont non nulles => AND est vrai
         // étant donné que le résultat est stocké dans op2, il n'y a rien à faire dans ce cas

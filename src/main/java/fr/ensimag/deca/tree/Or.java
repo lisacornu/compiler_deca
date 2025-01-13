@@ -31,15 +31,14 @@ public class Or extends AbstractOpBool {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        // CMP ne travaille qu'avec des registres
-        compiler.addInstruction(new LOAD(op1, GPRegister.R0));
 
-        // si op1 est vrai
-        compiler.addInstruction(new CMP(0, GPRegister.R0));
+        // si op2 est vrai
+        compiler.addInstruction(new CMP(0, op2));
         compiler.addInstruction(new BNE(new Label("or_true_case" + or_cpt)));
 
-        // sinon si op2 est vrai
-        compiler.addInstruction(new CMP(0, op2));
+        // si op1 est vrai
+        compiler.addInstruction(new LOAD(op1, GPRegister.R0));
+        compiler.addInstruction(new CMP(0, GPRegister.R0));
         compiler.addInstruction(new BNE(new Label("or_true_case" + or_cpt)));
 
         // sinon le resultat est faux, pas besoin de LOAD faux dans op2 car op2 est déjà faux, on va a la fin

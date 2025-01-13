@@ -56,6 +56,8 @@ public class While extends AbstractInst {
         GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
 
         compiler.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
+        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
+
         compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
 
         body.codeGenListInst(compiler); //génère le code du corps de la boucle
@@ -63,8 +65,6 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
 
         compiler.addLabel(finWhile);
-
-        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
     }
 
     @Override
