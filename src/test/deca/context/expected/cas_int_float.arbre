@@ -8,7 +8,8 @@
       |      +> [12, 9] Identifier (a)
       |      |  definition: variable defined at [12, 9], type=float
       |      `> [12, 11] Initialization
-      |         `> [12,13] ConvFloat
+      |         `> ConvFloat
+      |            type: float
       |            `> [12, 13] Int (3)
       |               type: int
       `> ListInst [List with 0 elements]
