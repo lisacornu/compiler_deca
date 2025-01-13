@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
 import java.util.HashMap;
 import java.util.Map;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
@@ -43,10 +45,20 @@ public class EnvironmentType {
         
     
     }
-    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass){
+
+    /**
+     * Add of a class in the environnement
+     * @param compiler
+     * @param nameOfClass
+     * @throws DoubleDefException
+     */
+    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass) throws DoubleDefException{
         Symbol newSymb = compiler.createSymbol(nameOfClass);
-        NEWTYPE = new ClassType(newSymb);
-        envTypes.put(newSymb, new TypeDefinition(NEWTYPE, null));
+        if (defOfType(newSymb)==null){
+            envTypes.put(newSymb, new TypeDefinition(new ClassType(newSymb), null));
+        } else{
+            throw new DoubleDefException();
+        }
     }
     private final Map<Symbol, TypeDefinition> envTypes;
 
@@ -59,6 +71,5 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
-    public       ClassType   NEWTYPE;
 
 }

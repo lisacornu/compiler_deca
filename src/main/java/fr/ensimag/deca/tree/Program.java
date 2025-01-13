@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -36,8 +37,8 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-       // EnvironmentType envTypes = compiler.environmentType;
-        //classes.verifyListClass(compiler, envTypes);
+        // EnvironmentType envTypes = compiler.environmentType;
+        classes.verifyListClass(compiler);
         main.verifyMain(compiler);
         
         LOG.debug("verify program: end");
