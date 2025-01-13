@@ -24,11 +24,11 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        if (this.getLeftOperand().getType().isInt() && this.getRightOperand().getType().isInt()) {
-
-        }
-        else {
+//        if (this.getLeftOperand().getType().isInt() && this.getRightOperand().getType().isInt()) {
+//
+//        }
+//        else {
             compiler.addInstruction(new MUL(op1, op2)); // R2 <- R0 * R2
-        }
+        //}
     }
 }
