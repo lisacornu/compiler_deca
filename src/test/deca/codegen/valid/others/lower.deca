@@ -21,6 +21,12 @@
     else{
         println("pas normal");
     }
-
+    if(3<3){
+        println("pas normal");
+    }
+    else{
+        println( "normal");
+    }
+    
 
 }
