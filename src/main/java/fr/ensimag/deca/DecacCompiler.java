@@ -1,6 +1,7 @@
 package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.RegisterHandler;
+import fr.ensimag.deca.codegen.StackUsageWatcher;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -44,7 +45,7 @@ public class DecacCompiler implements Callable<Boolean> {
 
     public int headOfGBStack = 3;
     public RegisterHandler registerHandler;
-
+    public StackUsageWatcher stackUsageWatcher;
 
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     
