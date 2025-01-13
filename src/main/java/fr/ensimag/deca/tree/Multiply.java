@@ -4,7 +4,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
 
 /**
@@ -24,11 +23,11 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        if (this.getLeftOperand().getType().isInt() && this.getRightOperand().getType().isInt()) {
-
-        }
-        else {
+//        if (this.getLeftOperand().getType().isInt() && this.getRightOperand().getType().isInt()) {
+//
+//        }
+//        else {
             compiler.addInstruction(new MUL(op1, op2)); // R2 <- R0 * R2
-        }
+        //}
     }
 }

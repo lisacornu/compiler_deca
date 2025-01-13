@@ -7,7 +7,7 @@ cd "$(dirname "$0")"/../../.. || exit 1
 PATH=./src/test/script/launchers:"$PATH"
 
 # Partie 1 : Tester les fichiers valides
-for i in src/test/deca/syntax/valid/*.deca
+for i in src/test/deca/syntax/valid/personal/*.deca
 do
     test_lex "$i" > /dev/null 2>&1
     
@@ -20,7 +20,7 @@ do
 done
 
 # Partie 2 : Capturer et comparer les tokens pour un fichier spécifique
-fichier_test="src/test/deca/syntax/invalid/many_tokens.deca"
+fichier_test="src/test/deca/syntax/invalid/personal/many_tokens.deca"
 resultat_attendu="src/test/deca/syntax/expected/many_tokens.tokens"
 
 # Exécuter la commande pour capturer la sortie des tokens
