@@ -77,16 +77,13 @@ public class DeclClass extends AbstractDeclClass {
         className.getClassDefinition().setNumberOfFields(listField.size());
         listField.verifyListFieldMembers(compiler, className.getClassDefinition());
         className.getClassDefinition().setNumberOfMethods(listMethod.size());
-        listMethod.verifyListMethodMembers(compiler);
-
-        
-        
+        listMethod.verifyListMethodMembers(compiler, className.getClassDefinition());
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         listField.verifyListFieldBody(compiler, className.getClassDefinition());
-        listMethod.verifyListMethodBody(compiler);
+        listMethod.verifyListMethodBody(compiler, className.getClassDefinition());
     }
 
 

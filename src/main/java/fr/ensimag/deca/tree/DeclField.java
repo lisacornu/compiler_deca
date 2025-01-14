@@ -17,10 +17,10 @@ import java.rmi.UnexpectedException;
 import org.apache.commons.lang.Validate;
 
 /**
- * Declaration of a class (<code>class name extends superClass {members}<code>).
+ * Declaration of a field
  * 
- * @author gl31
- * @date 01/01/2025
+ * @author Fabien Galzi
+ * @date 14/01/2025
  */
 public class DeclField extends AbstractDeclField {
 
@@ -49,7 +49,7 @@ public class DeclField extends AbstractDeclField {
                                fr.ensimag.deca.context.ClassDefinition nameClass, 
                                EnvironmentExp envExp) throws ContextualError {
         if (type.verifyType(compiler).isVoid()){
-            throw new ContextualError("The type of this field is float.", getLocation());
+            throw new ContextualError("The type of this field is void.", getLocation());
         }
         nameClass.incNumberOfFields();
         FieldDefinition fieldDef = new FieldDefinition(type.verifyType(compiler), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());

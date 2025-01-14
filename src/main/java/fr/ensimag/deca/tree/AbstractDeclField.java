@@ -2,8 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 
-import java.lang.instrument.ClassDefinition;
-
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -22,7 +21,7 @@ public abstract class AbstractDeclField extends Tree {
      * methods) are OK, without looking at method body and field initialization.
      */
     protected abstract void verifyFieldMembers(DecacCompiler compiler, 
-    fr.ensimag.deca.context.ClassDefinition nameClass, 
+    ClassDefinition nameClass, 
     EnvironmentExp envExp)
             throws ContextualError;
 
@@ -30,6 +29,6 @@ public abstract class AbstractDeclField extends Tree {
      * Pass 3 of [SyntaxeContextuelle]. Verify that instructions and expressions
      * contained in the field are OK.
      */
-    protected abstract void verifyFieldBody(DecacCompiler compiler, fr.ensimag.deca.context.ClassDefinition nameClass)
+    protected abstract void verifyFieldBody(DecacCompiler compiler, ClassDefinition nameClass)
             throws ContextualError;
 }
