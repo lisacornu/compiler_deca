@@ -1,0 +1,18 @@
+// Description:
+//    test minimaliste pour induire a l erreur lors du pass 2 
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+
+class B {
+    int a;
+}
+class A extends B {
+    protected int a;
+}

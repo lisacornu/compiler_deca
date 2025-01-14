@@ -1,0 +1,18 @@
+// Description:
+//    test minimaliste pour induire a l erreur lors du pass 2 (declaration de methode dans la super class et class)
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+
+class B {
+    void p(){}
+}
+class A extends B {
+    void p(int a ){}
+}

@@ -1,0 +1,18 @@
+// Description:
+//    test minimaliste pour testé le pass 2 (methode)
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+}
+
+class B {
+    B hi(){
+        return null;
+    }
+}

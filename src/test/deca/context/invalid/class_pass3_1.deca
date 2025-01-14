@@ -1,0 +1,16 @@
+// Description:
+//    test minimaliste pour induire a l erreur lors du pass 3 (retour d'un methode pas juste)
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+
+class B {
+    void p(A a){ return 1;}
+}
+
