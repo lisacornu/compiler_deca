@@ -45,6 +45,13 @@ public class Program extends AbstractProgram {
     }
 
     @Override
+    public void codeGenVTable(DecacCompiler compiler) {
+        for (AbstractDeclClass c : this.classes.getList()) {
+            c.codeGenVTable(compiler);
+        }
+    }
+
+    @Override
     public void codeGenProgram(DecacCompiler compiler) {
 
         // A FAIRE: compléter ce squelette très rudimentaire de code

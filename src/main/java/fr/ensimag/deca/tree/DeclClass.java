@@ -55,9 +55,7 @@ public class DeclClass extends AbstractDeclClass {
                 throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
             }
         } throw new ContextualError("The superClass is not a class", getLocation());
-        
-        
-        
+
     }
 
     @Override
@@ -82,6 +80,11 @@ public class DeclClass extends AbstractDeclClass {
     protected void iterChildren(TreeFunction f) {
         className.iter(f);
         parentClass.iter(f);
+    }
+
+    @Override
+    protected void codeGenVTable(DecacCompiler compiler) {
+        
     }
 
 }

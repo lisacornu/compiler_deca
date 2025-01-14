@@ -232,6 +232,7 @@ public class DecacCompiler implements Callable<Boolean> {
         }
 
         addComment("start main program");
+        prog.codeGenVTable(this);
         prog.codeGenProgram(this);
 
         // ajouté par lisa !! gestion du débordement de la pile
