@@ -1,0 +1,16 @@
+// Description:
+//   declarer une methode avec une visibility ce qui est impossible en deca
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+   protected void jsp(){
+    
+   }
+}
+
