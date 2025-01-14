@@ -1,14 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
-import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
-import java.lang.instrument.ClassDefinition;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -100,7 +104,31 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenVTable(DecacCompiler compiler) {
-        
+        // on stocke dans la classDefinition de cette classe l'@ de départ de sa table des méthodes
+        ClassDefinition def = (ClassDefinition) this.className.getDefinition();
+        def.setDefinitionAdress(compiler.headOfGBStack);
+
+        // store @ de la super classe
+        if (this.className.getName().getName().equals("Object")) {
+            compiler.addInstruction(new LOAD(null, GPRegister.R0));
+        } else {
+            compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
+        }
+        compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
+
+        // store le pointeur vers chaque méthode de la classe
+        for (AbstractDeclMethod m : this.listMethod.getList()) {
+            compiler.addInstruction(new LOAD (new LabelOperand ( new Label (
+                    "code." + this.className.getName().getName() + "." + m.getMethodName().getName().getName()
+            )), GPRegister.R0));
+
+            MethodDefinition metDef = (MethodDefinition) m.getMethodName().getDefinition();
+            compiler.addInstruction(new STORE (
+                    GPRegister.R0, new RegisterOffset(compiler.headOfGBStack + metDef.getIndex(), GPRegister.GB)
+            ));
+        }
+
+        compiler.headOfGBStack += this.listMethod.size();
     }
 
 }

@@ -1,7 +1,10 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -33,7 +36,15 @@ public class ClassDefinition extends TypeDefinition {
         Validate.isTrue(n >= 0);
         numberOfMethods = n;
     }
-    
+
+    public DAddr getDefinitionAdress() {
+        return definitionAdress;
+    }
+
+    public void setDefinitionAdress(int definitionAdress) {
+        this.definitionAdress = new RegisterOffset(definitionAdress, GPRegister.GB);
+    }
+
     public int incNumberOfMethods() {
         numberOfMethods++;
         return numberOfMethods;
@@ -41,6 +52,7 @@ public class ClassDefinition extends TypeDefinition {
 
     private int numberOfFields = 0;
     private int numberOfMethods = 0;
+    private DAddr definitionAdress;
     
     @Override
     public boolean isClass() {

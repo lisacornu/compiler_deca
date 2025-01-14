@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler implements Callable<Boolean> {
 
-    public int headOfGBStack = 3;
+    public int headOfGBStack = 1;
     public RegisterHandler registerHandler;
     public StackUsageWatcher stackUsageWatcher;
 
