@@ -21,19 +21,30 @@ public class DeclClass extends AbstractDeclClass {
 
     final private AbstractIdentifier parentClass;
     final private AbstractIdentifier className;
+    final private ListDeclField      listField;
+    final private ListDeclMethod     listMethod; 
     // TODO : ListeMethodes et ListeField
     
 
-    public DeclClass(AbstractIdentifier parentClass, AbstractIdentifier className) {
+    public DeclClass(AbstractIdentifier parentClass, AbstractIdentifier className,ListDeclField listField,ListDeclMethod listMethod) {
         Validate.notNull(className);
         this.parentClass = parentClass;
         this.className = className;
-        
+        this.listField = listField;
+        this.listMethod = listMethod;
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
         s.println("class extends " + this.parentClass.getClass().getName());
+        s.println("{");
+        s.indent();
+        listMethod.decompile(s);
+        s.println();
+        s.indent();
+        listField.decompile(s);
+        s.println("}");
+
         // TODO : print pour les methodes et field
         
     }
@@ -63,12 +74,19 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        className.getClassDefinition().setNumberOfFields(listField.size());
+        listField.verifyListFieldMembers(compiler, className.getClassDefinition());
+        className.getClassDefinition().setNumberOfMethods(listMethod.size());
+        listMethod.verifyListMethodMembers(compiler);
+
+        
+        
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        listField.verifyListFieldBody(compiler, className.getClassDefinition());
+        listMethod.verifyListMethodBody(compiler);
     }
 
 
