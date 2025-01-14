@@ -1,0 +1,17 @@
+// Description:
+//    test minimaliste pour induire a l erreur lors du pass 2 (signature)
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+
+class B {
+    int idk(C c){
+        
+    }
+}

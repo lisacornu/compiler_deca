@@ -1,0 +1,16 @@
+// Description:
+//    test minimaliste pour testé le pass 2
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+}
+
+class B {
+    protected B b;
+}
