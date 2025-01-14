@@ -71,6 +71,8 @@ public class DeclField extends AbstractDeclField {
     
     @Override
     protected void verifyFieldBody(DecacCompiler compiler, fr.ensimag.deca.context.ClassDefinition nameClass) throws ContextualError {
+        // TODO : remonter un type
+        // nameClass.getType();
         initialization.verifyInitialization(compiler, type.verifyType(compiler), nameClass.getMembers(), nameClass);
     }
 

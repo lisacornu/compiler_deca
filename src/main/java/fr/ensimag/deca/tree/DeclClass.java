@@ -82,6 +82,7 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
+        // TODO : apres tests ajouter la condition 3.5
         listField.verifyListFieldBody(compiler, className.getClassDefinition());
         listMethod.verifyListMethodBody(compiler, className.getClassDefinition());
     }
