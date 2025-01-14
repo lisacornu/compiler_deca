@@ -1,0 +1,31 @@
+// Description:
+//    test minimaliste pour testé si le parseur déclare bien les methodes de la class
+// pour l'intsant on se soucis pas si la methodes return qqchose c'est  l'etape d' apres
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+   void choco(){
+
+   }
+   int p(int x,int y,float f){// ici sa deviens comme un main
+        int b;
+        int c;
+        println(b);
+        x=b-c;
+        y=b+c;
+        f=x+y;
+   }
+
+   int computeSum(int a, int b) asm (
+    "mov eax, a\n"
+    "add eax, b\n"
+    "ret\n"
+    );
+   
+}
+

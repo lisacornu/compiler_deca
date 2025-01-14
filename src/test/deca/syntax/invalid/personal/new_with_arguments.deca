@@ -1,0 +1,18 @@
+// Description:
+//   utiliser new avec parametre
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+   int a;
+}
+
+{
+    A a = new A(3);
+}
+

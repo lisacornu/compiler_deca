@@ -1,0 +1,18 @@
+// Description:
+//    test minimaliste pour induire a l erreur lors du pass 1
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+
+class B {
+
+}
+class B {
+    
+}
