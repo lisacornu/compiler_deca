@@ -203,6 +203,16 @@ public class Identifier extends AbstractIdentifier {
         return getType();
     }
 
+    public Type verifyTypeMethod(DecacCompiler compiler) throws ContextualError{
+        Definition type = compiler.environmentType.defOfType(getName());
+        if (type == null){
+            throw new ContextualError("Type of method is not defined", getLocation());
+        }
+        setDefinition(type);
+        setType(type.getType());
+        return getType();
+    }
+
     @Override
     public void printExprValue(DecacCompiler compiler) {
         if (this.getExpDefinition().getNature().equals("variable")) {
@@ -213,6 +223,7 @@ public class Identifier extends AbstractIdentifier {
                 compiler.addInstruction(new WINT());
         }
     }
+
     
     private Definition definition;
 

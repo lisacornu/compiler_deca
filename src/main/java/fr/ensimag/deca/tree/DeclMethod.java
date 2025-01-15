@@ -63,24 +63,24 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void verifyMethodMembers(DecacCompiler compiler, 
                                        ClassDefinition nameClass) throws ContextualError {
-        
-        if (type.verifyType(compiler).isVoid()){
-            throw new ContextualError("The type of this method is void.", getLocation());
-        }
-        
+        //Override pas encore fait
+        // if (type.verifyType(compiler).isVoid()){
+        //     throw new ContextualError("The type of this method is void.", getLocation());
+        // }
         Signature sign = parameters.verifyListParamMembers(compiler, nameClass);
         nameClass.incNumberOfMethods();
-        MethodDefinition methodDef = new MethodDefinition(type.verifyType(compiler), getLocation(), sign, nameClass.getNumberOfMethods());
-        if (nameClass.getSuperClass().getMembers().get(methodName.getName())!=null){
+        MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.getNumberOfMethods());
+        System.out.println(nameClass.getSuperClass().getMembers().get(compiler.createSymbol("A"))+ " " + methodName.getName());
+        // if (nameClass.getSuperClass().getMembers().get(methodName.getName())==null){
             try{
                 nameClass.getSuperClass().getMembers().declare(methodName.getName(), methodDef);
             } catch (DoubleDefException e){
                 throw new ContextualError("The method as already been declared before.", getLocation());
             }
-        } else {
-            throw new ContextualError("You can't do it because en_exp_super(name) is not defined", getLocation());
-        }
-        methodName.verifyExpr(compiler, nameClass.getMembers(), nameClass); // ou mettre en parametre le envExp
+        // } else {
+        //     throw new ContextualError("You can't do it because env_exp_super(name) is not defined", getLocation());
+        // }
+        // methodName.verifyExpr(compiler, nameClass.getMembers(), nameClass); // ou mettre en parametre le envExp
         methodName.setDefinition(methodDef);
         
 
@@ -91,7 +91,8 @@ public class DeclMethod extends AbstractDeclMethod {
     protected void verifyMethodBody(DecacCompiler compiler, ClassDefinition nameClass) throws ContextualError {
         EnvironmentExp envExp = new EnvironmentExp(nameClass.getMembers());
         parameters.verifyListParamBody(compiler, envExp);
-        body.verifyMethodBody(compiler, envExp, nameClass, type.verifyType(compiler));
+        body.verifyMethodBody(compiler, envExp, nameClass, type.verifyTypeMethod(compiler));
+
     }
 
 
