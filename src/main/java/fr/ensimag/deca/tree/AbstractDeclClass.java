@@ -37,4 +37,5 @@ public abstract class AbstractDeclClass extends Tree {
      */
     protected abstract void codeGenVTable(DecacCompiler compiler);
 
+    protected abstract void codeGenDeclClass(DecacCompiler compiler);
 }
