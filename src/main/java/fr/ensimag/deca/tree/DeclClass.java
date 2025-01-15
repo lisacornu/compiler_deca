@@ -143,7 +143,7 @@ public class DeclClass extends AbstractDeclClass {
             ));
         }
 
-        compiler.headOfGBStack += this.listMethod.size();
+        compiler.headOfGBStack += this.listMethod.size() + 1;
     }
 
 }
