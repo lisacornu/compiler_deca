@@ -15,5 +15,4 @@ public class NumberOverflow extends DecaRecognitionException {
     public String getMessage(){
         return "Number overflow error";
     }
-
 }

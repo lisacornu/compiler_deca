@@ -27,10 +27,10 @@ public class DeclField extends AbstractDeclField {
     final private Visibility visibility;
     final private AbstractIdentifier type;
     final private AbstractIdentifier fieldName;
-    final private Initialization initialization;
+    final private AbstractInitialization initialization;
     
 
-    public DeclField(Visibility visibility,AbstractIdentifier type,AbstractIdentifier fieldName, Initialization initialization) {
+    public DeclField(Visibility visibility,AbstractIdentifier type,AbstractIdentifier fieldName, AbstractInitialization initialization) {
         this.visibility = visibility;
         this.type = type;
         this.fieldName = fieldName;
