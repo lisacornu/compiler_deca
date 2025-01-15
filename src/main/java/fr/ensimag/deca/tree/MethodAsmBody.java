@@ -52,7 +52,7 @@ public class MethodAsmBody extends AbstractMethodBody {
     }
 
     @Override
-    protected void codeGenMethodBody(DecacCompiler compiler) {
+    protected void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass) {
 
         
     }

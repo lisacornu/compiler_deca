@@ -5,15 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
-
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.LabelOperand;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
+import fr.ensimag.deca.context.ClassDefinition;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -105,8 +100,28 @@ public class DeclClass extends AbstractDeclClass {
         parentClass.iter(f);
     }
 
+    public AbstractIdentifier getClassName() {
+        return this.className;
+    }
+
+    void codeGenDeclClass(DecacCompiler compiler) {
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("\t\tClasse "+className);
+        compiler.addComment("--------------------------------------------------");
+
+        //Initialisation des champs
+        compiler.addLabel(new Label("init."+className));
+
+        //Methodes
+        for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
+            abstractMethod.codeGenMethod(compiler, this);
+        }
+    }
+
     @Override
     protected void codeGenVTable(DecacCompiler compiler) {
+        compiler.addComment("Code de la table des méthode de : " + this.className.getName().getName());
+
         // on stocke dans la classDefinition de cette classe l'@ de départ de sa table des méthodes
         ClassDefinition def = (ClassDefinition) this.className.getDefinition();
         def.setDefinitionAdress(compiler.headOfGBStack);
