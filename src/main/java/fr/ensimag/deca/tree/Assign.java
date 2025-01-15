@@ -78,7 +78,6 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        compiler.stackUsageWatcher.addToNbVariables();
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
