@@ -22,7 +22,7 @@ public abstract class AbstractDeclField extends Tree {
      */
     protected abstract void verifyFieldMembers(DecacCompiler compiler, 
     ClassDefinition nameClass, 
-    EnvironmentExp envExp)
+    EnvironmentExp envExp, int i)
             throws ContextualError;
 
     /**

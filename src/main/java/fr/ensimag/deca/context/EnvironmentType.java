@@ -42,6 +42,9 @@ public class EnvironmentType {
         // envTypes.put(stringSymb, new TypeDefinition(STRING, Location.BUILTIN));
 
         // not added to envTypes, it's not visible for the user.
+        Symbol objectSymb = compiler.createSymbol("Object");
+        OBJECT = new ClassType(objectSymb);
+        envTypes.put(objectSymb, new ClassDefinition(OBJECT, Location.BUILTIN,null));
         
     
     }
@@ -52,10 +55,11 @@ public class EnvironmentType {
      * @param nameOfClass
      * @throws DoubleDefException
      */
-    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass) throws DoubleDefException{
+    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass, ClassType nameClassType, ClassDefinition parentClass, Location location) throws DoubleDefException{
         Symbol newSymb = compiler.createSymbol(nameOfClass);
         if (defOfType(newSymb)==null){
-            envTypes.put(newSymb, new TypeDefinition(new ClassType(newSymb), null));
+            // envTypes.put(newSymb, new TypeDefinition(new ClassType(newSymb), null));
+            envTypes.put(newSymb, new ClassDefinition(nameClassType, location, parentClass));
         } else{
             throw new DoubleDefException();
         }
@@ -71,5 +75,6 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
+    public final ClassType   OBJECT;
 
 }
