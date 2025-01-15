@@ -389,7 +389,7 @@ select_expr returns[AbstractExpr tree]
     ;
 
 primary_expr returns[AbstractExpr tree]
-    //TODO gérer les identificateurs 
+    //TODO gérer les identificateurs
     : ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
@@ -397,6 +397,8 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
+            $tree = new MethodCall($tree, $m.tree, $args.tree);
+            setLocation($tree, $m.start);
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -497,7 +499,7 @@ class_decl returns [DeclClass tree]
             assert($superclass.tree != null);
             assert($class_body.fields != null);
             assert($class_body.methods != null);
-            $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
+            $tree = new DeclClass($superclass.tree, $name.tree, $class_body.fields, $class_body.methods);
             setLocation($tree, $CLASS);
         }
     ;
@@ -559,16 +561,18 @@ list_decl_field[Visibility v, AbstractIdentifier t, ListDeclField tree]
     ;
 
 decl_field [Visibility v, AbstractIdentifier t] returns [AbstractDeclField tree]
-    : i=ident {
-        AbstractIdentifier name = null; //nom du champ
+    @init{
         AbstractInitialization init = new NoInitialization(); // si le champ n'est pas initialisé
+    }
+    : i=ident {
+        assert($i.tree != null);
         }
       (EQUALS e=expr {
       init = new Initialization($e.tree);
       setLocation($tree, $EQUALS);
         }
       )? {
-      $tree = new DeclField($v, $t, name, init);
+      $tree = new DeclField($v, $t, $i.tree, init);
       setLocation($tree, $i.start);
         }
     ;
@@ -579,6 +583,7 @@ decl_method returns [DeclMethod tree]
 }
     : type ident OPARENT params=list_params CPARENT (block {
         methodBody = new MethodBody($block.decls, $block.insts);
+        setLocation(methodBody, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
         }
@@ -593,8 +598,10 @@ list_params returns [ListDeclParam tree]
     $tree = new ListDeclParam();
     }
     : (p1=param {// On ajoute les paramètres à la liste des paramètre
+        assert($p1.tree != null);
         $tree.add($p1.tree);
         } (COMMA p2=param {
+        assert($p2.tree != null);
         $tree.add($p2.tree);
         }
       )*)?

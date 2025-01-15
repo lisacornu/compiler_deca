@@ -30,7 +30,9 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
         this.envMap = new HashMap<Symbol,Definition>();
     }
-
+    public Map<Symbol, Definition> getMap(){
+        return envMap;
+    }
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }

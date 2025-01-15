@@ -21,7 +21,7 @@ import org.apache.commons.lang.Validate;
  * @date 14/01/2025
  */
 public abstract class Return extends AbstractInst {
-    private final AbstractExpr rvalue;
+    private AbstractExpr rvalue;
 
     public Return(AbstractExpr rvalue){
         this.rvalue = rvalue;
@@ -36,6 +36,10 @@ public abstract class Return extends AbstractInst {
             throw new UnsupportedOperationException("This return type is void");
         }
         rvalue.verifyRValue(compiler, localEnv, currentClass, type);
+        if (returnType.isFloat() && rvalue.getType().isInt()){
+            rvalue = new ConvFloat(rvalue);
+        }
+        rvalue.setType(returnType);
     }
 
 

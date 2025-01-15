@@ -40,8 +40,8 @@ public class Program extends AbstractProgram {
         // On fait les 3 passes
         LOG.debug("verify Classes: start");
         classes.verifyListClass(compiler);
-        classes.verifyListClassBody(compiler);
         classes.verifyListClassMembers(compiler);
+        classes.verifyListClassBody(compiler);
         LOG.debug("verify Classes: end");
 
         main.verifyMain(compiler);
