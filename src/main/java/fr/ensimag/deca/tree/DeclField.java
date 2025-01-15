@@ -4,15 +4,21 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.io.PrintStream;
-import java.lang.instrument.ClassDefinition;
+import java.lang.reflect.Field;
 import java.rmi.UnexpectedException;
+import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 
@@ -46,13 +52,21 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void verifyFieldMembers(DecacCompiler compiler, 
-                               fr.ensimag.deca.context.ClassDefinition nameClass, 
-                               EnvironmentExp envExp) throws ContextualError {
+                               ClassDefinition nameClass, 
+                               EnvironmentExp envExp, int i) throws ContextualError {
+                                
         if (type.verifyType(compiler).isVoid()){
             throw new ContextualError("The type of this field is void.", getLocation());
         }
-        nameClass.incNumberOfFields();
-        FieldDefinition fieldDef = new FieldDefinition(type.verifyType(compiler), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
+        System.out.println(visibility + "  " + type + "  "+ fieldName + " "+ initialization);
+        
+        ExpDefinition expDefinition = nameClass.getMembers().get(fieldName.getName());
+        int index = nameClass.getNumberOfFields();
+        if (expDefinition!=null){
+            FieldDefinition fieldDefinition = (FieldDefinition) expDefinition;
+            index = fieldDefinition.getIndex();
+        }
+        FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, index);
         if (nameClass.getSuperClass().getMembers().get(fieldName.getName())!=null){
             try{
                 nameClass.getSuperClass().getMembers().declare(fieldName.getName(), fieldDef);
@@ -62,8 +76,9 @@ public class DeclField extends AbstractDeclField {
         } else {
             throw new ContextualError("You cant update the environnement", getLocation());
         }
-        fieldName.verifyExpr(compiler, envExp, nameClass);
+        fieldName.setType(type.getType());
         fieldName.setDefinition(fieldDef);
+        type.setDefinition(fieldDef);
         
 
     }

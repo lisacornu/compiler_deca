@@ -18,8 +18,8 @@ import fr.ensimag.deca.context.ClassDefinition;
  */
 public class DeclClass extends AbstractDeclClass {
 
-    final private AbstractIdentifier parentClass;
     final private AbstractIdentifier className;
+    final private AbstractIdentifier parentClass;
     final private ListDeclField      listField;
     final private ListDeclMethod     listMethod; 
     // TODO : ListeMethodes et ListeField
@@ -51,20 +51,25 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         // throw new UnsupportedOperationException("not yet implemented");
-        if (parentClass.verifyType(compiler).isClass()){
-            try{
-                compiler.environmentType.addOfTypeClass(compiler, className.getName().getName());
-                ClassType classType = new ClassType(className.getName(), getLocation(), parentClass.getClassDefinition());
-                // if (parentClass.getName().equals("Object")){
-                //     classType = new ClassType(className, getLocation(), (fr.ensimag.deca.context.ClassDefinition) compiler.environmentType.defOfType(compiler.createSymbol("Object")));
-                // }
-                fr.ensimag.deca.context.ClassDefinition classDef = classType.getDefinition();
-                className.setDefinition(classDef);
-                className.setType(classType);
-            } catch (DoubleDefException e){
-                throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
-            }
-        } throw new ContextualError("The superClass is not a class", getLocation());
+        System.out.println(parentClass.verifyType(compiler));
+        if (!parentClass.verifyType(compiler).isClass()){
+            throw new ContextualError("The superClass is not a class", getLocation());
+        }
+
+        ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(compiler.createSymbol(parentClass.getName().getName()));
+        ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
+        
+        
+        ClassDefinition classDef = classType.getDefinition();
+        className.setDefinition(classDef);
+        className.setType(classType);
+        try{
+            compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classType, parentClassDef, getLocation());
+            
+        } catch (DoubleDefException e){
+            throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
+        }
+    
 
     }
 
