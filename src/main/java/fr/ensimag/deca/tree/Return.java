@@ -31,8 +31,7 @@ public abstract class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-            Type type = rvalue.verifyExpr(compiler, localEnv, currentClass);
-
+        Type type = rvalue.verifyExpr(compiler, localEnv, currentClass);
         if (type.isVoid()){
             throw new UnsupportedOperationException("This return type is void");
         }

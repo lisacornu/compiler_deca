@@ -30,4 +30,7 @@ public abstract class AbstractDeclMethod extends Tree {
             throws ContextualError;
 
     abstract protected void codeGenMethod(DecacCompiler compiler, DeclClass declClass);
+
+
+    public abstract AbstractIdentifier getMethodName();
 }

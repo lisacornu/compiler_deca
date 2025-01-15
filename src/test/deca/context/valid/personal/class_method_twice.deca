@@ -1,0 +1,17 @@
+// Description:
+//    test minimaliste pour testé le pass 2( declarer la methode dans la class et la super)
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+    void p(){}
+}
+
+class B extends A{
+    void p(){}
+}
