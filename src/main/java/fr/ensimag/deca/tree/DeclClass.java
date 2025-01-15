@@ -51,7 +51,6 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         // throw new UnsupportedOperationException("not yet implemented");
-        System.out.println(parentClass.verifyType(compiler));
         if (!parentClass.verifyType(compiler).isClass()){
             throw new ContextualError("The superClass is not a class", getLocation());
         }
