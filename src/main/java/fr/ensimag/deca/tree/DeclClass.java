@@ -25,7 +25,7 @@ public class DeclClass extends AbstractDeclClass {
     // TODO : ListeMethodes et ListeField
     
 
-    public DeclClass(AbstractIdentifier className, AbstractIdentifier parentClass,ListDeclField listField,ListDeclMethod listMethod) {
+    public DeclClass(AbstractIdentifier parentClass, AbstractIdentifier className,ListDeclField listField,ListDeclMethod listMethod) {
         Validate.notNull(className);
         this.parentClass = parentClass;
         this.className = className;
@@ -51,9 +51,11 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         // throw new UnsupportedOperationException("not yet implemented");
+        System.out.println(parentClass.verifyType(compiler));
         if (!parentClass.verifyType(compiler).isClass()){
             throw new ContextualError("The superClass is not a class", getLocation());
         }
+
         ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(compiler.createSymbol(parentClass.getName().getName()));
         ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
         
