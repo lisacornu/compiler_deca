@@ -17,6 +17,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import java.lang.reflect.Parameter;
 import java.rmi.UnexpectedException;
 
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -95,6 +99,21 @@ public class DeclMethod extends AbstractDeclMethod {
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
         methodName.iter(f);
+    }
+
+    @Override
+    protected void codeGenMethod(DecacCompiler compiler, DeclClass declClass) {
+
+        compiler.addComment("---------- Code de la methode " + methodName.getName());
+        compiler.addLabel(new Label("code."+declClass.getClassName().getName()+"."+methodName.getName()));
+
+        body.codeGenMethodBody(compiler, declClass);
+
+        //Si il manque un return :
+        compiler.addInstruction(new WSTR("Erreur : sortie de la methode "+declClass.getClassName().getName()+"."+methodName.getName()+" sans return"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+        compiler.addLabel(new Label("fin."+declClass.getClassName().getName()+"."+methodName.getName()));
     }
 
 }

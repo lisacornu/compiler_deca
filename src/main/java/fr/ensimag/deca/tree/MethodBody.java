@@ -67,8 +67,8 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    protected void codeGenMethodBody(DecacCompiler compiler) {
-
-        
+    protected void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass) {
+        listVar.codeGenListDeclVarMethod(compiler);
+        listInst.codeGenListInst(compiler);
     }
 }

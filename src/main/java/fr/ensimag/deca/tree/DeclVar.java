@@ -97,6 +97,25 @@ public class DeclVar extends AbstractDeclVar {
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
         compiler.headOfGBStack++;
+        compiler.stackUsageWatcher.addToNbVariables();
+
+        if (initialization instanceof NoInitialization) return;
+        Initialization initExpression = (Initialization) initialization;
+
+        DVal addrInit = initExpression.codeGenInit(compiler);
+        GPRegister regInit = RegisterHandler.popIntoRegister(compiler, addrInit, Register.R0);
+
+        compiler.addInstruction(new STORE(regInit, GB_Stack));
+        compiler.registerHandler.SetFree(regInit);
+    }
+
+    @Override
+    protected void codeGenDeclVarMethod(DecacCompiler compiler) {
+        //Ajout de l'operand à GB
+        RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
+        varName.getExpDefinition().setOperand(GB_Stack);
+        compiler.headOfLBStack++;
+        compiler.stackUsageWatcher.addToNbVariables();
 
         if (initialization instanceof NoInitialization) return;
         Initialization initExpression = (Initialization) initialization;

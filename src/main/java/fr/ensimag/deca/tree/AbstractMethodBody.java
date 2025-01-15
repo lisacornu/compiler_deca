@@ -30,5 +30,5 @@ public abstract class AbstractMethodBody extends Tree {
             EnvironmentExp localEnv, ClassDefinition currentClass,Type returnType)
             throws ContextualError;
 
-    protected abstract void codeGenMethodBody(DecacCompiler compiler); // copier les code gens de var et inst
+    protected abstract void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass); // copier les code gens de var et inst
 }

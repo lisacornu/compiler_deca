@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import java.lang.instrument.ClassDefinition;
 
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -98,6 +99,24 @@ public class DeclClass extends AbstractDeclClass {
     protected void iterChildren(TreeFunction f) {
         className.iter(f);
         parentClass.iter(f);
+    }
+
+    public AbstractIdentifier getClassName() {
+        return this.className;
+    }
+
+    void codeGenDeclClass(DecacCompiler compiler) {
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("\t\tClasse "+className);
+        compiler.addComment("--------------------------------------------------");
+
+        //Initialisation des champs
+        compiler.addLabel(new Label("init."+className));
+
+        //Methodes
+        for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
+            abstractMethod.codeGenMethod(compiler, this);
+        }
     }
 
 }
