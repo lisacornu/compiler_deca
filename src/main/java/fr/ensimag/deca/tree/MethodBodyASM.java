@@ -40,7 +40,7 @@ public class MethodBodyASM extends AbstractMethodBody {
     protected void verifyMethodBody(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        
+            
     }
 
     
