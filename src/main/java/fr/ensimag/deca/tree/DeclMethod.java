@@ -32,9 +32,12 @@ public class DeclMethod extends AbstractDeclMethod {
     final private AbstractIdentifier methodName;
     final private ListDeclParam parameters;
     final private AbstractMethodBody body;
-    
 
-    public DeclMethod(AbstractIdentifier type,AbstractIdentifier methodName, ListDeclParam parameters, AbstractMethodBody body) { // Visibility visibility,
+    public AbstractIdentifier getMethodName() {
+        return methodName;
+    }
+
+    public DeclMethod(AbstractIdentifier type, AbstractIdentifier methodName, ListDeclParam parameters, AbstractMethodBody body) { // Visibility visibility,
         // this.visibility = visibility;
         this.type = type;
         this.methodName = methodName;

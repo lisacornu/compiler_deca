@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler implements Callable<Boolean> {
 
-    public int headOfGBStack = 3;
+    public int headOfGBStack = 1;
     public RegisterHandler registerHandler;
     public StackUsageWatcher stackUsageWatcher;
 
@@ -232,6 +232,7 @@ public class DecacCompiler implements Callable<Boolean> {
         }
 
         addComment("start main program");
+        prog.codeGenVTable(this);
         prog.codeGenProgram(this);
 
         // ajouté par lisa !! gestion du débordement de la pile
