@@ -8,19 +8,19 @@
 
 {
     if(3>4){
-        println("pas noraml");
+        println("pas normal");
     }
     else{
         println("normal");
     }
     if(3>2){
-        println("noraml");
+        println("normal");
     }
     else{
-        println("pas noraml");
+        println("pas normal");
     }
     if(3>3){
-        println("pas noraml");
+        println("pas normal");
     }
     else{
         println("normal");

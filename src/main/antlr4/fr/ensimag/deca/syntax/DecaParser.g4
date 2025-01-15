@@ -553,6 +553,7 @@ list_decl_field[Visibility v, AbstractIdentifier t, ListDeclField tree]
         (COMMA dv2=decl_field[$v, $t]
       )*
     {
+    assert($dv2.tree != null);
     $tree.add($dv2.tree);
     }
 
