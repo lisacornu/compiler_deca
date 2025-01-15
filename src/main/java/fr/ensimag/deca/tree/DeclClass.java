@@ -104,6 +104,8 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenVTable(DecacCompiler compiler) {
+        compiler.addComment("Code de la table des méthode de : " + this.className.getName().getName());
+
         // on stocke dans la classDefinition de cette classe l'@ de départ de sa table des méthodes
         ClassDefinition def = (ClassDefinition) this.className.getDefinition();
         def.setDefinitionAdress(compiler.headOfGBStack);
