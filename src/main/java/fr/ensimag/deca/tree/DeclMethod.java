@@ -55,7 +55,13 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        type.decompile(s);
+        methodName.decompile(s);
+        s.print("(");
+        parameters.decompile(s);
+        s.print("){");
+        body.decompile(s);
+        s.print("}");
         // TODO 
         
     }
@@ -63,22 +69,25 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void verifyMethodMembers(DecacCompiler compiler, 
                                        ClassDefinition nameClass) throws ContextualError {
-        //Override pas encore fait
+        // TODO : Override pas encore fait
         // if (type.verifyType(compiler).isVoid()){
         //     throw new ContextualError("The type of this method is void.", getLocation());
         // }
         Signature sign = parameters.verifyListParamMembers(compiler, nameClass);
         nameClass.incNumberOfMethods();
         MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.getNumberOfMethods());
-        System.out.println(nameClass.getSuperClass().getMembers().get(compiler.createSymbol("A"))+ " " + methodName.getName());
-        // if (nameClass.getSuperClass().getMembers().get(methodName.getName())==null){
+        if (nameClass.getSuperClass().getMembers().get(methodName.getName())==null){
             try{
                 nameClass.getSuperClass().getMembers().declare(methodName.getName(), methodDef);
             } catch (DoubleDefException e){
                 throw new ContextualError("The method as already been declared before.", getLocation());
             }
-        // } else {
-        //     throw new ContextualError("You can't do it because env_exp_super(name) is not defined", getLocation());
+        } // else { // Pour le override
+            // if(nameClass.getSuperClass().getMembers().get(methodName.getName()).getType()!=type.getType()){
+            //     throw new ContextualError("You overwrite a method without good type", getLocation());
+            // } else {
+            //     methodDef = 
+            // }
         // }
         // methodName.verifyExpr(compiler, nameClass.getMembers(), nameClass); // ou mettre en parametre le envExp
         methodName.setDefinition(methodDef);
@@ -101,12 +110,17 @@ public class DeclMethod extends AbstractDeclMethod {
         // visibility.prettyPrint(s,prefix,false);
         type.prettyPrint(s, prefix,false);
         methodName.prettyPrint(s,prefix,false);
+        parameters.prettyPrint(s, prefix, false);
+        body.prettyPrint(s, prefix, true);
+
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
         methodName.iter(f);
+        parameters.iter(f);
+        body.iter(f);
     }
 
     @Override

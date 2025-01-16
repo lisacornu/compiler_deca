@@ -50,7 +50,12 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        s.print(visibility.name() + " ");
+        type.decompile(s);
+        s.print(" ");
+        fieldName.decompile(s);
+        initialization.decompile(s);
+        s.print(";");
         // TODO 
         
     }
@@ -72,15 +77,15 @@ public class DeclField extends AbstractDeclField {
             index = fieldDefinition.getIndex();
         }
         FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, index);
-        if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
+        // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
             try{
                 nameClass.getSuperClass().getMembers().declare(fieldName.getName(), fieldDef);
             } catch (DoubleDefException e){
                 throw new ContextualError("The field as already been declared before.", getLocation());
             }
-        } else {
-            throw new ContextualError("You cant update the environnement", getLocation());
-        }
+        // } else {
+        //     throw new ContextualError("You cant update the environnement", getLocation());
+        // }
         fieldName.setType(type.getType());
         fieldName.setDefinition(fieldDef);
         type.setDefinition(fieldDef);
@@ -102,12 +107,14 @@ public class DeclField extends AbstractDeclField {
         // visibility.prettyPrint(s,prefix,false);
         type.prettyPrint(s, prefix,false);
         fieldName.prettyPrint(s,prefix,false);
+        initialization.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
         fieldName.iter(f);
+        initialization.iter(f);
     }
 
     @Override
