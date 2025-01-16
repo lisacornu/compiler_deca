@@ -45,7 +45,6 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         LOG.debug("verify listMethodBody: start");
         // throw new UnsupportedOperationException("not yet implemented");
         for (AbstractDeclMethod m : getList()){
-            System.out.println(m);
             m.verifyMethodBody(compiler, nameClass);
         }
         LOG.debug("verify listMethodBody: end");

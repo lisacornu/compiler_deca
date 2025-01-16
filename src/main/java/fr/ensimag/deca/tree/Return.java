@@ -5,14 +5,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
-import org.apache.commons.lang.Validate;
+import fr.ensimag.ima.pseudocode.IMAProgram;
 
 /**
  * Return
@@ -20,7 +17,7 @@ import org.apache.commons.lang.Validate;
  * @author Fabien Galzi
  * @date 14/01/2025
  */
-public abstract class Return extends AbstractInst {
+public class Return extends AbstractInst {
     private AbstractExpr rvalue;
 
     public Return(AbstractExpr rvalue){
@@ -52,14 +49,14 @@ public abstract class Return extends AbstractInst {
 
 
     @Override
-    protected void decompileInst(IndentPrintStream s) {
+    public void decompile(IndentPrintStream s) {
         s.print("return ");
         rvalue.decompile(s);
         s.print(";");
     }
 
     @Override
-    protected void prettyPrintType(PrintStream s, String prefix) {
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
         rvalue.prettyPrint(s, prefix, true);
     }
     @Override

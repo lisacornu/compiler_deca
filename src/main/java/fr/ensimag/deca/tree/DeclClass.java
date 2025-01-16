@@ -63,7 +63,6 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(compiler.createSymbol(parentClass.getName().getName()));
         ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
         
-        
         ClassDefinition classDef = classType.getDefinition();
         className.setDefinition(classDef);
         className.setType(classType);
@@ -165,7 +164,7 @@ public class DeclClass extends AbstractDeclClass {
             ));
         }
 
-        compiler.headOfGBStack += this.listMethod.size();
+        compiler.headOfGBStack += this.listMethod.size() + 1;
     }
 
 }

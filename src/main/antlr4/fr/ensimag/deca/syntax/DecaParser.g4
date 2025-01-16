@@ -159,6 +159,8 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
+            $tree = new Return($expr.tree);
+            setLocation($tree, $RETURN);
         }
     ;
 
@@ -463,8 +465,12 @@ literal returns[AbstractExpr tree]
         setLocation($tree, $FALSE);
         }
     | THIS {
+        $tree = new This();
+        setLocation($tree, $THIS);
         }
     | NULL {
+        $tree = new Null();
+        setLocation($tree, $NULL);
         }
     ;
 
@@ -487,6 +493,7 @@ list_classes returns[ListDeclClass tree]
       (c1=class_decl {
         assert($c1.tree != null);   //On ajoute les déclarations de classes une par une
         $tree.add($c1.tree);
+        setLocation($tree, $c1.start);
         }
       )*
     ;
@@ -515,6 +522,7 @@ class_extension returns[AbstractIdentifier tree]
         SymbolTable symbTable = this.getDecacCompiler().symbolTable;
         Symbol name = symbTable.create("Object");
         $tree = new Identifier(name);
+        $tree.setLocation(Location.BUILTIN);
         }
     ;
 

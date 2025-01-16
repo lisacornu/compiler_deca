@@ -14,11 +14,9 @@ import fr.ensimag.deca.context.VariableDefinition;
 import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
@@ -68,7 +66,9 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass) {
+        compiler.registerHandler.saveAllReg(compiler);
         listVar.codeGenListDeclVarMethod(compiler);
         listInst.codeGenListInst(compiler);
+        compiler.registerHandler.restoreAllReg(compiler);
     }
 }
