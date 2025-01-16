@@ -55,11 +55,11 @@ public class EnvironmentType {
      * @param nameOfClass
      * @throws DoubleDefException
      */
-    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass, ClassType nameClassType, ClassDefinition parentClass, Location location) throws DoubleDefException{
+    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass, ClassDefinition nameClassDef) throws DoubleDefException{
         Symbol newSymb = compiler.createSymbol(nameOfClass);
         if (defOfType(newSymb)==null){
             // envTypes.put(newSymb, new TypeDefinition(new ClassType(newSymb), null));
-            envTypes.put(newSymb, new ClassDefinition(nameClassType, location, parentClass));
+            envTypes.put(newSymb, nameClassDef);
         } else{
             throw new DoubleDefException();
         }

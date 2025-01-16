@@ -66,18 +66,19 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("The superClass is not a class", getLocation());
         }
 
-        ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(compiler.createSymbol(parentClass.getName().getName()));
+        ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(parentClass.getName());
         ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
-        
-        ClassDefinition classDef = classType.getDefinition();
+        ClassDefinition classDef = new ClassDefinition(classType, getLocation(), parentClassDef);
         className.setDefinition(classDef);
         className.setType(classType);
+        
         try{
-            compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classType, parentClassDef, getLocation());
+            compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classDef);
             
         } catch (DoubleDefException e){
             throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
         }
+        
     
 
     }
