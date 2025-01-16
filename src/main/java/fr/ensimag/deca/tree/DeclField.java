@@ -76,6 +76,8 @@ public class DeclField extends AbstractDeclField {
         }
 
         FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, i);
+
+
         // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
             try{
                 nameClass.getSuperClass().getMembers().declare(fieldName.getName(), fieldDef);

@@ -60,6 +60,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
 
     protected void codeGenDeclField(DecacCompiler compiler, int superOffset, AbstractIdentifier parentClass) {
 
+
         //Si la classe n'a que Object en parent
         if (superOffset == 0) {
 

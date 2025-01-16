@@ -60,7 +60,9 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("The superClass is not a class", getLocation());
         }
 
-        ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(compiler.createSymbol(parentClass.getName().getName()));
+        ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(parentClass.getName());
+
+
         ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
         
         ClassDefinition classDef = classType.getDefinition();
@@ -118,6 +120,13 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition parentClassDefinition = parentClass.getClassDefinition();
         int offset = 0;
 
+        System.out.println(
+                className.getClassDefinition().getType().getName().getName()+" : "+
+                className.getClassDefinition().getNumberOfFields()+"\n"+
+                parentClass.getClassDefinition().getType().getName().getName()+" : "+
+                parentClass.getClassDefinition().getNumberOfFields()+"\n"
+        );
+
         while(parentClassDefinition != null) {
             offset += parentClassDefinition.getNumberOfFields();
             parentClassDefinition = parentClassDefinition.getSuperClass();
@@ -128,6 +137,9 @@ public class DeclClass extends AbstractDeclClass {
 
 
     protected void codeGenDeclClass(DecacCompiler compiler) {
+
+
+
         compiler.addComment("--------------------------------------------------");
         compiler.addComment("\t\tClasse "+className.getName().getName());
         compiler.addComment("--------------------------------------------------");
