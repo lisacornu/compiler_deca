@@ -35,13 +35,18 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.println("class extends " + this.parentClass.getClass().getName());
+        if (parentClass!=null || parentClass.getName().getName()!="Object"){
+            s.println("class"+ className.getName().getName() + "extends " + parentClass.getName().getName());
+        } else {
+            s.println("class  " + className.getName().getName());
+        }
         s.println("{");
         s.indent();
         listMethod.decompile(s);
         s.println();
         s.indent();
         listField.decompile(s);
+        s.unindent();
         s.println("}");
 
         // TODO : print pour les methodes et field
@@ -93,12 +98,16 @@ public class DeclClass extends AbstractDeclClass {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         className.prettyPrint(s,prefix, false);
         parentClass.prettyPrint(s, prefix,false);
+        listField.prettyPrint(s,prefix,false);
+        listMethod.prettyPrint(s,prefix,true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
         className.iter(f);
         parentClass.iter(f);
+        listField.iter(f);
+        listMethod.iter(f);
     }
 
     public AbstractIdentifier getClassName() {
