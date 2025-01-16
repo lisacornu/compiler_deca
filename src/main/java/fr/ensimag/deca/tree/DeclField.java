@@ -68,7 +68,6 @@ public class DeclField extends AbstractDeclField {
         if (type.verifyType(compiler).isVoid()){
             throw new ContextualError("The type of this field is void.", getLocation());
         }
-        System.out.println(visibility + "  " + type + "  "+ fieldName + " "+ initialization);
         
         ExpDefinition expDefinition = nameClass.getMembers().get(fieldName.getName());
         int index = nameClass.getNumberOfFields();
