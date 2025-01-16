@@ -221,7 +221,6 @@ assign_expr returns[AbstractExpr tree]
       | /* epsilon */ {
             assert($e.tree != null);
             $tree = $e.tree;
-            setLocation($tree, $e.start);
         }
       )
     ;
@@ -488,7 +487,6 @@ list_classes returns[ListDeclClass tree]
       (c1=class_decl {
         assert($c1.tree != null);   //On ajoute les déclarations de classes une par une
         $tree.add($c1.tree);
-        setLocation($tree, $c1.start);
         }
       )*
     ;
@@ -529,7 +527,6 @@ class_body returns [ListDeclMethod methods, ListDeclField fields]
     : (m=decl_method {
         assert($m.tree != null);
         $methods.add($m.tree);
-        setLocation($m.tree, $m.start);
         }
       | decl_field_set[$fields]
       )*
@@ -538,9 +535,6 @@ class_body returns [ListDeclMethod methods, ListDeclField fields]
 decl_field_set[ListDeclField tree]
     : v=visibility t=type list_decl_field[$v.tree, $t.tree, $tree]
       SEMI
-      {
-      setLocation($tree, $v.start);
-      }
     ;
 
 visibility returns [Visibility tree]
@@ -559,7 +553,6 @@ list_decl_field[Visibility v, AbstractIdentifier t, ListDeclField tree]
         (COMMA dv2=decl_field[$v, $t]
         {
             $tree.add($dv2.tree);
-            setLocation($tree, $COMMA);
         }
       )*
 
@@ -588,7 +581,6 @@ decl_method returns [DeclMethod tree]
 }
     : type ident OPARENT params=list_params CPARENT (block {
         methodBody = new MethodBody($block.decls, $block.insts);
-        setLocation(methodBody, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
         }
