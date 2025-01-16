@@ -127,7 +127,7 @@ public class DeclClass extends AbstractDeclClass {
         //TODO : fix si pas de parent / + de 1 parent
         int superOffset = parentClass.getClassDefinition().getNumberOfFields();
 
-        listField.codeGenDeclField(compiler, superOffset);
+        listField.codeGenDeclField(compiler, 0);
         compiler.addInstruction(new RTS());
 
         //Methodes
