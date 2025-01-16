@@ -57,6 +57,10 @@ public abstract class Return extends AbstractInst {
 
     @Override
     protected void prettyPrintType(PrintStream s, String prefix) {
-        rvalue.prettyPrint(s, prefix, false);
+        rvalue.prettyPrint(s, prefix, true);
+    }
+    @Override
+    protected void iterChildren(TreeFunction f) {
+        rvalue.iter(f);
     }
 }

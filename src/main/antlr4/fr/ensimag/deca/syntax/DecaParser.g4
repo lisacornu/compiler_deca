@@ -221,7 +221,6 @@ assign_expr returns[AbstractExpr tree]
       | /* epsilon */ {
             assert($e.tree != null);
             $tree = $e.tree;
-            setLocation($tree, $e.start);
         }
       )
     ;
@@ -488,7 +487,6 @@ list_classes returns[ListDeclClass tree]
       (c1=class_decl {
         assert($c1.tree != null);   //On ajoute les déclarations de classes une par une
         $tree.add($c1.tree);
-        setLocation($tree, $c1.start);
         }
       )*
     ;
@@ -583,7 +581,6 @@ decl_method returns [DeclMethod tree]
 }
     : type ident OPARENT params=list_params CPARENT (block {
         methodBody = new MethodBody($block.decls, $block.insts);
-        setLocation(methodBody, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
         }

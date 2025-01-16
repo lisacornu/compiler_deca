@@ -50,7 +50,12 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        s.print(visibility.name() + " ");
+        type.decompile(s);
+        s.print(" ");
+        fieldName.decompile(s);
+        initialization.decompile(s);
+        s.print(";");
         // TODO 
         
     }
@@ -72,15 +77,15 @@ public class DeclField extends AbstractDeclField {
             index = fieldDefinition.getIndex();
         }
         FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, index);
-        if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
+        // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
             try{
                 nameClass.getSuperClass().getMembers().declare(fieldName.getName(), fieldDef);
             } catch (DoubleDefException e){
                 throw new ContextualError("The field as already been declared before.", getLocation());
             }
-        } else {
-            throw new ContextualError("You cant update the environnement", getLocation());
-        }
+        // } else {
+        //     throw new ContextualError("You cant update the environnement", getLocation());
+        // }
         fieldName.setType(type.getType());
         fieldName.setDefinition(fieldDef);
         type.setDefinition(fieldDef);
@@ -102,16 +107,29 @@ public class DeclField extends AbstractDeclField {
         // visibility.prettyPrint(s,prefix,false);
         type.prettyPrint(s, prefix,false);
         fieldName.prettyPrint(s,prefix,false);
+        initialization.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
         fieldName.iter(f);
+        initialization.iter(f);
+    }
+
+
+    private GPRegister defaultInitField(DecacCompiler compiler, GPRegister reg) {
+        DVal defaultValue;
+        if (type.getType().isInt()) defaultValue = new ImmediateInteger(0);
+        else if (type.getType().isBoolean()) defaultValue = new ImmediateInteger(0);
+        else if (type.getType().isFloat()) defaultValue = new ImmediateFloat(0.0f);
+        else defaultValue = new NullOperand();
+        compiler.addInstruction(new LOAD(defaultValue, reg));
+        return reg;
     }
 
     @Override
-    protected void codeGenDeclField(DecacCompiler compiler) {
+    protected void codeGenDeclField(DecacCompiler compiler, int superOffset) {
 
         GPRegister initReg;
 
@@ -121,14 +139,7 @@ public class DeclField extends AbstractDeclField {
             initReg = RegisterHandler.popIntoRegister(compiler, initAddrStack,GPRegister.R0);
         } else {
             //Initialisation de la valeur par default
-            DVal defaultValue;
-            if (type.getType().isInt()) defaultValue = new ImmediateInteger(0);
-            else if (type.getType().isBoolean()) defaultValue = new ImmediateInteger(0);
-            else if (type.getType().isFloat()) defaultValue = new ImmediateFloat(0.0f);
-            else defaultValue = new NullOperand();
-
-            initReg = GPRegister.R0;
-            compiler.addInstruction(new LOAD(defaultValue, initReg));
+            initReg = defaultInitField(compiler, GPRegister.R0);
         }
 
         // On récupère l'adresse de l'objet
@@ -136,7 +147,7 @@ public class DeclField extends AbstractDeclField {
         compiler.addInstruction(new LOAD(objectAddress, GPRegister.R1));
 
         // On store l'initialisation dans le bon field de l'objet
-        int fieldOffset = fieldName.getFieldDefinition().getIndex();
+        int fieldOffset = superOffset + fieldName.getFieldDefinition().getIndex();
         RegisterOffset heapFieldAddress = new RegisterOffset(fieldOffset, GPRegister.R1);
         compiler.addInstruction(new STORE(initReg, heapFieldAddress));
     }
