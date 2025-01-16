@@ -66,7 +66,7 @@ public class RegisterHandler {
     // Restaure l'état des registres à la fin de l'éxecution d'une méthode
     public void restoreAllReg (DecacCompiler compiler) {
         this.freeRegisters = this.savedStateOfFreeRegisters;
-        for (int i=nbRegisterAvailable; i >= 2; i--) {
+        for (int i=nbRegisterAvailable-1; i >= 2; i--) {
             compiler.addInstruction(new POP(GPRegister.getR(i)));
         }
     }

@@ -66,16 +66,21 @@ public class DeclMethod extends AbstractDeclMethod {
         
     }
 
+
     @Override
     protected void verifyMethodMembers(DecacCompiler compiler, 
                                        ClassDefinition nameClass) throws ContextualError {
+
         // TODO : Override pas encore fait
         // if (type.verifyType(compiler).isVoid()){
         //     throw new ContextualError("The type of this method is void.", getLocation());
         // }
         Signature sign = parameters.verifyListParamMembers(compiler, nameClass);
-        nameClass.incNumberOfMethods();
-        MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.getNumberOfMethods());
+        //nameClass.incNumberOfMethods();
+
+        MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.incNumberOfMethods());
+        nameClass.setMethodIndex(nameClass.getMethodIndex() + 1);
+
         if (nameClass.getSuperClass().getMembers().get(methodName.getName())==null){
             try{
                 nameClass.getSuperClass().getMembers().declare(methodName.getName(), methodDef);

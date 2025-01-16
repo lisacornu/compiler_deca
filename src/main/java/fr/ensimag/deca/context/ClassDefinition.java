@@ -32,6 +32,16 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfMethods;
     }
 
+    private int methodIndex = 1;
+
+    public int getMethodIndex() {
+        return methodIndex;
+    }
+
+    public void setMethodIndex(int methodIndex) {
+        this.methodIndex = methodIndex;
+    }
+
     public void setNumberOfMethods(int n) {
         Validate.isTrue(n >= 0);
         numberOfMethods = n;
