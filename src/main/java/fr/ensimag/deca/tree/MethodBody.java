@@ -66,12 +66,9 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass) {
-        // programme à part du programme principal qui va contenir le corps de la méthode
-        // Générer à part pour voir quels registres il utilise et savoir lesquels sauvegarder au début
-        IMAProgram methodBodyProgram = new IMAProgram();
-        ArrayList<GPRegister> registerUsed = new ArrayList<>();
-
+        compiler.registerHandler.saveAllReg(compiler);
         listVar.codeGenListDeclVarMethod(compiler);
         listInst.codeGenListInst(compiler);
+        compiler.registerHandler.restoreAllReg(compiler);
     }
 }
