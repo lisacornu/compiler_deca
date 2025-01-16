@@ -487,6 +487,7 @@ list_classes returns[ListDeclClass tree]
       (c1=class_decl {
         assert($c1.tree != null);   //On ajoute les déclarations de classes une par une
         $tree.add($c1.tree);
+        setLocation($tree, $c1.start);
         }
       )*
     ;
