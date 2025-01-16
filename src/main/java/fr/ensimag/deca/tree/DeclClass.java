@@ -61,20 +61,19 @@ public class DeclClass extends AbstractDeclClass {
         }
 
         ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(parentClass.getName());
-
-
         ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
-        
-        ClassDefinition classDef = classType.getDefinition();
+        ClassDefinition classDef = new ClassDefinition(classType, getLocation(), parentClassDef);
         className.setDefinition(classDef);
         className.setType(classType);
+
         try{
-            compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classType, parentClassDef, getLocation());
+            compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classDef);
             
         } catch (DoubleDefException e){
             throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
         }
-    
+
+
 
     }
 
@@ -172,7 +171,7 @@ public class DeclClass extends AbstractDeclClass {
         if (this.className.getName().getName().equals("Object")) {
             compiler.addInstruction(new LOAD(null, GPRegister.R0));
         } else {
-            //compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
+            compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
         }
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
 
