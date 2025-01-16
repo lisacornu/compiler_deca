@@ -47,29 +47,29 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(IMAProgram methodBodyProgram) {
+    protected void codeGenInst(DecacCompiler compiler) {
 
        // On récupère le résultat de la condition (qui était dans la pile/un registre)
-        DVal condAddr = condition.codeGenExpr(methodBodyProgram);
-        GPRegister condReg = RegisterHandler.popIntoRegister(methodBodyProgram, condAddr, Register.R0);
+        DVal condAddr = condition.codeGenExpr(compiler);
+        GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
 
         Label startLabel = new Label("elseStart" + branchIndex);
         Label endLabel = new Label ("ifThenElseExit" + branchIndex);
 
         //On compare la condition dans la pile à 1 (true)
 
-        methodBodyProgram.addInstruction(new CMP(new ImmediateInteger(1),condReg));
-        methodBodyProgram.registerHandler.SetFree(condReg); //Free du registre de la condition
+        compiler.addInstruction(new CMP(new ImmediateInteger(1),condReg));
+        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
 
-        methodBodyProgram.addInstruction(new BNE(startLabel));//On saute à startLabel quand la condition est false (else)
+        compiler.addInstruction(new BNE(startLabel));//On saute à startLabel quand la condition est false (else)
         branchIndex++; //Incrémentation de l'index
 
-        thenBranch.codeGenListInst(methodBodyProgram); //Sinon on éxécute le then (if)
-        methodBodyProgram.addInstruction(new BRA(endLabel)); //Puis on saute à la fin du if-else
+        thenBranch.codeGenListInst(compiler); //Sinon on éxécute le then (if)
+        compiler.addInstruction(new BRA(endLabel)); //Puis on saute à la fin du if-else
 
-        methodBodyProgram.addLabel(startLabel);// Début du else
-        elseBranch.codeGenListInst(methodBodyProgram); // Exécution du else
-        methodBodyProgram.addLabel(endLabel); //Fin du if-else
+        compiler.addLabel(startLabel);// Début du else
+        elseBranch.codeGenListInst(compiler); // Exécution du else
+        compiler.addLabel(endLabel); //Fin du if-else
     }
 
     @Override

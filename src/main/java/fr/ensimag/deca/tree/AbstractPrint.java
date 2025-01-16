@@ -48,9 +48,9 @@ public abstract class AbstractPrint extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(IMAProgram methodBodyProgram) {
+    protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(methodBodyProgram, printHex);
+            a.codeGenPrint(compiler, printHex);
         }
     }
 

@@ -8,7 +8,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Label;
 
 import java.util.ArrayList;
 
@@ -35,11 +34,12 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
-    public void codeGenListInst(IMAProgram methodBodyProgram, ArrayList<GPRegister> registerUsed) {
+    public void codeGenListInst(DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
-            i.codeGenInst(methodBodyProgram, registerUsed);
+            i.codeGenInst(compiler);
         }
     }
+
 
     @Override
     public void decompile(IndentPrintStream s) {

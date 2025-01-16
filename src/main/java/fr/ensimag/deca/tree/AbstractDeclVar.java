@@ -36,5 +36,5 @@ public abstract class AbstractDeclVar extends Tree {
 
     protected abstract void codeGenDeclVar(DecacCompiler compiler);
 
-    protected abstract void codeGenDeclVarMethod(IMAProgram methodBodyProgram, ArrayList<GPRegister> registerUsed);
+    protected abstract void codeGenDeclVarMethod(DecacCompiler compiler);
 }

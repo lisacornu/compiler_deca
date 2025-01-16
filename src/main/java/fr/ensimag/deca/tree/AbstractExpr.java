@@ -144,8 +144,8 @@ public abstract class AbstractExpr extends AbstractInst {
 
 
     @Override
-    protected void codeGenInst(IMAProgram methodBodyProgram) {
-        codeGenExpr(methodBodyProgram);
+    protected void codeGenInst(DecacCompiler compiler) {
+        codeGenExpr(compiler);
     }
 
     protected abstract DVal codeGenExpr(DecacCompiler compiler);

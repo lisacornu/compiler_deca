@@ -50,9 +50,9 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         }
     }
 
-    protected void codeGenListDeclVarMethod(IMAProgram methodBodyProgram, ArrayList<GPRegister> registerUsed) {
+    protected void codeGenListDeclVarMethod(DecacCompiler compiler) {
         for(AbstractDeclVar declVar : getList()) {
-            declVar.codeGenDeclVarMethod(methodBodyProgram, registerUsed);
+            declVar.codeGenDeclVarMethod(compiler);
         }
     }
 

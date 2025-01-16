@@ -1,14 +1,16 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacFatalError;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Label;
+
+import java.util.ArrayList;
 
 /**
  * Instruction
@@ -33,9 +35,10 @@ public abstract class AbstractInst extends Tree {
     /**
      * Generate assembly code for the instruction.
      *
-     * @param methodBodyProgram
+     * @param compiler
      */
-    protected abstract void codeGenInst(IMAProgram methodBodyProgram);
+    protected abstract void codeGenInst(DecacCompiler compiler);
+
 
 
     /**

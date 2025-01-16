@@ -42,28 +42,28 @@ public class While extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(IMAProgram methodBodyProgram) {
+    protected void codeGenInst(DecacCompiler compiler) {
 
 
         nbNestedWhiles++;
         Label debutWhile = new Label ("while" + nbNestedWhiles);
         Label finWhile = new Label ("whileExit" + nbNestedWhiles);
-        methodBodyProgram.addLabel(debutWhile);
+        compiler.addLabel(debutWhile);
 
         // On récupère le résultat de la condition (qui était dans la pile/un registre)
-        DVal condAddr = condition.codeGenExpr(methodBodyProgram);
-        GPRegister condReg = RegisterHandler.popIntoRegister(methodBodyProgram, condAddr, Register.R0);
+        DVal condAddr = condition.codeGenExpr(compiler);
+        GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
 
-        methodBodyProgram.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
-        methodBodyProgram.registerHandler.SetFree(condReg); //Free du registre de la condition
+        compiler.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
+        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
 
-        methodBodyProgram.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
+        compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
 
-        body.codeGenListInst(methodBodyProgram); //génère le code du corps de la boucle
+        body.codeGenListInst(compiler); //génère le code du corps de la boucle
 
-        methodBodyProgram.addInstruction(new BRA(debutWhile));   //retour au début du while
+        compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
 
-        methodBodyProgram.addLabel(finWhile);
+        compiler.addLabel(finWhile);
     }
 
     @Override

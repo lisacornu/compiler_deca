@@ -71,7 +71,7 @@ public class MethodBody extends AbstractMethodBody {
         IMAProgram methodBodyProgram = new IMAProgram();
         ArrayList<GPRegister> registerUsed = new ArrayList<>();
 
-        listVar.codeGenListDeclVarMethod(methodBodyProgram, registerUsed);
-        listInst.codeGenListInst(methodBodyProgram, registerUsed);
+        listVar.codeGenListDeclVarMethod(compiler);
+        listInst.codeGenListInst(compiler);
     }
 }

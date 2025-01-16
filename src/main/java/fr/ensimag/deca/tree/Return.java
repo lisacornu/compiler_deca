@@ -41,7 +41,7 @@ public abstract class Return extends AbstractInst {
 
 
     @Override
-    protected void codeGenInst(IMAProgram methodBodyProgram) {
+    protected void codeGenInst(DecacCompiler compiler) {
         // TODO
     }
 
