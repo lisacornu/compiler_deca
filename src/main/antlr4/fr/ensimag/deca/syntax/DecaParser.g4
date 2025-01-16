@@ -516,6 +516,7 @@ class_extension returns[AbstractIdentifier tree]
         SymbolTable symbTable = this.getDecacCompiler().symbolTable;
         Symbol name = symbTable.create("Object");
         $tree = new Identifier(name);
+        $tree.setLocation(Location.BUILTIN);
         }
     ;
 

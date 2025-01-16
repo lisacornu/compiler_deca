@@ -67,6 +67,7 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition classDef = classType.getDefinition();
         className.setDefinition(classDef);
         className.setType(classType);
+        System.out.println(getLocation());
         try{
             compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classType, parentClassDef, getLocation());
             
