@@ -43,9 +43,6 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        compiler.addComment("--------------------------------------------------");
-        compiler.addComment("\t\tCode du programme principal");
-        compiler.addComment("--------------------------------------------------");
         compiler.addComment("---------- Déclaration des variables");
         declVariables.codeGenListDeclVar(compiler);
         compiler.addComment("---------- Instructions");

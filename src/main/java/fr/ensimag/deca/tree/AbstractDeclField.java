@@ -33,5 +33,5 @@ public abstract class AbstractDeclField extends Tree {
             throws ContextualError;
 
 
-    abstract protected void codeGenDeclField(DecacCompiler compiler);
+    abstract protected void codeGenDeclField(DecacCompiler compiler, int superOffset);
 }

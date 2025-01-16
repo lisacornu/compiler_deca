@@ -5,14 +5,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
-import org.apache.commons.lang.Validate;
+import fr.ensimag.ima.pseudocode.IMAProgram;
 
 /**
  * Return

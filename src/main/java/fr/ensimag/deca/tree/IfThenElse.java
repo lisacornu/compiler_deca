@@ -14,7 +14,6 @@ import org.apache.commons.lang.Validate;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.POP;
 
 /**
  * Full if/else if/else statement.

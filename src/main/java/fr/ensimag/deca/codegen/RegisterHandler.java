@@ -12,9 +12,14 @@ import fr.ensimag.ima.pseudocode.instructions.PUSH;
 public class RegisterHandler {
 
     private boolean[] freeRegisters;
+    // copie de freeRegister pour pouvoir retrouver quels registres étaient utilisé avant l'appel en resortant d'une méthode
+    // vaut null si on est pas en cours de génération de code d'une méthode
+    private boolean[] savedStateOfFreeRegisters = null;
+    private int nbRegisterAvailable;
 
     public RegisterHandler(int NbRegisterAvailable) {
         freeRegisters = new boolean[NbRegisterAvailable];
+        this.nbRegisterAvailable = NbRegisterAvailable;
         for (int i = 0; i < NbRegisterAvailable; i++) freeRegisters[i] = true;
     }
 
@@ -46,6 +51,26 @@ public class RegisterHandler {
         if (index == -1) return;
         freeRegisters[index] = true;
     }
+
+
+    // Appellée au début d'une méthode pour sauvegarder l'état de tout les registres
+    // A optimiser plus tard pour ne sauvegarder que les registres utiles à la méthode
+    public void saveAllReg (DecacCompiler compiler) {
+        this.savedStateOfFreeRegisters = this.freeRegisters;
+        for (int i=2; i < this.nbRegisterAvailable; i++) {
+            compiler.addInstruction(new PUSH(GPRegister.getR(i)));
+            this.freeRegisters[i] = true;
+        }
+    }
+
+    // Restaure l'état des registres à la fin de l'éxecution d'une méthode
+    public void restoreAllReg (DecacCompiler compiler) {
+        this.freeRegisters = this.savedStateOfFreeRegisters;
+        for (int i=nbRegisterAvailable; i >= 2; i--) {
+            compiler.addInstruction(new POP(GPRegister.getR(i)));
+        }
+    }
+
 
     // Vérifie que addr (renvoyé par un codegen) n'est pas dans la pile
     // sinon pop le résultat dans un registre temporaire

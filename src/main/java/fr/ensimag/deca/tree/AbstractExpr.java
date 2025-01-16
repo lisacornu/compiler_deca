@@ -11,7 +11,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.IMAProgram;
 import org.apache.commons.lang.Validate;
 
 /**

@@ -117,8 +117,19 @@ public class DeclField extends AbstractDeclField {
         initialization.iter(f);
     }
 
+
+    private GPRegister defaultInitField(DecacCompiler compiler, GPRegister reg) {
+        DVal defaultValue;
+        if (type.getType().isInt()) defaultValue = new ImmediateInteger(0);
+        else if (type.getType().isBoolean()) defaultValue = new ImmediateInteger(0);
+        else if (type.getType().isFloat()) defaultValue = new ImmediateFloat(0.0f);
+        else defaultValue = new NullOperand();
+        compiler.addInstruction(new LOAD(defaultValue, reg));
+        return reg;
+    }
+
     @Override
-    protected void codeGenDeclField(DecacCompiler compiler) {
+    protected void codeGenDeclField(DecacCompiler compiler, int superOffset) {
 
         GPRegister initReg;
 
@@ -128,14 +139,7 @@ public class DeclField extends AbstractDeclField {
             initReg = RegisterHandler.popIntoRegister(compiler, initAddrStack,GPRegister.R0);
         } else {
             //Initialisation de la valeur par default
-            DVal defaultValue;
-            if (type.getType().isInt()) defaultValue = new ImmediateInteger(0);
-            else if (type.getType().isBoolean()) defaultValue = new ImmediateInteger(0);
-            else if (type.getType().isFloat()) defaultValue = new ImmediateFloat(0.0f);
-            else defaultValue = new NullOperand();
-
-            initReg = GPRegister.R0;
-            compiler.addInstruction(new LOAD(defaultValue, initReg));
+            initReg = defaultInitField(compiler, GPRegister.R0);
         }
 
         // On récupère l'adresse de l'objet
@@ -143,7 +147,7 @@ public class DeclField extends AbstractDeclField {
         compiler.addInstruction(new LOAD(objectAddress, GPRegister.R1));
 
         // On store l'initialisation dans le bon field de l'objet
-        int fieldOffset = fieldName.getFieldDefinition().getIndex();
+        int fieldOffset = superOffset + fieldName.getFieldDefinition().getIndex();
         RegisterOffset heapFieldAddress = new RegisterOffset(fieldOffset, GPRegister.R1);
         compiler.addInstruction(new STORE(initReg, heapFieldAddress));
     }
