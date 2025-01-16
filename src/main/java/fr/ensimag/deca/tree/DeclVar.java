@@ -95,7 +95,7 @@ public class DeclVar extends AbstractDeclVar {
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
         compiler.headOfGBStack++;
-        compiler.stackUsageWatcher.addToNbVariables();
+        compiler.stackUsageWatcher.nbVariables++;
 
         if (initialization instanceof NoInitialization) return;
         Initialization initExpression = (Initialization) initialization;
@@ -113,7 +113,7 @@ public class DeclVar extends AbstractDeclVar {
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
         compiler.headOfLBStack++;
-        compiler.stackUsageWatcher.addToNbVariables();
+        compiler.stackUsageWatcher.nbVariables++;
 
         if (initialization instanceof NoInitialization) return;
         Initialization initExpression = (Initialization) initialization;

@@ -119,13 +119,6 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition parentClassDefinition = parentClass.getClassDefinition();
         int offset = 0;
 
-        System.out.println(
-                className.getClassDefinition().getType().getName().getName()+" : "+
-                className.getClassDefinition().getNumberOfFields()+"\n"+
-                parentClass.getClassDefinition().getType().getName().getName()+" : "+
-                parentClass.getClassDefinition().getNumberOfFields()+"\n"
-        );
-
         while(parentClassDefinition != null) {
             offset += parentClassDefinition.getNumberOfFields();
             parentClassDefinition = parentClassDefinition.getSuperClass();
@@ -171,7 +164,7 @@ public class DeclClass extends AbstractDeclClass {
         if (this.className.getName().getName().equals("Object")) {
             compiler.addInstruction(new LOAD(null, GPRegister.R0));
         } else {
-            compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
+            //compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
         }
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
 
