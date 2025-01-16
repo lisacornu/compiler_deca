@@ -113,21 +113,33 @@ public class DeclClass extends AbstractDeclClass {
         return this.className;
     }
 
+    protected int getSuperOffset() {
+
+        ClassDefinition parentClassDefinition = parentClass.getClassDefinition();
+        int offset = 0;
+
+        while(parentClassDefinition != null) {
+            offset += parentClassDefinition.getNumberOfFields();
+            parentClassDefinition = parentClassDefinition.getSuperClass();
+        }
+
+        return offset;
+    }
+
+
     protected void codeGenDeclClass(DecacCompiler compiler) {
         compiler.addComment("--------------------------------------------------");
-        compiler.addComment("\t\tClasse "+className);
+        compiler.addComment("\t\tClasse "+className.getName().getName());
         compiler.addComment("--------------------------------------------------");
 
 
         //Initialisation des champs
-        compiler.addComment("---------- Initialisation des champs de "+className);
-        compiler.addLabel(new Label("init."+className));
+        compiler.addComment("---------- Initialisation des champs de "+className.getName().getName());
+        compiler.addLabel(new Label("init."+className.getName().getName()));
 
-        //TODO : fix si pas de parent / + de 1 parent
-        int superOffset = parentClass.getClassDefinition().getNumberOfFields();
-
-        listField.codeGenDeclField(compiler, 0);
+        listField.codeGenDeclField(compiler, getSuperOffset(), parentClass);
         compiler.addInstruction(new RTS());
+
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
@@ -148,7 +160,7 @@ public class DeclClass extends AbstractDeclClass {
         if (this.className.getName().getName().equals("Object")) {
             compiler.addInstruction(new LOAD(null, GPRegister.R0));
         } else {
-            compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
+            //compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
         }
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
 
