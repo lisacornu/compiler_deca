@@ -529,6 +529,7 @@ class_body returns [ListDeclMethod methods, ListDeclField fields]
     : (m=decl_method {
         assert($m.tree != null);
         $methods.add($m.tree);
+        setLocation($m.tree, $m.start);
         }
       | decl_field_set[$fields]
       )*
@@ -537,6 +538,9 @@ class_body returns [ListDeclMethod methods, ListDeclField fields]
 decl_field_set[ListDeclField tree]
     : v=visibility t=type list_decl_field[$v.tree, $t.tree, $tree]
       SEMI
+      {
+      setLocation($tree, $v.start);
+      }
     ;
 
 visibility returns [Visibility tree]
@@ -555,6 +559,7 @@ list_decl_field[Visibility v, AbstractIdentifier t, ListDeclField tree]
         (COMMA dv2=decl_field[$v, $t]
         {
             $tree.add($dv2.tree);
+            setLocation($tree, $COMMA);
         }
       )*
 
