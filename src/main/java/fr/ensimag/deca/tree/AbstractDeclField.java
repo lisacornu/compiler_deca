@@ -34,4 +34,8 @@ public abstract class AbstractDeclField extends Tree {
 
 
     abstract protected void codeGenDeclField(DecacCompiler compiler, int superOffset);
+
+    abstract protected void codeGenDefaultDeclField(DecacCompiler compiler, int superOffset);
+
+    abstract protected void codeGenObjectDirectChildDeclField(DecacCompiler compiler, int superOffset);
 }

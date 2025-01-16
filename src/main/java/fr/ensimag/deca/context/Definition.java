@@ -9,18 +9,7 @@ import fr.ensimag.deca.tree.Location;
  * @date 01/01/2025
  */
 public abstract class Definition {
-    @Override
-    public String toString() {
-        String res;
-        res = getNature();
-        if (location == Location.BUILTIN) {
-            res += " (builtin)";
-        } else {
-            res += " defined at " + location;
-        }
-        res += ", type=" + type;
-        return res;
-    }
+
 
     public abstract String getNature();
 

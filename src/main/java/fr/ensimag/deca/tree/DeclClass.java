@@ -71,15 +71,15 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition classDef = new ClassDefinition(classType, getLocation(), parentClassDef);
         className.setDefinition(classDef);
         className.setType(classType);
-        
+
         try{
             compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classDef);
             
         } catch (DoubleDefException e){
             throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
         }
-        
-    
+
+
 
     }
 
@@ -121,21 +121,43 @@ public class DeclClass extends AbstractDeclClass {
         return this.className;
     }
 
+    protected int getSuperOffset() {
+
+        ClassDefinition parentClassDefinition = parentClass.getClassDefinition();
+        int offset = 0;
+
+        System.out.println(
+                className.getClassDefinition().getType().getName().getName()+" : "+
+                className.getClassDefinition().getNumberOfFields()+"\n"+
+                parentClass.getClassDefinition().getType().getName().getName()+" : "+
+                parentClass.getClassDefinition().getNumberOfFields()+"\n"
+        );
+
+        while(parentClassDefinition != null) {
+            offset += parentClassDefinition.getNumberOfFields();
+            parentClassDefinition = parentClassDefinition.getSuperClass();
+        }
+
+        return offset;
+    }
+
+
     protected void codeGenDeclClass(DecacCompiler compiler) {
+
+
+
         compiler.addComment("--------------------------------------------------");
-        compiler.addComment("\t\tClasse "+className);
+        compiler.addComment("\t\tClasse "+className.getName().getName());
         compiler.addComment("--------------------------------------------------");
 
 
         //Initialisation des champs
-        compiler.addComment("---------- Initialisation des champs de "+className);
-        compiler.addLabel(new Label("init."+className));
+        compiler.addComment("---------- Initialisation des champs de "+className.getName().getName());
+        compiler.addLabel(new Label("init."+className.getName().getName()));
 
-        //TODO : fix si pas de parent / + de 1 parent
-        int superOffset = parentClass.getClassDefinition().getNumberOfFields();
-
-        listField.codeGenDeclField(compiler, superOffset);
+        listField.codeGenDeclField(compiler, getSuperOffset(), parentClass);
         compiler.addInstruction(new RTS());
+
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
