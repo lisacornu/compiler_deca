@@ -6,7 +6,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Label;
+
+import java.util.ArrayList;
 
 /**
  * 
@@ -31,9 +35,9 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
-    public void codeGenListInst(DecacCompiler compiler) {
+    public void codeGenListInst(IMAProgram methodBodyProgram, ArrayList<GPRegister> registerUsed) {
         for (AbstractInst i : getList()) {
-            i.codeGenInst(compiler);
+            i.codeGenInst(methodBodyProgram, registerUsed);
         }
     }
 

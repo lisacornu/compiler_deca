@@ -11,7 +11,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.IMAProgram;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -144,8 +144,8 @@ public abstract class AbstractExpr extends AbstractInst {
 
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        codeGenExpr(compiler);
+    protected void codeGenInst(IMAProgram methodBodyProgram) {
+        codeGenExpr(methodBodyProgram);
     }
 
     protected abstract DVal codeGenExpr(DecacCompiler compiler);

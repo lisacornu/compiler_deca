@@ -14,7 +14,6 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.POP;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -43,28 +42,28 @@ public class While extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(IMAProgram methodBodyProgram) {
 
 
         nbNestedWhiles++;
         Label debutWhile = new Label ("while" + nbNestedWhiles);
         Label finWhile = new Label ("whileExit" + nbNestedWhiles);
-        compiler.addLabel(debutWhile);
+        methodBodyProgram.addLabel(debutWhile);
 
         // On récupère le résultat de la condition (qui était dans la pile/un registre)
-        DVal condAddr = condition.codeGenExpr(compiler);
-        GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
+        DVal condAddr = condition.codeGenExpr(methodBodyProgram);
+        GPRegister condReg = RegisterHandler.popIntoRegister(methodBodyProgram, condAddr, Register.R0);
 
-        compiler.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
-        compiler.registerHandler.SetFree(condReg); //Free du registre de la condition
+        methodBodyProgram.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
+        methodBodyProgram.registerHandler.SetFree(condReg); //Free du registre de la condition
 
-        compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
+        methodBodyProgram.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
 
-        body.codeGenListInst(compiler); //génère le code du corps de la boucle
+        body.codeGenListInst(methodBodyProgram); //génère le code du corps de la boucle
 
-        compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
+        methodBodyProgram.addInstruction(new BRA(debutWhile));   //retour au début du while
 
-        compiler.addLabel(finWhile);
+        methodBodyProgram.addLabel(finWhile);
     }
 
     @Override
