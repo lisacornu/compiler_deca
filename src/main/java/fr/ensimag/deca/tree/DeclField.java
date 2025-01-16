@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
@@ -20,6 +21,9 @@ import java.lang.reflect.Field;
 import java.rmi.UnexpectedException;
 import java.util.Map;
 
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -42,6 +46,7 @@ public class DeclField extends AbstractDeclField {
         this.fieldName = fieldName;
         this.initialization = initialization;
     }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -103,6 +108,37 @@ public class DeclField extends AbstractDeclField {
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
         fieldName.iter(f);
+    }
+
+    @Override
+    protected void codeGenDeclField(DecacCompiler compiler) {
+
+        GPRegister initReg;
+
+        if (initialization instanceof Initialization) {
+            // On récupère la valeur de l'initialisation dans initReg
+            DVal initAddrStack = initialization.codeGenInit(compiler);
+            initReg = RegisterHandler.popIntoRegister(compiler, initAddrStack,GPRegister.R0);
+        } else {
+            //Initialisation de la valeur par default
+            DVal defaultValue;
+            if (type.getType().isInt()) defaultValue = new ImmediateInteger(0);
+            else if (type.getType().isBoolean()) defaultValue = new ImmediateInteger(0);
+            else if (type.getType().isFloat()) defaultValue = new ImmediateFloat(0.0f);
+            else defaultValue = new NullOperand();
+
+            initReg = GPRegister.R0;
+            compiler.addInstruction(new LOAD(defaultValue, initReg));
+        }
+
+        // On récupère l'adresse de l'objet
+        RegisterOffset objectAddress = new RegisterOffset(-2, Register.LB);
+        compiler.addInstruction(new LOAD(objectAddress, GPRegister.R1));
+
+        // On store l'initialisation dans le bon field de l'objet
+        int fieldOffset = fieldName.getFieldDefinition().getIndex();
+        RegisterOffset heapFieldAddress = new RegisterOffset(fieldOffset, GPRegister.R1);
+        compiler.addInstruction(new STORE(initReg, heapFieldAddress));
     }
 
 }

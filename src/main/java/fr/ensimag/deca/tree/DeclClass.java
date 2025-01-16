@@ -105,19 +105,24 @@ public class DeclClass extends AbstractDeclClass {
         return this.className;
     }
 
-    void codeGenDeclClass(DecacCompiler compiler) {
+    protected void codeGenDeclClass(DecacCompiler compiler) {
         compiler.addComment("--------------------------------------------------");
         compiler.addComment("\t\tClasse "+className);
         compiler.addComment("--------------------------------------------------");
 
+
         //Initialisation des champs
+        compiler.addComment("---------- Initialisation des champs de "+className);
         compiler.addLabel(new Label("init."+className));
+        listField.codeGenDeclField(compiler);
+        compiler.addInstruction(new RTS());
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
-            abstractMethod.codeGenMethod(compiler, this);
+            //abstractMethod.codeGenMethod(compiler, this);
         }
     }
+
 
     @Override
     protected void codeGenVTable(DecacCompiler compiler) {
