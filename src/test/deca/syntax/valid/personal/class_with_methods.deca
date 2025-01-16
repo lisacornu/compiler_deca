@@ -22,10 +22,7 @@ class A{
    }
 
    int computeSum(int a, int b) asm (
-    "mov eax, a\n"
-    "add eax, b\n"
-    "ret\n"
+    "mov eax, a\n add eax, b\nret"
     );
    
 }
-

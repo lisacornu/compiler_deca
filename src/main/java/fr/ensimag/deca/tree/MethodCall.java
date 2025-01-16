@@ -29,7 +29,7 @@ public class MethodCall extends AbstractExpr{
         Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
         if(currentClass.getMembers().get(methodIdent.getName())!=null){
             Type typeMethod = methodIdent.verifyExpr(compiler, localEnv, currentClass);
-            Type returnType = methodIdent.verifyType(compiler);
+            Type returnType = methodIdent.verifyTypeMethod(compiler);
             for (AbstractExpr rval : rvalueStar.getList()){
                 rval.verifyRValue(compiler, localEnv, currentClass, typeMethod);
             }
@@ -73,6 +73,6 @@ public class MethodCall extends AbstractExpr{
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         expr.prettyPrint(s, prefix, false);
         methodIdent.prettyPrint(s,prefix,false);
-        rvalueStar.prettyPrint(s,prefix,false);
+        rvalueStar.prettyPrint(s,prefix,true);
     }
 }
