@@ -50,9 +50,9 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         LOG.debug("verify listFieldBody: end");
     }
 
-    protected void codeGenDeclField(DecacCompiler compiler) {
+    protected void codeGenDeclField(DecacCompiler compiler, int superOffset) {
         for (AbstractDeclField abstractDeclField : getList()) {
-            abstractDeclField.codeGenDeclField(compiler);
+            abstractDeclField.codeGenDeclField(compiler, superOffset);
         }
     }
 
