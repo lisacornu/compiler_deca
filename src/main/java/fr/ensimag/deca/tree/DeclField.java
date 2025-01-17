@@ -63,7 +63,7 @@ public class DeclField extends AbstractDeclField {
     @Override
     protected void verifyFieldMembers(DecacCompiler compiler, 
                                ClassDefinition nameClass, 
-                               EnvironmentExp envExp, int i) throws ContextualError {
+                               EnvironmentExp envExp) throws ContextualError {
                                 
         if (type.verifyType(compiler).isVoid()){
             throw new ContextualError("The type of this field is void.", getLocation());
@@ -74,8 +74,8 @@ public class DeclField extends AbstractDeclField {
         if (expDefinition!=null){
             FieldDefinition fieldDefinition = (FieldDefinition) expDefinition;
         }
-
-        FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, i);
+        nameClass.incNumberOfFields();
+        FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
 
 
         // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){

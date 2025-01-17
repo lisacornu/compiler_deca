@@ -78,7 +78,7 @@ public class DeclMethod extends AbstractDeclMethod {
         if (nameClass.getSuperClass().getMembers().get(methodName.getName())==null){
             try{
                 nameClass.incNumberOfMethods();
-                MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.getSuperClass().getNumberOfMethods());
+                MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.getNumberOfMethods());
                 nameClass.getMembers().declare(methodName.getName(), methodDef);
                 methodName.setDefinition(methodDef);
                 methodName.setType(type.verifyTypeMethod(compiler)); // ou mettre en parametre le envExp
