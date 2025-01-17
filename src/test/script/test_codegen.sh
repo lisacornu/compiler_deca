@@ -13,9 +13,19 @@ while [ ! -f pom.xml ] && [ "$PWD" != "/" ]; do
 done
 
 if [ ! -f pom.xml ]; then
-    echo "Error: Could not find project root (pom.xml)"
+    echo -e "${RED}Error: Could not find project root (pom.xml)${NC}"
     exit 1
 fi
+
+# Execute Maven commands
+for cmd in "clean" "compile" "test-compile"; do
+    echo -e "${BOLD}Running 'mvn $cmd'...${NC}"
+    if ! mvn "$cmd"; then
+        echo -e "${RED}Error: 'mvn $cmd' failed. Aborting.${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✓ 'mvn $cmd' succeeded.${NC}"
+done
 
 # Test directory path
 TEST_DIR="src/test/deca/codegen/valid"
@@ -23,7 +33,7 @@ EXPECTED_DIR="src/test/deca/codegen/valid/expected"
 
 # Check if test directory exists
 if [ ! -d "$TEST_DIR" ]; then
-    echo "Error: Test directory not found: $TEST_DIR"
+    echo -e "${RED}Error: Test directory not found: $TEST_DIR${NC}"
     exit 1
 fi
 
@@ -47,8 +57,8 @@ process_file() {
     # Compile the .deca file and capture output
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # Check if compilation was successful (no output)
-    if [ -z "$compilation_output" ]; then
+    # Check if compilation output is empty or contains only "." or "/"
+    if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
 
