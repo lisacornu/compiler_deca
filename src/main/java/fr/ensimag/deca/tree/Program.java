@@ -82,10 +82,20 @@ public class Program extends AbstractProgram {
         classes.codeGenListDeclClass(compiler);
         compiler.addInstruction(new HALT());
 
-        // gestion de dépassement de pile
-        compiler.addComment("Erreur : dépassement de pile");
+        //Depas
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("\t\tMessage d'erreur : pile pleine");
+        compiler.addComment("--------------------------------------------------");
         compiler.addLabel(new Label("pile_pleine"));
         compiler.addInstruction(new WSTR("Erreur : dépassement de la taille de pile autorisée"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("Message d'erreur : allocation impossible, tas plein");
+        compiler.addComment("--------------------------------------------------");
+        compiler.addLabel(new Label("tas_plein"));
+        compiler.addInstruction(new WSTR("Erreur : allocation impossible, tas plein"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 

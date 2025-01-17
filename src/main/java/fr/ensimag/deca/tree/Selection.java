@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -8,11 +9,11 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.*;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -76,7 +77,20 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        DVal exprAddr = expr.codeGenExpr(compiler);
+        GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, GPRegister.R0);
+
+        DAddr varAddr = fieldIdent.getExpDefinition().getOperand();
+        compiler.addInstruction(new LOAD(varAddr,GPRegister.R1));
+
+        compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R1));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+
+        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),GPRegister.R1);
+        compiler.addInstruction(new STORE(exprReg, fieldHeapAddr));
+
+        return RegisterHandler.pushFromRegister(compiler, exprReg);
     }
 
     @Override

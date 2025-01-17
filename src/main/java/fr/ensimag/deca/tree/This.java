@@ -10,9 +10,7 @@ import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -64,7 +62,8 @@ public class This extends AbstractExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        RegisterOffset objAddr = new RegisterOffset(-2, GPRegister.LB);
+        return RegisterHandler.pushFromDVal(compiler, objAddr, Register.R0);
     }
 
 }
