@@ -127,7 +127,6 @@ public class DeclClass extends AbstractDeclClass {
     protected void codeGenDeclClass(DecacCompiler compiler) {
 
 
-
         compiler.addComment("--------------------------------------------------");
         compiler.addComment("\t\tClasse "+className.getName().getName());
         compiler.addComment("--------------------------------------------------");
@@ -138,13 +137,14 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addLabel(new Label("init."+className.getName().getName()));
 
         listField.codeGenDeclField(compiler, className.getClassDefinition().getNumberOfFields(), parentClass);
-        compiler.addInstruction(new RTS());
 
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
-            //abstractMethod.codeGenMethod(compiler, this);
+            abstractMethod.codeGenMethod(compiler, this);
         }
+
+        compiler.addInstruction(new RTS());
     }
 
 
@@ -174,12 +174,8 @@ public class DeclClass extends AbstractDeclClass {
     protected void codeGenVTable(DecacCompiler compiler) {
         compiler.addComment("Code de la table des méthode de : " + this.className.getName().getName());
 
-        System.out.println("nb méthode de cette classe : "+ this.listMethod.size());
-
         // on stocke dans la classDefinition de cette classe l'@ de départ de sa table des méthodes
         this.className.getClassDefinition().setDefinitionAdress(compiler.headOfGBStack);
-        System.out.println("@ set à : " +this.className.getClassDefinition().getDefinitionAdress());
-
 
         // Génération de l'adresse de la super classe
         compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
