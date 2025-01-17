@@ -175,6 +175,9 @@ public class Identifier extends AbstractIdentifier {
             if (expr.isExpression()){
                 setDefinition(expr);
                 setType(expr.getType());
+                // Incrémenter l'usage de la variable dans la table de hachage
+                String varNameStr = getName().toString();
+                compiler.variableUsageCount.put(varNameStr, compiler.variableUsageCount.get(varNameStr) + 1);  // Incrémenter l'usage
                 return getType();
             }else{
                 throw new ContextualError("This is not an expression.", getLocation());

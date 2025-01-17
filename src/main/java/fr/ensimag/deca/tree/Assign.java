@@ -74,12 +74,36 @@ public class Assign extends AbstractBinaryExpr {
         //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
         return op1;
     }
-
-
+    
+    
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
+ /*   @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+        // Générer le code pour l'expression droite
+        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 
+        // Allouer un nouveau registre pour la variable gauche
+        GPRegister newRegister = compiler.registerHandler.Get();
+        if (newRegister == null) {
+            throw new RuntimeException("No free registers available for SSA");
+        }
+        
+        // Libérer l'ancien registre de la variable gauche
+        DVal leftop=((Identifier)getLeftOperand()).codeGenExpr(compiler);
+        compiler.registerHandler.SetFree(leftop);
+
+        // Mettre à jour le registre SSA de la variable gauche
+        ((AbstractIdentifier) getLeftOperand()).setRegistre_ssa(newRegister);
+
+        // Stocker la valeur dans le nouveau registre
+        compiler.addInstruction(new LOAD(rightOperandResult, newRegister));
+        compiler.registerHandler.SetFree(rightOperandResult);
+        return newRegister;
+    }
+
+*/
 }

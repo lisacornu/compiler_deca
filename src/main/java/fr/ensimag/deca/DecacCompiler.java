@@ -12,7 +12,7 @@ import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.deca.tree.Program;
 import fr.ensimag.ima.pseudocode.*;
-
+import java.util.HashMap;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,7 +21,6 @@ import java.io.PrintStream;
 import java.util.Stack;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
-
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -43,7 +42,8 @@ import org.apache.log4j.Logger;
  * @date 01/01/2025
  */
 public class DecacCompiler implements Callable<Boolean> {
-
+    // Table de hachage pour compter les usages des variables
+    public HashMap<String, Integer> variableUsageCount=new HashMap<>();
     public int headOfGBStack = 1;
     public int headOfLBStack = 0;
 

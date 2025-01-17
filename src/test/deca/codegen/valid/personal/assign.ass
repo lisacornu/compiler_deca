@@ -1,0 +1,35 @@
+	TSTO #1024
+	BOV pile_pleine
+	ADDSP #4
+; start main program
+; --------------------------------------------------
+; 		Code du programme principal
+; --------------------------------------------------
+; ---------- Déclaration des variables
+; Variable y non utilisée, pas de code généré.
+; Variable z non utilisée, pas de code généré.
+; Variable c non utilisée, pas de code généré.
+	LOAD #8, R2
+	FLOAT R2, R2
+	STORE R2, 1(GB)
+	LOAD #3, R2
+	LOAD #3, R3
+	ADD R3, R2
+	STORE R2, 2(GB)
+; ---------- Instructions
+	LOAD #5, R2
+	STORE R2, 2(GB)
+	LOAD #5, R2
+	STORE R2, 2(GB)
+	LOAD #5, R2
+	STORE R2, 2(GB)
+	LOAD 1(GB), R1
+	WFLOAT
+	WNL
+	HALT
+; Erreur : dépassement de pile
+pile_pleine:
+	WSTR "Erreur : dépassement de la taille de pile autorisée"
+	WNL
+	ERROR
+; end main program

@@ -14,6 +14,7 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
  *
@@ -21,7 +22,7 @@ import fr.ensimag.ima.pseudocode.instructions.*;
  * @date 01/01/2025
  */
 public abstract class AbstractIdentifier extends AbstractLValue {
-
+    
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.

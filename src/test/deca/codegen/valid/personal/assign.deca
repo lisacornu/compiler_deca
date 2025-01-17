@@ -8,10 +8,16 @@
 // Historique:
 //    cree le 10/01/2025
 
-{
-    int x;
-    x = 2;
-    println(x);
-    x = 5;
-    println(x);
+{   
+    int y=1;
+    int z=45;
+    int c=8;
+    float cd=8;
+    int x=3+3;
+    x=5;
+    x=5;
+    x=5;
+
+    
+
 }

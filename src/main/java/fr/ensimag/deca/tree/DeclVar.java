@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -55,6 +57,9 @@ public class DeclVar extends AbstractDeclVar {
 
             varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
             localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
+            // Ajouter le suivi de l'utilisation de la variable dans la table de hachage
+            String varNameStr = varName.getName().getName(); // Récupérer le nom de la variable
+            compiler.variableUsageCount.putIfAbsent(varNameStr, 0); // Initialiser si nécessaire
 
         }catch(DoubleDefException e){
             throw new ContextualError("The type as already been define for the variable " + varName.getName(), getLocation());
@@ -90,7 +95,15 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
+            // Vérifier l'utilisation de la variable dans la table de hachage
+        String varNameStr = varName.getName().getName();
+        int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0); // Récupérer le compteur d'usage de la variable
 
+        // Si la variable n'a pas été utilisée, ne pas générer de code
+        if (usageCount == 0) {
+            compiler.addComment("Variable " + varNameStr + " non utilisée, pas de code généré.");
+            return;  // Ne pas générer la déclaration de la variable
+        }
         //Ajout de l'operand à GB
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
@@ -124,4 +137,20 @@ public class DeclVar extends AbstractDeclVar {
         compiler.addInstruction(new STORE(regInit, GB_Stack));
         compiler.registerHandler.SetFree(regInit);
     }
+
+  /*   @Override
+    protected void codeGenDeclVar(DecacCompiler compiler) {
+        // Assigner un registre unique à chaque variable déclarée
+        GPRegister newRegister = compiler.registerHandler.Get();
+        if (newRegister == null) {
+            throw new RuntimeException("No free registers available for SSA");
+        }
+        varName.setRegistre_ssa(newRegister);
+
+        if (!(initialization instanceof NoInitialization)) {
+            DVal addrInit = initialization.codeGenInit(compiler);
+            compiler.addInstruction(new LOAD(addrInit, newRegister));
+        }
+    }*/
+
 }
