@@ -9,6 +9,9 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Definition of a class.
  *
@@ -17,6 +20,19 @@ import org.apache.commons.lang.Validate;
  */
 public class ClassDefinition extends TypeDefinition {
 
+    private int numberOfFields = 0;
+    private int numberOfMethods = 0;
+    private DAddr definitionAdress;
+
+    private ArrayList<String> methodArray = new ArrayList<>();
+
+    public ArrayList<String> getMethodArray() {
+        return methodArray;
+    }
+
+    public void setMethodArray(ArrayList<String> methodArray) {
+        this.methodArray = methodArray;
+    }
 
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
@@ -61,10 +77,6 @@ public class ClassDefinition extends TypeDefinition {
         numberOfMethods++;
         return numberOfMethods;
     }
-
-    private int numberOfFields = 0;
-    private int numberOfMethods = 0;
-    private DAddr definitionAdress;
     
     @Override
     public boolean isClass() {
@@ -101,21 +113,5 @@ public class ClassDefinition extends TypeDefinition {
         this.superClass = superClass;
     }
 
-
-    public void codeGenMethodsVTable (DecacCompiler compiler, ListDeclMethod listMethod) {
-
-        // store le pointeur vers chaque méthode de la classe
-        for (AbstractDeclMethod m : listMethod.getList()) {
-            System.out.println("index de la méthode : " + m.getMethodName().getMethodDefinition().getIndex());
-            compiler.addInstruction(new LOAD(new LabelOperand( new Label (
-                    "code." + this.getType().getName().getName() + "." + m.getMethodName().getName().getName()
-            )), GPRegister.R0));
-
-            MethodDefinition metDef = (MethodDefinition) m.getMethodName().getDefinition();
-            compiler.addInstruction(new STORE(
-                    GPRegister.R0, new RegisterOffset(compiler.headOfGBStack + metDef.getIndex(), GPRegister.GB)
-            ));
-        }
-    }
     
 }

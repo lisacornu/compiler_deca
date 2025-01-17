@@ -63,7 +63,6 @@ public class Program extends AbstractProgram {
 
         compiler.headOfGBStack+=2;
 
-
         for (AbstractDeclClass c : this.classes.getList()) {
             c.codeGenVTable(compiler);
         }

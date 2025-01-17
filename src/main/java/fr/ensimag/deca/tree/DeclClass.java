@@ -161,6 +161,28 @@ public class DeclClass extends AbstractDeclClass {
     }
 
 
+    private void buildMethodArray () {
+        ArrayList<String> methodArray = this.className.getClassDefinition().getMethodArray();
+
+        if (this.parentClass.getName().getName().equals("Object")) {
+            methodArray.add("code.Object.equals");
+        } else {
+            methodArray.addAll(this.parentClass.getClassDefinition().getMethodArray());
+        }
+
+        for (AbstractDeclMethod m : this.listMethod.getList()) {
+            int index = m.getMethodName().getMethodDefinition().getIndex();
+            String methodName = "code." + this.className.getName().getName() + "." + m.getMethodName().getName().getName();
+
+            if (index < methodArray.size()) {
+                methodArray.set(index, methodName);
+            } else {
+                methodArray.add(methodName);
+            }
+        }
+    }
+
+
     @Override
     protected void codeGenVTable(DecacCompiler compiler) {
         compiler.addComment("Code de la table des méthode de : " + this.className.getName().getName());
@@ -172,31 +194,29 @@ public class DeclClass extends AbstractDeclClass {
         System.out.println("@ set à : " +this.className.getClassDefinition().getDefinitionAdress());
 
 
-        // store @ de la super classe
-        System.out.println("classe : " + this.className.getName());
-        System.out.println("defAdresse : " + this.className.getClassDefinition().getDefinitionAdress() + "\n");
-        System.out.println("parent : " + this.parentClass.getName());
-        System.out.println("defAdresse : " + this.parentClass.getClassDefinition().getDefinitionAdress());
-
-
+        // Génération de l'adresse de la super classe
         compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
-
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
 
-        // on construit une liste des superclasse, la dernière est celle juste avant Object
-        ArrayList<ClassDefinition> classHierarchy = new ArrayList<>();
-        ClassDefinition currentClass = this.className.getClassDefinition();
 
-        while (currentClass.getSuperClass() != null) {
-            classHierarchy.add(currentClass);
-            currentClass = currentClass.getSuperClass();
-        }
+        // construction du tableau des méthodes de cette classe
+        this.buildMethodArray();
 
-        for (int i = classHierarchy.size()-1; i>=0; i--) {
-            classHierarchy.get(i).codeGenMethodsVTable(compiler, classHierarchy.get(i).);
-        }
+        // génération de la partie méthode de la table des méthodes
+        this.codeGenMethodsVTable(compiler);
 
-        compiler.headOfGBStack += this.listMethod.size() + 1;
+        compiler.headOfGBStack++;
     }
 
+
+    public void codeGenMethodsVTable (DecacCompiler compiler) {
+
+        for (String methodName : this.className.getClassDefinition().getMethodArray()) {
+            compiler.headOfGBStack++;
+            compiler.addInstruction(new LOAD(new LabelOperand(new Label(methodName)), GPRegister.R0));
+            compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, Register.GB)));
+
+        }
+
+    }
 }
