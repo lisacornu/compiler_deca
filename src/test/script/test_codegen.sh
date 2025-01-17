@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
@@ -167,30 +166,38 @@ process_invalid_file() {
 }
 
 
+# shellcheck disable=SC2044
 for deca_file in $(find "$PERSONAL_TEST_DIR" -type f -name "*.deca"); do
     ((total_files++))
     process_personal_file "$deca_file"
 done
 
 
+# shellcheck disable=SC2044
 for deca_file in $(find "$GENERAL_TEST_DIR" -type f -name "*.deca" ! -path "$PERSONAL_TEST_DIR/*"); do
     ((total_files++))
     process_general_file "$deca_file"
 done
 
 
+# shellcheck disable=SC2044
 for deca_file in $(find "$INVALID_TEST_DIR" -type f -name "*.deca"); do
     ((total_files++))
     process_invalid_file "$deca_file"
 done
 
+total_compilation_sucess=$((successful_compilations + successful_invalid))
+total_compilation_fail=$((failed_compilations + failed_invalid))
 
 echo -e "\n${BOLD}Testing Summary:${NC}"
 echo "Total files processed: $total_files"
-echo "Successful compilations: $successful_compilations"
-echo "Failed compilations: $failed_compilations"
+
+echo -e "\n${BOLD}Compiling Tests Summary:${NC}"
+echo "Successful compilations tests: $total_compilation_sucess"
+echo "Failed compilations tests : $total_compilation_fail"
+
+echo -e "\n${BOLD}Executing Tests Summary:${NC}"
 echo "Total executions attempted: $total_executions"
 echo "Successful executions: $successful_executions"
 echo "Failed executions: $failed_executions"
-echo "Successful invalid tests: $successful_invalid"
 echo "Failed invalid tests: $failed_invalid"
