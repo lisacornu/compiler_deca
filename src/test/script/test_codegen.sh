@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Couleurs
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
-# Va à la racine du projet
+# Remonte à la racine
 while [ ! -f pom.xml ] && [ "$PWD" != "/" ]; do
     cd ..
 done
@@ -17,7 +16,7 @@ if [ ! -f pom.xml ]; then
     exit 1
 fi
 
-
+# Maven
 for cmd in "clean" "compile" "test-compile"; do
     echo -e "${BOLD}Running 'mvn $cmd'...${NC}"
     if ! mvn "$cmd"; then
@@ -27,11 +26,13 @@ for cmd in "clean" "compile" "test-compile"; do
     echo -e "${GREEN}✓ 'mvn $cmd' succeeded.${NC}"
 done
 
+
 PERSONAL_TEST_DIR="src/test/deca/codegen/valid/personal/stdin"
 GENERAL_TEST_DIR="src/test/deca/codegen/valid"
+INVALID_TEST_DIR="src/test/deca/codegen/invalid"
 EXPECTED_DIR="src/test/deca/codegen/valid/expected"
 
-# Vérifie si les dossier existent
+# Vérifie que les dossiers existent
 if [ ! -d "$PERSONAL_TEST_DIR" ]; then
     echo -e "${RED}Error: Personal test directory not found: $PERSONAL_TEST_DIR${NC}"
     exit 1
@@ -40,26 +41,32 @@ if [ ! -d "$GENERAL_TEST_DIR" ]; then
     echo -e "${RED}Error: General test directory not found: $GENERAL_TEST_DIR${NC}"
     exit 1
 fi
+if [ ! -d "$INVALID_TEST_DIR" ]; then
+    echo -e "${RED}Error: Invalid test directory not found: $INVALID_TEST_DIR${NC}"
+    exit 1
+fi
 
-# Initialisation
+
 total_files=0
 successful_compilations=0
 successful_executions=0
 failed_compilations=0
 failed_executions=0
 total_executions=0
+successful_invalid=0
+failed_invalid=0
 
-# Traite un fichier . deca
+# traite un fichier .deca
 process_personal_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
 
     echo "Processing (compilation only): $deca_file"
 
-
+    # Compile
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # Vérifie si la compilation affiche qq chose ou non
+    # Si la sortie contient . ou / on considère la compilation échoué (arbitraire)
     if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
@@ -72,7 +79,7 @@ process_personal_file() {
     echo "----------------------------------------"
 }
 
-# compile et execute un fichie deca
+# compilation et execution d'un fichier .deca
 process_general_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
@@ -81,24 +88,25 @@ process_general_file() {
 
     echo "Processing (compilation and execution): $deca_file"
 
-    # Compile the .deca file and capture output
+    # Compile
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # Il y a une erreur si il y a . ou / dans la sortie (arbitraire)
+    # si il y a . ou / dans la sortie la compilation est échoué
     if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
 
-        # vérifie que les .ass sont générés
+        # Vérif que les .ass sont générés
         if [ -f "$dir_name/$base_name.ass" ]; then
             ((total_executions++))
-            # Execute
+
             ima_output=$(ima "$dir_name/$base_name.ass" 2>&1)
 
-            # vérifie si les .expected existent
+            # Vérifie que les .expected existent
             if [ -f "$expected_file" ]; then
                 expected_output=$(<"$expected_file")
 
+                # Compare sorties
                 if [ "$ima_output" == "$expected_output" ]; then
                     echo -e "${GREEN}✓ Execution matches expected output${NC}"
                     ((successful_executions++))
@@ -127,22 +135,54 @@ process_general_file() {
     echo "----------------------------------------"
 }
 
+# Gère les fichiers deca invalides
+process_invalid_file() {
+    local deca_file="$1"
+    local base_name=$(basename "$deca_file" .deca)
+
+    echo "Processing (invalid test): $deca_file"
+
+    # idem
+    compilation_output=$(decac "$deca_file" 2>&1)
+
+    # idem
+    if [[ "$compilation_output" =~ [./] ]]; then
+        echo -e "${GREEN}✓ Invalid test passed${NC}"
+        ((successful_invalid++))
+    else
+        echo -e "${RED}✗ Invalid test failed${NC}"
+        echo "Compilation output:"
+        echo "$compilation_output"
+        ((failed_invalid++))
+    fi
+    echo "----------------------------------------"
+}
+
 
 for deca_file in $(find "$PERSONAL_TEST_DIR" -type f -name "*.deca"); do
     ((total_files++))
     process_personal_file "$deca_file"
 done
 
+
 for deca_file in $(find "$GENERAL_TEST_DIR" -type f -name "*.deca" ! -path "$PERSONAL_TEST_DIR/*"); do
     ((total_files++))
     process_general_file "$deca_file"
 done
 
+
+for deca_file in $(find "$INVALID_TEST_DIR" -type f -name "*.deca"); do
+    ((total_files++))
+    process_invalid_file "$deca_file"
+done
+
+
 echo -e "\n${BOLD}Testing Summary:${NC}"
 echo "Total files processed: $total_files"
 echo "Successful compilations: $successful_compilations"
 echo "Failed compilations: $failed_compilations"
-echo ""
 echo "Total executions attempted: $total_executions"
 echo "Successful executions: $successful_executions"
 echo "Failed executions: $failed_executions"
+echo "Successful invalid tests: $successful_invalid"
+echo "Failed invalid tests: $failed_invalid"
