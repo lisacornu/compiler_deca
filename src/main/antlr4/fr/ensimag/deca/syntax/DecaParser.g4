@@ -375,9 +375,11 @@ select_expr returns[AbstractExpr tree]
             $tree = $e.tree;
             setLocation($tree, $e.start);
         }
-    | e1=select_expr DOT i=ident {
+    | e1=select_expr DOT i=ident { //selection de champ
             assert($e1.tree != null);
             assert($i.tree != null);
+            $tree = new Selection($e1.tree, $i.tree);
+            setLocation($tree, $e1.start);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
@@ -395,7 +397,7 @@ primary_expr returns[AbstractExpr tree]
             assert($ident.tree != null);
             $tree = $ident.tree;
         }
-    | m=ident OPARENT args=list_expr CPARENT {
+    | m=ident OPARENT args=list_expr CPARENT { //appel de méthode
             assert($args.tree != null);
             assert($m.tree != null);
             $tree = new MethodCall($tree, $m.tree, $args.tree);
