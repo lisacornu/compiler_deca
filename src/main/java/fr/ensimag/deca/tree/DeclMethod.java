@@ -67,9 +67,11 @@ public class DeclMethod extends AbstractDeclMethod {
         
     }
 
+
     @Override
     protected void verifyMethodMembers(DecacCompiler compiler, 
                                        ClassDefinition nameClass) throws ContextualError {
+
         // TODO : Override pas encore fait
         // if (type.verifyType(compiler).isVoid()){
         //     throw new ContextualError("The type of this method is void.", getLocation());
@@ -98,13 +100,13 @@ public class DeclMethod extends AbstractDeclMethod {
                 methodName.setDefinition(methodDef);
                 methodName.setType(type.verifyTypeMethod(compiler));
                 nameClass.getMembers().declare(methodName.getName(), methodDef);
-                
+
                 } catch (DoubleDefException e){
                     throw new ContextualError("The method as already been declared before.", getLocation());
                 }
             }
         }
-        
+
         
 
     }

@@ -1,0 +1,9 @@
+class A {
+    protected int x ;
+
+    int getX() { }
+    void setX(int x) { }
+}
+
+{
+}

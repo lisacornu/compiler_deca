@@ -1,10 +1,12 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -51,6 +53,16 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenVTable(DecacCompiler compiler) {
+        this.classes.getList().get(0).setParentClassAdress(1);
+
+        compiler.addInstruction(new LOAD(new NullOperand(), GPRegister.R0));
+        compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
+
+        compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), GPRegister.R0));
+        compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack+1, GPRegister.GB)));
+
+        compiler.headOfGBStack+=2;
+
         for (AbstractDeclClass c : this.classes.getList()) {
             c.codeGenVTable(compiler);
         }

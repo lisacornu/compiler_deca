@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -23,7 +25,11 @@ public class DeclClass extends AbstractDeclClass {
     final private ListDeclField      listField;
     final private ListDeclMethod     listMethod; 
     // TODO : ListeMethodes et ListeField
-    
+
+    public void setParentClassAdress (int i) {
+        ClassDefinition def = this.parentClass.getClassDefinition();
+        def.setDefinitionAdress(i);
+    }
 
     public DeclClass(AbstractIdentifier parentClass, AbstractIdentifier className,ListDeclField listField,ListDeclMethod listMethod) {
         Validate.notNull(className);
@@ -86,7 +92,7 @@ public class DeclClass extends AbstractDeclClass {
         // className.getClassDefinition().setNumberOfMethods(listMethod.size());
         className.getClassDefinition().setNumberOfMethods(parentClass.getClassDefinition().getNumberOfMethods());
         listMethod.verifyListMethodMembers(compiler, className.getClassDefinition());
-        
+
     }
     
     @Override
@@ -155,35 +161,62 @@ public class DeclClass extends AbstractDeclClass {
     }
 
 
+    private void buildMethodArray () {
+        ArrayList<String> methodArray = this.className.getClassDefinition().getMethodArray();
+
+        if (this.parentClass.getName().getName().equals("Object")) {
+            methodArray.add("code.Object.equals");
+        } else {
+            methodArray.addAll(this.parentClass.getClassDefinition().getMethodArray());
+        }
+
+        for (AbstractDeclMethod m : this.listMethod.getList()) {
+            int index = m.getMethodName().getMethodDefinition().getIndex();
+            String methodName = "code." + this.className.getName().getName() + "." + m.getMethodName().getName().getName();
+
+            if (index < methodArray.size()) {
+                methodArray.set(index, methodName);
+            } else {
+                methodArray.add(methodName);
+            }
+        }
+    }
+
+
     @Override
     protected void codeGenVTable(DecacCompiler compiler) {
         compiler.addComment("Code de la table des méthode de : " + this.className.getName().getName());
 
-        // on stocke dans la classDefinition de cette classe l'@ de départ de sa table des méthodes
-        ClassDefinition def = (ClassDefinition) this.className.getDefinition();
-        def.setDefinitionAdress(compiler.headOfGBStack);
+        System.out.println("nb méthode de cette classe : "+ this.listMethod.size());
 
-        // store @ de la super classe
-        if (this.className.getName().getName().equals("Object")) {
-            compiler.addInstruction(new LOAD(null, GPRegister.R0));
-        } else {
-            //compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
-        }
+        // on stocke dans la classDefinition de cette classe l'@ de départ de sa table des méthodes
+        this.className.getClassDefinition().setDefinitionAdress(compiler.headOfGBStack);
+        System.out.println("@ set à : " +this.className.getClassDefinition().getDefinitionAdress());
+
+
+        // Génération de l'adresse de la super classe
+        compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
 
-        // store le pointeur vers chaque méthode de la classe
-        for (AbstractDeclMethod m : this.listMethod.getList()) {
-            compiler.addInstruction(new LOAD (new LabelOperand ( new Label (
-                    "code." + this.className.getName().getName() + "." + m.getMethodName().getName().getName()
-            )), GPRegister.R0));
 
-            MethodDefinition metDef = (MethodDefinition) m.getMethodName().getDefinition();
-            compiler.addInstruction(new STORE (
-                    GPRegister.R0, new RegisterOffset(compiler.headOfGBStack + metDef.getIndex(), GPRegister.GB)
-            ));
-        }
+        // construction du tableau des méthodes de cette classe
+        this.buildMethodArray();
 
-        compiler.headOfGBStack += this.listMethod.size() + 1;
+        // génération de la partie méthode de la table des méthodes
+        this.codeGenMethodsVTable(compiler);
+
+        compiler.headOfGBStack++;
     }
 
+
+    public void codeGenMethodsVTable (DecacCompiler compiler) {
+
+        for (String methodName : this.className.getClassDefinition().getMethodArray()) {
+            compiler.headOfGBStack++;
+            compiler.addInstruction(new LOAD(new LabelOperand(new Label(methodName)), GPRegister.R0));
+            compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, Register.GB)));
+
+        }
+
+    }
 }
