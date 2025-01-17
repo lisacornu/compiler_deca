@@ -4,6 +4,7 @@
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
+BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # Go to project root (where pom.xml is located)
@@ -97,7 +98,7 @@ for deca_file in $(find "$TEST_DIR" -type f -name "*.deca"); do
 done
 
 # Print summary
-echo "Testing Summary:"
+echo -e "\n${BOLD}Testing Summary:${NC}"
 echo "Total files processed: $total_files"
 echo "Successful compilations: $successful_compilations"
 echo "Failed compilations: $failed_compilations"
