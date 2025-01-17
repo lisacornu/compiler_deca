@@ -1,10 +1,12 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tree.AbstractDeclMethod;
+import fr.ensimag.deca.tree.ListDeclMethod;
 import fr.ensimag.deca.tree.Location;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -97,6 +99,23 @@ public class ClassDefinition extends TypeDefinition {
         }
         members = new EnvironmentExp(parent);
         this.superClass = superClass;
+    }
+
+
+    public void codeGenMethodsVTable (DecacCompiler compiler, ListDeclMethod listMethod) {
+
+        // store le pointeur vers chaque méthode de la classe
+        for (AbstractDeclMethod m : listMethod.getList()) {
+            System.out.println("index de la méthode : " + m.getMethodName().getMethodDefinition().getIndex());
+            compiler.addInstruction(new LOAD(new LabelOperand( new Label (
+                    "code." + this.getType().getName().getName() + "." + m.getMethodName().getName().getName()
+            )), GPRegister.R0));
+
+            MethodDefinition metDef = (MethodDefinition) m.getMethodName().getDefinition();
+            compiler.addInstruction(new STORE(
+                    GPRegister.R0, new RegisterOffset(compiler.headOfGBStack + metDef.getIndex(), GPRegister.GB)
+            ));
+        }
     }
     
 }

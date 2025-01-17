@@ -198,32 +198,10 @@ public class DeclClass extends AbstractDeclClass {
         }
 
         for (int i = classHierarchy.size()-1; i>=0; i--) {
-
+            classHierarchy.get(i).codeGenMethodsVTable(compiler, classHierarchy.get(i).);
         }
-
-        codeGenMethodsVTable(compiler);
-
-
-
+        
         compiler.headOfGBStack += this.listMethod.size() + 1;
-    }
-
-
-    private void codeGenMethodsVTable (DecacCompiler compiler) {
-
-
-        // store le pointeur vers chaque méthode de la classe
-        for (AbstractDeclMethod m : this.listMethod.getList()) {
-            System.out.println("index de la méthode : " + m.getMethodName().getMethodDefinition().getIndex());
-            compiler.addInstruction(new LOAD (new LabelOperand ( new Label (
-                    "code." + this.className.getName().getName() + "." + m.getMethodName().getName().getName()
-            )), GPRegister.R0));
-
-            MethodDefinition metDef = (MethodDefinition) m.getMethodName().getDefinition();
-            compiler.addInstruction(new STORE (
-                    GPRegister.R0, new RegisterOffset(compiler.headOfGBStack + metDef.getIndex(), GPRegister.GB)
-            ));
-        }
     }
 
 }
