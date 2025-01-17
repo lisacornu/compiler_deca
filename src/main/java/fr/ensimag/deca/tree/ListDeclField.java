@@ -39,9 +39,8 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     public void verifyListFieldMembers(DecacCompiler compiler, fr.ensimag.deca.context.ClassDefinition nameClass) throws ContextualError {
         LOG.debug("verify listFieldMembers: start");
         // throw new UnsupportedOperationException("not yet implemented");
-        int i = 0;
         for (AbstractDeclField f : getList()){
-            f.verifyFieldMembers(compiler, nameClass, nameClass.getMembers(), i++);
+            f.verifyFieldMembers(compiler, nameClass, nameClass.getMembers());
         }
         LOG.debug("verify listFieldMembers: end");
     }
