@@ -28,7 +28,6 @@ public class SymbolTable {
 
         //si le symbole n'existe pas déjà
         if(this.map.get(name) == null){
-            System.out.println("On crée un nouveau token " + name);
             System.out.flush();
             Symbol symbol = new Symbol(name);
             this.map.put(name, symbol);
