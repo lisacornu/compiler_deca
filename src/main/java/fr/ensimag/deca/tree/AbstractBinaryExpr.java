@@ -97,7 +97,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         // Generation du code de l'expression (résultat enregistré dans op2)
         codeGenBinaryExpr(compiler, op1, op2);
-        compiler.registerHandler.SetFree(op1); //On libère le registre de op1 (car il est maintenant inutile)
+        
+        
 
         // On push dans la pile si besoin (et on déplace op2 si c'est un registre temporaire dans un nv registre/dans la pile)
         return RegisterHandler.pushFromRegister(compiler, op2);

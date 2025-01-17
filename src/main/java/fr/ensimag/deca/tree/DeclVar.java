@@ -60,6 +60,7 @@ public class DeclVar extends AbstractDeclVar {
             // Ajouter le suivi de l'utilisation de la variable dans la table de hachage
             String varNameStr = varName.getName().getName(); // Récupérer le nom de la variable
             compiler.variableUsageCount.putIfAbsent(varNameStr, 0); // Initialiser si nécessaire
+            compiler.variableToRegister.putIfAbsent(varNameStr, null);
 
         }catch(DoubleDefException e){
             throw new ContextualError("The type as already been define for the variable " + varName.getName(), getLocation());
@@ -93,7 +94,7 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
-    @Override
+  /*  @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
             // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = varName.getName().getName();
@@ -118,7 +119,7 @@ public class DeclVar extends AbstractDeclVar {
 
         compiler.addInstruction(new STORE(regInit, GB_Stack));
         compiler.registerHandler.SetFree(regInit);
-    }
+    }*/
 
     @Override
     protected void codeGenDeclVarMethod(DecacCompiler compiler) {
@@ -138,19 +139,33 @@ public class DeclVar extends AbstractDeclVar {
         compiler.registerHandler.SetFree(regInit);
     }
 
-  /*   @Override
+     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
-        // Assigner un registre unique à chaque variable déclarée
-        GPRegister newRegister = compiler.registerHandler.Get();
-        if (newRegister == null) {
-            throw new RuntimeException("No free registers available for SSA");
+          // Vérifier l'utilisation de la variable dans la table de hachage
+        String varNameStr = varName.getName().getName();
+        int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0); // Récupérer le compteur d'usage de la variable
+
+        // Si la variable n'a pas été utilisée, ne pas générer de code
+        if (usageCount == 0) {
+            compiler.addComment("Variable " + varNameStr + " non utilisée, pas de code généré.");
+            return;  // Ne pas générer la déclaration de la variable
         }
-        varName.setRegistre_ssa(newRegister);
+        
 
         if (!(initialization instanceof NoInitialization)) {
             DVal addrInit = initialization.codeGenInit(compiler);
-            compiler.addInstruction(new LOAD(addrInit, newRegister));
+         //   compiler.addInstruction(new LOAD(addrInit, newRegister));
+          //  compiler.registerHandler.SetFree(addrInit);
+            compiler.variableToRegister.put(varName.getName().getName(),(GPRegister) addrInit);
+            return;
         }
-    }*/
+        // Assigner un registre unique à chaque variable déclarée
+        GPRegister newRegister = compiler.registerHandler.Get();
+        if (newRegister == null) {
+            //fautdra faire declvar la methode d avant ou faire qqchose de plus opti
+            throw new RuntimeException("No free registers available for SSA");
+        }
+        compiler.variableToRegister.put(varName.getName().getName(), newRegister);
+    }
 
 }

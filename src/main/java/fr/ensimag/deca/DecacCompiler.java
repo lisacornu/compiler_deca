@@ -46,7 +46,7 @@ public class DecacCompiler implements Callable<Boolean> {
     public HashMap<String, Integer> variableUsageCount=new HashMap<>();
     public int headOfGBStack = 1;
     public int headOfLBStack = 0;
-
+    public HashMap<String, GPRegister> variableToRegister= new HashMap<>();
     public RegisterHandler registerHandler;
     public StackUsageWatcher stackUsageWatcher;
 

@@ -56,7 +56,7 @@ public class Assign extends AbstractBinaryExpr {
         return "=";
     }
 
-    @Override
+  /*  @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
         // Generation du codes des branches
@@ -73,7 +73,7 @@ public class Assign extends AbstractBinaryExpr {
 
         //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
         return op1;
-    }
+    }*/
     
     
     @Override
@@ -81,7 +81,7 @@ public class Assign extends AbstractBinaryExpr {
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
- /*   @Override
+    @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
         // Générer le code pour l'expression droite
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
@@ -93,11 +93,14 @@ public class Assign extends AbstractBinaryExpr {
         }
         
         // Libérer l'ancien registre de la variable gauche
-        DVal leftop=((Identifier)getLeftOperand()).codeGenExpr(compiler);
-        compiler.registerHandler.SetFree(leftop);
-
-        // Mettre à jour le registre SSA de la variable gauche
-        ((AbstractIdentifier) getLeftOperand()).setRegistre_ssa(newRegister);
+        String variableName =((Identifier )getLeftOperand()).getName().getName();
+        GPRegister oldRegister = compiler.variableToRegister.get(variableName);
+        if (oldRegister != null) {
+           // compiler.addComment("on est dans assign");
+            compiler.registerHandler.SetFree(oldRegister);
+        }
+        //met a jour le nouveau registre pr la nouvelle version de la variable
+        compiler.variableToRegister.put(variableName, newRegister); // Associe le nouveau registre
 
         // Stocker la valeur dans le nouveau registre
         compiler.addInstruction(new LOAD(rightOperandResult, newRegister));
@@ -105,5 +108,5 @@ public class Assign extends AbstractBinaryExpr {
         return newRegister;
     }
 
-*/
+
 }

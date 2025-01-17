@@ -215,11 +215,25 @@ public class Identifier extends AbstractIdentifier {
         setType(type.getType());
         return getType();
     }
-
+/*
     @Override
     public void printExprValue(DecacCompiler compiler) {
         if (this.getExpDefinition().getNature().equals("variable")) {
             compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
+            if (this.getExpDefinition().getType().isFloat())
+                compiler.addInstruction(new WFLOAT());
+            else if (this.getExpDefinition().getType().isInt())
+                compiler.addInstruction(new WINT());
+        }
+    }*/
+   @Override
+    public void printExprValue(DecacCompiler compiler) {
+        if (this.getExpDefinition().getNature().equals("variable")) {
+            // Récupérer le nom de la variable
+            String variableName = getName().getName();
+            // Récupérer le registre associé à la variable dans la table
+            GPRegister register = compiler.variableToRegister.get(variableName);
+              compiler.addInstruction(new LOAD(register, GPRegister.R1));
             if (this.getExpDefinition().getType().isFloat())
                 compiler.addInstruction(new WFLOAT());
             else if (this.getExpDefinition().getType().isInt())

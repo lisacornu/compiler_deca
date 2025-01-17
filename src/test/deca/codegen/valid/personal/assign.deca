@@ -9,14 +9,12 @@
 //    cree le 10/01/2025
 
 {   
-    int y=1;
-    int z=45;
-    int c=8;
-    float cd=8;
-    int x=3+3;
-    x=5;
-    x=5;
-    x=5;
+    int x=3;
+    while(3==x){
+        x=x-1;
+        println(x);
+    }
+    println(x);
 
     
 

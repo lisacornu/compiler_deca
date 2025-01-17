@@ -40,7 +40,7 @@ public class While extends AbstractInst {
         this.condition = condition;
         this.body = body;
     }
-
+    /*
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
 
@@ -64,6 +64,35 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
 
         compiler.addLabel(finWhile);
+    }*/
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+
+
+        nbNestedWhiles++;
+        Label debutWhile = new Label ("while" + nbNestedWhiles);
+        Label finWhile = new Label ("whileExit" + nbNestedWhiles);
+        compiler.addLabel(debutWhile);
+
+        // On récupère le résultat de la condition (qui était dans la pile/un registre)
+        DVal condAddr = condition.codeGenExpr(compiler);
+        GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
+
+        compiler.addInstruction(new CMP(new ImmediateInteger(1), condReg)); //compare la condition avec vrai
+        
+
+        compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
+
+        body.codeGenListInst(compiler); //génère le code du corps de la boucle
+
+        compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
+
+        compiler.addLabel(finWhile);
+         if (!compiler.variableToRegister.containsValue(condReg)) {
+            // Si le registre n'est pas dans variableToRegister, on le libère
+            compiler.addComment("yo");
+            compiler.registerHandler.SetFree(condReg);
+        }
     }
 
     @Override

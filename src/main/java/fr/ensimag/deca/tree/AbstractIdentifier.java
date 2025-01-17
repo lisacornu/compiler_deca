@@ -102,7 +102,9 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        return getExpDefinition().getOperand();
+         String variableName = getName().getName();
+         GPRegister register = compiler.variableToRegister.get(variableName);
+         return register;
     }
 
 }
