@@ -85,8 +85,8 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        
         Type type2 = verifyExpr(compiler, localEnv, currentClass);
+
         if(type2.sameType(expectedType)){
             setType(type2);
             return this;
@@ -103,8 +103,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
             Type type2 = verifyExpr(compiler, localEnv, currentClass);
-
-        if (!(type2.isBoolean() || type2.isFloat() || type2.isInt() || type2.isString())){
+        if (!(type2.isBoolean() || type2.isFloat() || type2.isInt() || type2.isString()|| type2.isVoid())){
             throw new UnsupportedOperationException("This is not inst type");
         }
     }

@@ -2,11 +2,12 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 import java.rmi.UnexpectedException;
-
+import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -27,12 +28,20 @@ public class MethodCall extends AbstractExpr{
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError{
         Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
-        if(currentClass.getMembers().get(methodIdent.getName())!=null){
-            Type typeMethod = methodIdent.verifyExpr(compiler, localEnv, currentClass);
-            Type returnType = methodIdent.verifyTypeMethod(compiler);
+        ClassDefinition classDef = (ClassDefinition) compiler.environmentType.defOfType(type2.getName());
+        if(classDef.getMembers().get(methodIdent.getName())!=null){
+            MethodDefinition methodDef = (MethodDefinition)classDef.getMembers().get(methodIdent.getName());
+            Type returnType = methodDef.getType();
+            Signature signMeth = methodDef.getSignature();
+            int i = 0;
             for (AbstractExpr rval : rvalueStar.getList()){
-                rval.verifyRValue(compiler, localEnv, currentClass, typeMethod);
+                Type typeParam = rval.verifyExpr(compiler, localEnv, currentClass);
+                if(!typeParam.sameType(signMeth.paramNumber(i))){
+                    throw new ContextualError("ParamType is different than type you passed as argument", getLocation());
+                }
             }
+            methodIdent.setDefinition(methodDef);
+            setType(returnType);
             return returnType;
         } else{
             throw new ContextualError("The method was not defined before " + methodIdent.getName(), getLocation());
