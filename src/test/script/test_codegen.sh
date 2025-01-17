@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Color definitions
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+NC='\033[0m' # No Color
+
 # Go to project root (where pom.xml is located)
 while [ ! -f pom.xml ] && [ "$PWD" != "/" ]; do
     cd ..
@@ -20,29 +26,28 @@ if [ ! -d "$TEST_DIR" ]; then
     exit 1
 fi
 
-# Counter for statistics
+# Initialize counters
 total_files=0
 successful_compilations=0
 successful_executions=0
 failed_compilations=0
 failed_executions=0
 
-# Function to process .deca files
-process_deca_file() {
-    local deca_file="$1"
-    local base_name=$(basename "$deca_file" .deca)
-    local dir_name=$(dirname "$deca_file")
-    local expected_file="$EXPECTED_DIR/$base_name.expected"
+# Process all .deca files and store results
+while IFS= read -r deca_file; do
+    ((total_files++))
 
     echo "Processing: $deca_file"
-    ((total_files++))
+    base_name=$(basename "$deca_file" .deca)
+    dir_name=$(dirname "$deca_file")
+    expected_file="$EXPECTED_DIR/$base_name.expected"
 
     # Compile the .deca file and capture output
     compilation_output=$(decac "$deca_file" 2>&1)
 
     # Check if compilation was successful (no output)
     if [ -z "$compilation_output" ]; then
-        echo "✓ Compilation successful"
+        echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
 
         # Check if .ass file was generated
@@ -56,10 +61,10 @@ process_deca_file() {
 
                 # Compare outputs
                 if [ "$ima_output" == "$expected_output" ]; then
-                    echo "✓ Execution matches expected output"
+                    echo -e "${GREEN}✓ Execution matches expected output${NC}"
                     ((successful_executions++))
                 else
-                    echo "✗ Execution output mismatch"
+                    echo -e "${RED}✗ Execution output mismatch${NC}"
                     echo "Expected:"
                     echo "$expected_output"
                     echo "Got:"
@@ -67,26 +72,21 @@ process_deca_file() {
                     ((failed_executions++))
                 fi
             else
-                echo "! Warning: Expected output file not found: $expected_file"
+                echo -e "${ORANGE}! Warning: Expected output file not found: $expected_file${NC}"
                 ((failed_executions++))
             fi
         else
-            echo "✗ Assembly file not generated: $dir_name/$base_name.ass"
+            echo -e "${RED}✗ Assembly file not generated: $dir_name/$base_name.ass${NC}"
             ((failed_executions++))
         fi
     else
-        echo "✗ Compilation failed"
+        echo -e "${RED}✗ Compilation failed${NC}"
         echo "Compilation output:"
         echo "$compilation_output"
         ((failed_compilations++))
     fi
     echo "----------------------------------------"
-}
-
-# Find and process all .deca files
-find "$TEST_DIR" -type f -name "*.deca" | while read -r file; do
-    process_deca_file "$file"
-done
+done < <(find "$TEST_DIR" -type f -name "*.deca")
 
 # Print summary
 echo "Testing Summary:"
