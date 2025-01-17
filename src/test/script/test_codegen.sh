@@ -178,11 +178,17 @@ done
 
 
 echo -e "\n${BOLD}Testing Summary:${NC}"
+
+echo -e "\n${BOLD}Compilation Summary:${NC}"
 echo "Total files processed: $total_files"
 echo "Successful compilations: $successful_compilations"
 echo "Failed compilations: $failed_compilations"
+
+echo -e "\n${BOLD}Execution Summary:${NC}"
 echo "Total executions attempted: $total_executions"
 echo "Successful executions: $successful_executions"
 echo "Failed executions: $failed_executions"
+
+echo -e "\n${BOLD}Invalid .deca File Test Summary:${NC}"
 echo "Successful invalid tests: $successful_invalid"
 echo "Failed invalid tests: $failed_invalid"
