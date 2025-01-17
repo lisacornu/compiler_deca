@@ -34,7 +34,7 @@ public class New extends AbstractExpr {
         if(!type.verifyType(compiler).isClass()){
             throw new ContextualError("Type is not a class type", getLocation());
         }
-        setType(currentClass.getType());
+        setType(type.verifyType(compiler));
         return getType();
     }
 
