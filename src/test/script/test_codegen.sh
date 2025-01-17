@@ -190,9 +190,9 @@ total_compilation_sucess=$((successful_compilations + successful_invalid))
 total_compilation_fail=$((failed_compilations + failed_invalid))
 
 echo -e "\n${BOLD}Testing Summary:${NC}"
-echo "Total files processed: $total_files"
 
 echo -e "\n${BOLD}Compiling Tests Summary:${NC}"
+echo "Total files compiled: $total_files"
 echo -e "${GREEN}Successful compilations tests: $total_compilation_sucess${NC}"
 echo -e "${RED}Failed compilations tests : $total_compilation_fail${NC}"
 
