@@ -1,12 +1,13 @@
 #!/bin/bash
 
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
 BOLD='\033[1m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Remonte à la racine
+# remonte à la racine du projet
 while [ ! -f pom.xml ] && [ "$PWD" != "/" ]; do
     cd ..
 done
@@ -16,7 +17,7 @@ if [ ! -f pom.xml ]; then
     exit 1
 fi
 
-# Maven
+
 for cmd in "clean" "compile" "test-compile"; do
     echo -e "${BOLD}Running 'mvn $cmd'...${NC}"
     if ! mvn "$cmd"; then
@@ -32,7 +33,7 @@ GENERAL_TEST_DIR="src/test/deca/codegen/valid"
 INVALID_TEST_DIR="src/test/deca/codegen/invalid"
 EXPECTED_DIR="src/test/deca/codegen/valid/expected"
 
-# Vérifie que les dossiers existent
+
 if [ ! -d "$PERSONAL_TEST_DIR" ]; then
     echo -e "${RED}Error: Personal test directory not found: $PERSONAL_TEST_DIR${NC}"
     exit 1
@@ -56,7 +57,7 @@ total_executions=0
 successful_invalid=0
 failed_invalid=0
 
-# traite un fichier .deca
+# Gère les .deca qu'il faut juste compiler (ceux avec entrées)
 process_personal_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
@@ -66,7 +67,7 @@ process_personal_file() {
     # Compile
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # Si la sortie contient . ou / on considère la compilation échoué (arbitraire)
+    # Si la sortie contient . ou / la compilation est echouée
     if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
@@ -79,7 +80,7 @@ process_personal_file() {
     echo "----------------------------------------"
 }
 
-# compilation et execution d'un fichier .deca
+# execution et compilation d'un .deca
 process_general_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
@@ -88,10 +89,10 @@ process_general_file() {
 
     echo "Processing (compilation and execution): $deca_file"
 
-    # Compile
+    # Compile les .deca
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # si il y a . ou / dans la sortie la compilation est échoué
+    # Compilation échoué si la sortie contient . ou /
     if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
@@ -102,11 +103,11 @@ process_general_file() {
 
             ima_output=$(ima "$dir_name/$base_name.ass" 2>&1)
 
-            # Vérifie que les .expected existent
+            # Vérifie que les fichiers existent
             if [ -f "$expected_file" ]; then
                 expected_output=$(<"$expected_file")
 
-                # Compare sorties
+                # Compare les sorties
                 if [ "$ima_output" == "$expected_output" ]; then
                     echo -e "${GREEN}✓ Execution matches expected output${NC}"
                     ((successful_executions++))
@@ -122,6 +123,9 @@ process_general_file() {
                 echo -e "${ORANGE}! Warning: Expected output file not found: $expected_file${NC}"
                 ((failed_executions++))
             fi
+
+            # Retire les .ass
+            rm -f "$dir_name/$base_name.ass"
         else
             echo -e "${RED}✗ Assembly file not generated: $dir_name/$base_name.ass${NC}"
             ((failed_executions++))
@@ -135,17 +139,17 @@ process_general_file() {
     echo "----------------------------------------"
 }
 
-# Gère les fichiers deca invalides
+# Gère les fichiers .deca invalide
 process_invalid_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
 
     echo "Processing (invalid test): $deca_file"
 
-    # idem
+    # Compile
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # idem
+    # Si la sortie contient . ou / elle est considéré comme échoué
     if [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Invalid test passed${NC}"
         ((successful_invalid++))
@@ -155,6 +159,10 @@ process_invalid_file() {
         echo "$compilation_output"
         ((failed_invalid++))
     fi
+
+    # retire les fichiers .ass générés
+    rm -f "$(dirname "$deca_file")/$base_name.ass"
+
     echo "----------------------------------------"
 }
 
@@ -178,17 +186,11 @@ done
 
 
 echo -e "\n${BOLD}Testing Summary:${NC}"
-
-echo -e "\n${BOLD}Compilation Summary:${NC}"
 echo "Total files processed: $total_files"
 echo "Successful compilations: $successful_compilations"
 echo "Failed compilations: $failed_compilations"
-
-echo -e "\n${BOLD}Execution Summary:${NC}"
 echo "Total executions attempted: $total_executions"
 echo "Successful executions: $successful_executions"
 echo "Failed executions: $failed_executions"
-
-echo -e "\n${BOLD}Invalid .deca File Test Summary:${NC}"
 echo "Successful invalid tests: $successful_invalid"
 echo "Failed invalid tests: $failed_invalid"
