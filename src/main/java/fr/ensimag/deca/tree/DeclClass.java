@@ -86,11 +86,13 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        className.getClassDefinition().setNumberOfFields(listField.size());
+        // className.getClassDefinition().setNumberOfFields(listField.size());
+        className.getClassDefinition().setNumberOfFields(parentClass.getClassDefinition().getNumberOfFields());
         listField.verifyListFieldMembers(compiler, className.getClassDefinition());
-        // enlevé par lisa, pas utile car incNumberOfMethod appelé dans la définition de méthode du fichier DeclMethod suffit à compter les méthodes
-        //className.getClassDefinition().setNumberOfMethods(listMethod.size());
+        // className.getClassDefinition().setNumberOfMethods(listMethod.size());
+        className.getClassDefinition().setNumberOfMethods(parentClass.getClassDefinition().getNumberOfMethods());
         listMethod.verifyListMethodMembers(compiler, className.getClassDefinition());
+
     }
     
     @Override
@@ -125,13 +127,6 @@ public class DeclClass extends AbstractDeclClass {
 
         ClassDefinition parentClassDefinition = parentClass.getClassDefinition();
         int offset = 0;
-
-        System.out.println(
-                className.getClassDefinition().getType().getName().getName()+" : "+
-                className.getClassDefinition().getNumberOfFields()+"\n"+
-                parentClass.getClassDefinition().getType().getName().getName()+" : "+
-                parentClass.getClassDefinition().getNumberOfFields()+"\n"
-        );
 
         while(parentClassDefinition != null) {
             offset += parentClassDefinition.getNumberOfFields();
@@ -200,7 +195,7 @@ public class DeclClass extends AbstractDeclClass {
         for (int i = classHierarchy.size()-1; i>=0; i--) {
             classHierarchy.get(i).codeGenMethodsVTable(compiler, classHierarchy.get(i).);
         }
-        
+
         compiler.headOfGBStack += this.listMethod.size() + 1;
     }
 

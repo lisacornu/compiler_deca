@@ -239,7 +239,7 @@ public class DecacCompiler implements Callable<Boolean> {
 
         // ajouté par lisa !! gestion du débordement de la pile
         int methodTableSize = 2; // dans le cas du sans objet
-        program.addFirst(new ADDSP(stackUsageWatcher.getNbVariables() + methodTableSize));
+        program.addFirst(new ADDSP(stackUsageWatcher.nbVariables + methodTableSize));
         program.addFirst(new BOV(new Label("pile_pleine")));
         program.addFirst(new TSTO(1024));
 

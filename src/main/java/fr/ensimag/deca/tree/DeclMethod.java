@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -76,26 +77,36 @@ public class DeclMethod extends AbstractDeclMethod {
         //     throw new ContextualError("The type of this method is void.", getLocation());
         // }
         Signature sign = parameters.verifyListParamMembers(compiler, nameClass);
-        //nameClass.incNumberOfMethods();
-
-        MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.incNumberOfMethods());
-        nameClass.setMethodIndex(nameClass.getMethodIndex() + 1);
-
         if (nameClass.getSuperClass().getMembers().get(methodName.getName())==null){
             try{
-                nameClass.getSuperClass().getMembers().declare(methodName.getName(), methodDef);
+                nameClass.incNumberOfMethods();
+                MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.getNumberOfMethods());
+                nameClass.getMembers().declare(methodName.getName(), methodDef);
+                methodName.setDefinition(methodDef);
+                methodName.setType(type.verifyTypeMethod(compiler)); // ou mettre en parametre le envExp
+
             } catch (DoubleDefException e){
                 throw new ContextualError("The method as already been declared before.", getLocation());
             }
-        } // else { // Pour le override
-            // if(nameClass.getSuperClass().getMembers().get(methodName.getName()).getType()!=type.getType()){
-            //     throw new ContextualError("You overwrite a method without good type", getLocation());
-            // } else {
-            //     methodDef = 
-            // }
-        // }
-        // methodName.verifyExpr(compiler, nameClass.getMembers(), nameClass); // ou mettre en parametre le envExp
-        methodName.setDefinition(methodDef);
+        } else { // Pour le override
+            if(!nameClass.getSuperClass().getMembers().get(methodName.getName()).getType().sameType(type.verifyTypeMethod(compiler))){
+                throw new ContextualError("You overwrite a method without good type", getLocation());
+            } else {
+                try{
+                nameClass.incNumberOfMethods();
+                ExpDefinition parentDef = nameClass.getSuperClass().getMembers().get(methodName.getName());
+                MethodDefinition parentMethodDef = (MethodDefinition) parentDef;
+                MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, parentMethodDef.getIndex());
+                methodName.setDefinition(methodDef);
+                methodName.setType(type.verifyTypeMethod(compiler));
+                nameClass.getMembers().declare(methodName.getName(), methodDef);
+
+                } catch (DoubleDefException e){
+                    throw new ContextualError("The method as already been declared before.", getLocation());
+                }
+            }
+        }
+
         
 
     }

@@ -1,151 +1,194 @@
 #!/bin/bash
 
-#-----------------------------------------------------------------------------------------------
-#
-# Ce test lance la commande decac sur tous les fichier .deca du répertoire de test
-# de codegen et considère les test comme passé si les test valide (respectivement invalide)
-# ne produisent pas de sorti (respectivement en produisent) et considère le test comme échoué
-# dans le cas inverse
-#
-#-----------------------------------------------------------------------------------------------
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
 
-# Fonction pour afficher un message en rouge gras
-function print_red_bold {
-    echo -e "\033[1;31m$1\033[0m"
-}
+# Remonte à la racine
+while [ ! -f pom.xml ] && [ "$PWD" != "/" ]; do
+    cd ..
+done
 
-# Aller à la racine du projet
-cd "$(dirname "$0")/../../../" || exit 1
-
-# Vérifier si on est bien dans la racine du projet
-if [ -f "pom.xml" ]; then
-    echo "Racine du projet détectée. Exécution des commandes Maven."
-
-    # Exécution des commandes Maven et vérification des erreurs
-    mvn clean || { print_red_bold "Erreur lors de l'exécution de mvn clean"; exit 1; }
-    mvn compile || { print_red_bold "Erreur lors de l'exécution de mvn compile"; exit 1; }
-    mvn test-compile || { print_red_bold "Erreur lors de l'exécution de mvn test-compile"; exit 1; }
-
-else
-    echo "Erreur : Impossible de détecter la racine du projet (pom.xml introuvable)."
+if [ ! -f pom.xml ]; then
+    echo -e "${RED}Error: Could not find project root (pom.xml)${NC}"
     exit 1
 fi
 
-# Revenir au répertoire d'origine
-cd "src/test"
-
-
-# Dossiers contenant les fichiers à tester
-VALID_DIR="deca/codegen/valid"
-INVALID_DIR="deca/codegen/invalid"
-
-# Vérification si les répertoires existent et contiennent des fichiers .deca
-if [ ! -d "$VALID_DIR" ]; then
-    echo "Le répertoire $VALID_DIR n'existe pas."
-    exit 1
-fi
-
-if [ ! -d "$INVALID_DIR" ]; then
-    echo "Le répertoire $INVALID_DIR n'existe pas."
-    exit 1
-fi
-
-# Vérification des fichiers .deca
-valid_deca_files=$(find "$VALID_DIR" -type f -name "*.deca")
-invalid_deca_files=$(find "$INVALID_DIR" -type f -name "*.deca")
-
-if [ -z "$valid_deca_files" ] && [ -z "$invalid_deca_files" ]; then
-    echo "Aucun fichier .deca trouvé dans les répertoires $VALID_DIR et $INVALID_DIR."
-    exit 1
-fi
-
-# Statistiques
-total_tests=0
-passed_tests=0
-failed_tests=()
-
-function print_green {
-    echo -e "\033[32m$1\033[0m"
-}
-
-function print_red {
-    echo -e "\033[31m$1\033[0m"
-}
-
-function print_bold {
-    echo -e "\033[1m$1\033[0m"
-}
-
-# Test du répertoire valide
-echo "Vérification des fichiers .deca valide :"
-
-# Récupère les fichier un par un
-while IFS= read -r file; do
-    total_tests=$((total_tests + 1))
-
-    # lancement de la commande decac
-    output=$(decac "$file" 2>&1)
-    exit_code=$?
-
-    # Vérification de la sortie
-    if [ $exit_code -eq 0 ] && [ -z "$output" ]; then
-        passed_tests=$((passed_tests + 1))
-        print_green "test n°$total_tests passed : $(basename "$file")"
-    else
-        # Si un message est affiché --> problème si c'est un test valide
-        print_red "$(basename "$file") erreur :"
-        echo -e "$output"  # Affiche le message d'erreur sous le nom du fichier
-        failed_tests+=("$(basename "$file")")
+# Maven
+for cmd in "clean" "compile" "test-compile"; do
+    echo -e "${BOLD}Running 'mvn $cmd'...${NC}"
+    if ! mvn "$cmd"; then
+        echo -e "${RED}Error: 'mvn $cmd' failed. Aborting.${NC}"
+        exit 1
     fi
-done <<< "$valid_deca_files"
+    echo -e "${GREEN}✓ 'mvn $cmd' succeeded.${NC}"
+done
 
-# Test des fichiers invalide
-echo "Vérification des fichiers .deca invalide :"
 
-# Récupère les fichier un par un
-while IFS= read -r file; do
-    total_tests=$((total_tests + 1))
+PERSONAL_TEST_DIR="src/test/deca/codegen/valid/personal/stdin"
+GENERAL_TEST_DIR="src/test/deca/codegen/valid"
+INVALID_TEST_DIR="src/test/deca/codegen/invalid"
+EXPECTED_DIR="src/test/deca/codegen/valid/expected"
 
-    output=$(decac "$file" 2>&1)
-    exit_code=$?
+# Vérifie que les dossiers existent
+if [ ! -d "$PERSONAL_TEST_DIR" ]; then
+    echo -e "${RED}Error: Personal test directory not found: $PERSONAL_TEST_DIR${NC}"
+    exit 1
+fi
+if [ ! -d "$GENERAL_TEST_DIR" ]; then
+    echo -e "${RED}Error: General test directory not found: $GENERAL_TEST_DIR${NC}"
+    exit 1
+fi
+if [ ! -d "$INVALID_TEST_DIR" ]; then
+    echo -e "${RED}Error: Invalid test directory not found: $INVALID_TEST_DIR${NC}"
+    exit 1
+fi
 
-    # Vérification de la sortie : inverse des test valide
-    if [ $exit_code -eq 0 ] && [ -z "$output" ]; then
-        print_red "$(basename "$file") erreur :"
-        echo -e "$output"  # Affiche le message d'erreur sous le nom du fichier
-        failed_tests+=("$(basename "$file")")
+
+total_files=0
+successful_compilations=0
+successful_executions=0
+failed_compilations=0
+failed_executions=0
+total_executions=0
+successful_invalid=0
+failed_invalid=0
+
+# traite un fichier .deca
+process_personal_file() {
+    local deca_file="$1"
+    local base_name=$(basename "$deca_file" .deca)
+
+    echo "Processing (compilation only): $deca_file"
+
+    # Compile
+    compilation_output=$(decac "$deca_file" 2>&1)
+
+    # Si la sortie contient . ou / on considère la compilation échoué (arbitraire)
+    if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
+        echo -e "${GREEN}✓ Compilation successful${NC}"
+        ((successful_compilations++))
     else
-        # Si la commande affiche quelque chose (erreur ou autre) --> le test est réussi pour "invalid"
-        passed_tests=$((passed_tests + 1))
-        print_green "test n°$total_tests passed : $(basename "$file")"
+        echo -e "${RED}✗ Compilation failed${NC}"
+        echo "Compilation output:"
+        echo "$compilation_output"
+        ((failed_compilations++))
     fi
-done <<< "$invalid_deca_files"
+    echo "----------------------------------------"
+}
 
-# Résumé
-if [ $total_tests -gt 0 ]; then
-    passed_percentage=$((100 * passed_tests / total_tests))
-else
-    passed_percentage=0
-fi
+# compilation et execution d'un fichier .deca
+process_general_file() {
+    local deca_file="$1"
+    local base_name=$(basename "$deca_file" .deca)
+    local dir_name=$(dirname "$deca_file")
+    local expected_file="$EXPECTED_DIR/$base_name.expected"
 
-echo ""
-print_bold "Résumé des tests :"
+    echo "Processing (compilation and execution): $deca_file"
 
-if [ ${#failed_tests[@]} -gt 0 ]; then
-    print_bold "Tests échoués :"
-    for failed_test in "${failed_tests[@]}"; do
-        echo "  - $failed_test"
-    done
-else
-    echo "  Aucun test échoué."
-fi
+    # Compile
+    compilation_output=$(decac "$deca_file" 2>&1)
 
-find "$VALID_DIR" -type f -name "*.ass" -exec rm -f {} \;
-find "$INVALID_DIR" -type f -name "*.ass" -exec rm -f {} \;
+    # si il y a . ou / dans la sortie la compilation est échoué
+    if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
+        echo -e "${GREEN}✓ Compilation successful${NC}"
+        ((successful_compilations++))
 
-echo ""
-print_bold "Résumé final :"
-echo "  - Nombre total de tests : $total_tests"
-print_green "  --> Tests réussis : $passed_tests"
-print_red "  --> Tests échoués : ${#failed_tests[@]}"
-print_bold "Taux de réussite : $passed_percentage%"
+        # Vérif que les .ass sont générés
+        if [ -f "$dir_name/$base_name.ass" ]; then
+            ((total_executions++))
+
+            ima_output=$(ima "$dir_name/$base_name.ass" 2>&1)
+
+            # Vérifie que les .expected existent
+            if [ -f "$expected_file" ]; then
+                expected_output=$(<"$expected_file")
+
+                # Compare sorties
+                if [ "$ima_output" == "$expected_output" ]; then
+                    echo -e "${GREEN}✓ Execution matches expected output${NC}"
+                    ((successful_executions++))
+                else
+                    echo -e "${RED}✗ Execution output mismatch${NC}"
+                    echo "Expected:"
+                    echo "$expected_output"
+                    echo "Got:"
+                    echo "$ima_output"
+                    ((failed_executions++))
+                fi
+            else
+                echo -e "${ORANGE}! Warning: Expected output file not found: $expected_file${NC}"
+                ((failed_executions++))
+            fi
+        else
+            echo -e "${RED}✗ Assembly file not generated: $dir_name/$base_name.ass${NC}"
+            ((failed_executions++))
+        fi
+    else
+        echo -e "${RED}✗ Compilation failed${NC}"
+        echo "Compilation output:"
+        echo "$compilation_output"
+        ((failed_compilations++))
+    fi
+    echo "----------------------------------------"
+}
+
+# Gère les fichiers deca invalides
+process_invalid_file() {
+    local deca_file="$1"
+    local base_name=$(basename "$deca_file" .deca)
+
+    echo "Processing (invalid test): $deca_file"
+
+    # idem
+    compilation_output=$(decac "$deca_file" 2>&1)
+
+    # idem
+    if [[ "$compilation_output" =~ [./] ]]; then
+        echo -e "${GREEN}✓ Invalid test passed${NC}"
+        ((successful_invalid++))
+    else
+        echo -e "${RED}✗ Invalid test failed${NC}"
+        echo "Compilation output:"
+        echo "$compilation_output"
+        ((failed_invalid++))
+    fi
+    echo "----------------------------------------"
+}
+
+
+for deca_file in $(find "$PERSONAL_TEST_DIR" -type f -name "*.deca"); do
+    ((total_files++))
+    process_personal_file "$deca_file"
+done
+
+
+for deca_file in $(find "$GENERAL_TEST_DIR" -type f -name "*.deca" ! -path "$PERSONAL_TEST_DIR/*"); do
+    ((total_files++))
+    process_general_file "$deca_file"
+done
+
+
+for deca_file in $(find "$INVALID_TEST_DIR" -type f -name "*.deca"); do
+    ((total_files++))
+    process_invalid_file "$deca_file"
+done
+
+
+echo -e "\n${BOLD}Testing Summary:${NC}"
+
+echo -e "\n${BOLD}Compilation Summary:${NC}"
+echo "Total files processed: $total_files"
+echo "Successful compilations: $successful_compilations"
+echo "Failed compilations: $failed_compilations"
+
+echo -e "\n${BOLD}Execution Summary:${NC}"
+echo "Total executions attempted: $total_executions"
+echo "Successful executions: $successful_executions"
+echo "Failed executions: $failed_executions"
+
+echo -e "\n${BOLD}Invalid .deca File Test Summary:${NC}"
+echo "Successful invalid tests: $successful_invalid"
+echo "Failed invalid tests: $failed_invalid"
