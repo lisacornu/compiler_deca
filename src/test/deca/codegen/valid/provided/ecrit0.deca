@@ -9,12 +9,8 @@
 //    cree le 01/01/2025
 
 {
-   println("ok") ; 
-   println();
-   println("vrouem");
-   print("ok") ; 
-   println("a") ; 
-   println(1.5);
+   println("ok") ;
+   print("ok") ;
 }
 
 

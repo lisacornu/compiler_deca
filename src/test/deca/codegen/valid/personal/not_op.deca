@@ -3,12 +3,11 @@
 //
 // Resultats:
 //   ok
-//
+//   non
 // Historique:
 //    cree le 11/01/2025
 
 {
-    println("Devrait print 'ok' : ");
     if (!false) {
         println("ok");
     }
@@ -16,7 +15,6 @@
         println("non");
     }
 
-    println("Devrait print 'non' : ");
     if (!true) {
         println("ok");
     }

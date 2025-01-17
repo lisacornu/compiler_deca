@@ -80,7 +80,7 @@ public class DeclField extends AbstractDeclField {
 
         // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
             try{
-                nameClass.getSuperClass().getMembers().declare(fieldName.getName(), fieldDef);
+                nameClass.getMembers().declare(fieldName.getName(), fieldDef);
             } catch (DoubleDefException e){
                 throw new ContextualError("The field as already been declared before.", getLocation());
             }

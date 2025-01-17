@@ -123,19 +123,6 @@ public class DeclClass extends AbstractDeclClass {
         return this.className;
     }
 
-    protected int getSuperOffset() {
-
-        ClassDefinition parentClassDefinition = parentClass.getClassDefinition();
-        int offset = 0;
-
-        while(parentClassDefinition != null) {
-            offset += parentClassDefinition.getNumberOfFields();
-            parentClassDefinition = parentClassDefinition.getSuperClass();
-        }
-
-        return offset;
-    }
-
 
     protected void codeGenDeclClass(DecacCompiler compiler) {
 
@@ -149,7 +136,8 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("---------- Initialisation des champs de "+className.getName().getName());
         compiler.addLabel(new Label("init."+className.getName().getName()));
 
-        listField.codeGenDeclField(compiler, getSuperOffset(), parentClass);
+        listField.codeGenDeclField(compiler, className.getClassDefinition().getNumberOfFields(), parentClass);
+
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
