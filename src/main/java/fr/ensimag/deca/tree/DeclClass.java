@@ -136,8 +136,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("---------- Initialisation des champs de "+className.getName().getName());
         compiler.addLabel(new Label("init."+className.getName().getName()));
 
-        listField.codeGenDeclField(compiler, className.getClassDefinition().getNumberOfFields(), parentClass);
-
+        listField.codeGenDeclField(compiler, parentClass.getClassDefinition().getNumberOfFields(), parentClass);
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {

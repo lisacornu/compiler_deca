@@ -79,8 +79,9 @@ public class Program extends AbstractProgram {
         compiler.addComment("--------------------------------------------------");
         main.codeGenMain(compiler);
 
-        classes.codeGenListDeclClass(compiler);
         compiler.addInstruction(new HALT());
+        classes.codeGenListDeclClass(compiler);
+
 
         //Depas
         compiler.addComment("--------------------------------------------------");
