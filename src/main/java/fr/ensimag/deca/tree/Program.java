@@ -53,6 +53,9 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenVTable(DecacCompiler compiler) {
+        if (this.classes.getList().isEmpty())
+            return;
+        
         this.classes.getList().get(0).setParentClassAdress(1);
 
         compiler.addInstruction(new LOAD(new NullOperand(), GPRegister.R0));
