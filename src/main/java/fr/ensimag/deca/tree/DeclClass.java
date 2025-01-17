@@ -193,7 +193,6 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
 
-
         // construction du tableau des méthodes de cette classe
         this.buildMethodArray();
 
@@ -204,14 +203,12 @@ public class DeclClass extends AbstractDeclClass {
     }
 
 
-    public void codeGenMethodsVTable (DecacCompiler compiler) {
-
+    private void codeGenMethodsVTable (DecacCompiler compiler) {
         for (String methodName : this.className.getClassDefinition().getMethodArray()) {
             compiler.headOfGBStack++;
             compiler.addInstruction(new LOAD(new LabelOperand(new Label(methodName)), GPRegister.R0));
             compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, Register.GB)));
-
         }
-
     }
+
 }
