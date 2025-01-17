@@ -1,0 +1,8 @@
+TEST AND
+Devrait print : true
+true
+TEST OR
+Devrait print : true true true
+true
+true
+true

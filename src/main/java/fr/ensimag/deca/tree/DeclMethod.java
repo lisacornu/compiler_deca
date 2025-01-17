@@ -84,7 +84,6 @@ public class DeclMethod extends AbstractDeclMethod {
                 nameClass.getMembers().declare(methodName.getName(), methodDef);
                 methodName.setDefinition(methodDef);
                 methodName.setType(type.verifyTypeMethod(compiler)); // ou mettre en parametre le envExp
-
             } catch (DoubleDefException e){
                 throw new ContextualError("The method as already been declared before.", getLocation());
             }
