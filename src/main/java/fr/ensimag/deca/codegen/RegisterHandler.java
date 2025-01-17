@@ -9,12 +9,11 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
+import java.util.ArrayList;
+
 public class RegisterHandler {
 
     private boolean[] freeRegisters;
-    // copie de freeRegister pour pouvoir retrouver quels registres étaient utilisé avant l'appel en resortant d'une méthode
-    // vaut null si on est pas en cours de génération de code d'une méthode
-    private boolean[] savedStateOfFreeRegisters = null;
     private int nbRegisterAvailable;
 
     public RegisterHandler(int NbRegisterAvailable) {
@@ -53,21 +52,29 @@ public class RegisterHandler {
     }
 
 
-    // Appellée au début d'une méthode pour sauvegarder l'état de tout les registres
-    // A optimiser plus tard pour ne sauvegarder que les registres utiles à la méthode
-    public void saveAllReg (DecacCompiler compiler) {
-        this.savedStateOfFreeRegisters = this.freeRegisters;
+    // Appellé au début d'une méthode pour sauvegarder tout les registres occupé
+    // Renvoi tout les registres occupés
+    public ArrayList<GPRegister> saveFullRegs (DecacCompiler compiler) {
+
+        ArrayList<GPRegister> savedRegs = new ArrayList<>();
+
         for (int i=2; i < this.nbRegisterAvailable; i++) {
+
+            if (this.freeRegisters[i]) continue;
+            savedRegs.add(GPRegister.getR(i));
+
             compiler.addInstruction(new PUSH(GPRegister.getR(i)));
             this.freeRegisters[i] = true;
         }
+        return savedRegs;
     }
 
-    // Restaure l'état des registres à la fin de l'éxecution d'une méthode
-    public void restoreAllReg (DecacCompiler compiler) {
-        this.freeRegisters = this.savedStateOfFreeRegisters;
-        for (int i=nbRegisterAvailable; i >= 2; i--) {
-            compiler.addInstruction(new POP(GPRegister.getR(i)));
+    // Restaure l'état des registres en arguments à la fin de l'éxecution d'une méthode
+    public void restoreRegs (DecacCompiler compiler, ArrayList<GPRegister> savedRegs) {
+        for(GPRegister reg : savedRegs) {
+
+            compiler.addInstruction(new POP(reg));
+            this.freeRegisters[reg.getNumber()] = false;
         }
     }
 

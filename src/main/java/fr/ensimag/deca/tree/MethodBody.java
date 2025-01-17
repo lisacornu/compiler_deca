@@ -66,9 +66,10 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass) {
-        compiler.registerHandler.saveAllReg(compiler);
+
+        ArrayList<GPRegister> savedRegs = compiler.registerHandler.saveFullRegs(compiler);
         listVar.codeGenListDeclVarMethod(compiler);
         listInst.codeGenListInst(compiler);
-        compiler.registerHandler.restoreAllReg(compiler);
+        compiler.registerHandler.restoreRegs(compiler, savedRegs);
     }
 }
