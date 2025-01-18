@@ -74,9 +74,9 @@ public class DeclField extends AbstractDeclField {
         if (expDefinition!=null){
             FieldDefinition fieldDefinition = (FieldDefinition) expDefinition;
         }
-        nameClass.incNumberOfFields();
-        FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
 
+        FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
+        nameClass.incNumberOfFields();
 
         // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
             try{
@@ -138,6 +138,7 @@ public class DeclField extends AbstractDeclField {
 
     //Initialise le champ et renvoi son adresse dans le tas
     private RegisterOffset initField(DecacCompiler compiler, GPRegister initReg, GPRegister objReg, int superOffset) {
+
         int fieldOffset = 1 + superOffset + fieldName.getFieldDefinition().getIndex();
         RegisterOffset heapFieldAddress = new RegisterOffset(fieldOffset, objReg);
         compiler.addInstruction(new STORE(initReg, heapFieldAddress));
