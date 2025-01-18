@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -85,15 +86,22 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        Type type2 = verifyExpr(compiler, localEnv, currentClass);
-
-        if(type2.sameType(expectedType)){
-            setType(type2);
+        Type type = verifyExpr(compiler, localEnv, currentClass);
+        if(type.sameType(expectedType)){
+            setType(type);
             return this;
-        }else if ((type2.isInt() && expectedType.isFloat()) ){ //|| (type2.isFloat() && expectedType.isInt())
+        }else if ((type.isInt() && expectedType.isFloat()) ){ //|| (type.isFloat() && expectedType.isInt())
             return this;
+        }else if (type.isClass()){
+            ClassType classType = type.asClassType(null, getLocation());
+            ClassType expectedClassType= expectedType.asClassType(null, getLocation());
+            if (classType.isSubClassOf(expectedClassType)){
+                return this;
+            }else{
+                throw new ContextualError("The classType "+ classType +" is not a subclassType of " + expectedClassType, getLocation());
+            }
         }else{
-            throw new ContextualError("They are not compatible (not same type or float->int) " + type2 + " is not " + expectedType, getLocation());
+            throw new ContextualError("They are not compatible (not same type or float->int) " + type + " is not " + expectedType, getLocation());
         }
     }
     
@@ -102,8 +110,8 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-            Type type2 = verifyExpr(compiler, localEnv, currentClass);
-        if (!(type2.isBoolean() || type2.isFloat() || type2.isInt() || type2.isString()|| type2.isVoid())){
+            Type type = verifyExpr(compiler, localEnv, currentClass);
+        if (!(type.isBoolean() || type.isFloat() || type.isInt() || type.isString()|| type.isVoid()|| type.isClass())){
             throw new UnsupportedOperationException("This is not inst type");
         }
     }
