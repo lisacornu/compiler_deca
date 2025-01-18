@@ -34,7 +34,6 @@ public class InstanceOf extends AbstractExpr {
                 System.out.println(type.getName() + " " + expr.getName());
         Type typeExpr = expr.verifyExpr(compiler, localEnv, currentClass);
         Type typeType = type.verifyType(compiler);
-        System.out.println(typeExpr.isClass() + " " + typeType.isClass());
         if(!((typeExpr.isClass()|| typeExpr.isNull())||typeType.isClass())){
             throw new ContextualError("You cant do Instanceof " + typeExpr, getLocation());
         }

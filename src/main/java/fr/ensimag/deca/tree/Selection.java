@@ -40,7 +40,6 @@ public class Selection extends AbstractLValue {
             ClassDefinition currentClass)
             throws ContextualError {
         Type type = expr.verifyExpr(compiler, localEnv, currentClass);
-        System.out.println(currentClass);
         FieldDefinition fieldDef;
         if (currentClass==null){
             ClassDefinition classParentDef = (ClassDefinition)compiler.environmentType.defOfType(type.getName()); 
@@ -48,7 +47,6 @@ public class Selection extends AbstractLValue {
         }else{
             fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
         }
-        System.out.println(fieldDef);
         
         if(!type.isClass()){
             throw new ContextualError("The class is not defined", getLocation());
