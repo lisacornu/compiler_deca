@@ -136,8 +136,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("---------- Initialisation des champs de "+className.getName().getName());
         compiler.addLabel(new Label("init."+className.getName().getName()));
 
-        listField.codeGenDeclField(compiler, className.getClassDefinition().getNumberOfFields(), parentClass);
-
+        listField.codeGenDeclField(compiler, parentClass.getClassDefinition().getNumberOfFields(), parentClass);
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {
@@ -181,7 +180,6 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
 
-
         // construction du tableau des méthodes de cette classe
         this.buildMethodArray();
 
@@ -192,14 +190,12 @@ public class DeclClass extends AbstractDeclClass {
     }
 
 
-    public void codeGenMethodsVTable (DecacCompiler compiler) {
-
+    private void codeGenMethodsVTable (DecacCompiler compiler) {
         for (String methodName : this.className.getClassDefinition().getMethodArray()) {
             compiler.headOfGBStack++;
             compiler.addInstruction(new LOAD(new LabelOperand(new Label(methodName)), GPRegister.R0));
             compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, Register.GB)));
-
         }
-
     }
+
 }

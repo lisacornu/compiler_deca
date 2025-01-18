@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.DecacCompiler;
@@ -11,11 +12,12 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.*;
 
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -38,17 +40,30 @@ public class Selection extends AbstractLValue {
             ClassDefinition currentClass)
             throws ContextualError {
         Type type = expr.verifyExpr(compiler, localEnv, currentClass);
-        FieldDefinition fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
+        System.out.println(currentClass);
+        FieldDefinition fieldDef;
+        if (currentClass==null){
+            ClassDefinition classParentDef = (ClassDefinition)compiler.environmentType.defOfType(type.getName()); 
+            fieldDef = (FieldDefinition) classParentDef.getMembers().get(fieldIdent.getName());
+        }else{
+            fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
+        }
+        System.out.println(fieldDef);
+        
         if(!type.isClass()){
             throw new ContextualError("The class is not defined", getLocation());
         }
         if (fieldDef.getVisibility()==Visibility.PROTECTED){
+            if (currentClass==null){
+                throw new ContextualError("You cant get a protected type", getLocation());
+            }
             if(!type.sameType(currentClass.getType())){
                 throw new ContextualError("Subtype(expr type) is not a subtype of super class(currentClass)", getLocation());
             }
             if(!currentClass.getType().sameType(fieldDef.getContainingClass().getType())){
                 throw new ContextualError("Subtype(currentClass) is not a subtype of super class(field Class)", getLocation());
             }
+            
         }
         fieldIdent.setDefinition(fieldDef);
         setType(fieldDef.getType());
@@ -78,7 +93,20 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        DVal exprAddr = expr.codeGenExpr(compiler);
+        GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, GPRegister.R0);
+
+        DAddr varAddr = fieldIdent.getExpDefinition().getOperand();
+        compiler.addInstruction(new LOAD(varAddr,GPRegister.R1));
+
+        compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R1));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+
+        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),GPRegister.R1);
+        compiler.addInstruction(new STORE(exprReg, fieldHeapAddr));
+
+        return RegisterHandler.pushFromRegister(compiler, exprReg);
     }
 
     @Override
