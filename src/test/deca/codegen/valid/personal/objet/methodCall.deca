@@ -1,0 +1,16 @@
+// Description:
+//    Programme de test de la génération de methodCall
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
+class A {
+    void p (int a, float b) { }
+}
+
+{
+    A a = new A();
+    a.p(1, 2.3);
+}

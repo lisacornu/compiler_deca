@@ -1,0 +1,20 @@
+// Description:
+//    Programme de test de la génération de instanceof
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
+class A { }
+class B extends A { }
+class C extends B { }
+
+{
+    A a;
+    B b;
+    a = new C();
+    if (a instanceof B) {
+        println("ok");
+    }
+}

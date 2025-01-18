@@ -1,3 +1,11 @@
+// Description:
+//    Programme de test de la génération de la table des méthodes avec 1 seule classe
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
 class A {
     protected int x ;
 

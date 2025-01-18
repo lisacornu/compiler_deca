@@ -1,0 +1,24 @@
+// Description:
+//    Programme de test de la génération de la table des méthodes avec 2 classes sans lien entre elles
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
+class A {
+    protected int x ;
+
+    int getX() { }
+    void setX(int x) { }
+}
+
+class B {
+    protected int y ;
+
+    int getY() { }
+    void setY(int x) { }
+}
+
+{
+}
