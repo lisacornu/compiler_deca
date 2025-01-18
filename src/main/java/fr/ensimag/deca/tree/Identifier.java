@@ -215,7 +215,7 @@ public class Identifier extends AbstractIdentifier {
         setType(type.getType());
         return getType();
     }
-/*
+
     @Override
     public void printExprValue(DecacCompiler compiler) {
         if (this.getExpDefinition().getNature().equals("variable")) {
@@ -225,8 +225,8 @@ public class Identifier extends AbstractIdentifier {
             else if (this.getExpDefinition().getType().isInt())
                 compiler.addInstruction(new WINT());
         }
-    }*/
-   @Override
+    }
+ /*  @Override
     public void printExprValue(DecacCompiler compiler) {
         if (this.getExpDefinition().getNature().equals("variable")) {
             // Récupérer le nom de la variable
@@ -239,7 +239,7 @@ public class Identifier extends AbstractIdentifier {
             else if (this.getExpDefinition().getType().isInt())
                 compiler.addInstruction(new WINT());
         }
-    }
+    }*/
 
     
     private Definition definition;

@@ -10,10 +10,7 @@
 
 {   
     int x=3;
-    while(3==x){
-        x=x-1;
-        println(x);
-    }
+    int y =4;
     println(x);
 
     

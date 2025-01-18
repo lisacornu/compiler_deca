@@ -100,11 +100,14 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract Type verifyTypeMethod(DecacCompiler compiler) throws ContextualError;
 
-    @Override
+   /* @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
          String variableName = getName().getName();
          GPRegister register = compiler.variableToRegister.get(variableName);
          return register;
+    }*/
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+         return getExpDefinition().getOperand();
     }
 
 }

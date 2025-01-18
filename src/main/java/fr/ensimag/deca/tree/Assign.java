@@ -56,7 +56,7 @@ public class Assign extends AbstractBinaryExpr {
         return "=";
     }
 
-  /*  @Override
+    @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
         // Generation du codes des branches
@@ -73,7 +73,7 @@ public class Assign extends AbstractBinaryExpr {
 
         //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
         return op1;
-    }*/
+    }
     
     
     @Override
@@ -81,7 +81,7 @@ public class Assign extends AbstractBinaryExpr {
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
-    @Override
+   /* @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
         // Générer le code pour l'expression droite
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
@@ -108,5 +108,5 @@ public class Assign extends AbstractBinaryExpr {
         return newRegister;
     }
 
-
+*/
 }

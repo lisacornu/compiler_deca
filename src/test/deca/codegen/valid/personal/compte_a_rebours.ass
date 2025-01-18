@@ -6,13 +6,37 @@
 ; 		Code du programme principal
 ; --------------------------------------------------
 ; ---------- Déclaration des variables
-	LOAD #3, R2
+	LOAD #5, R2
 	STORE R2, 1(GB)
-; Variable y non utilisée, pas de code généré.
 ; ---------- Instructions
+while1:
+	LOAD #0, R2
+	LOAD 1(GB), R0
+	CMP R2, R0
+	BNE equal0
+	LOAD #0, R0
+	BRA notequal_0
+equal0:
+	LOAD #1, R0
+notequal_0:
+	PUSH R0
+	POP R0
+	CMP #1, R0
+	BNE whileExit1
 	LOAD 1(GB), R1
 	WINT
 	WNL
+	LOAD #1, R0
+	PUSH R0
+	POP R1
+	LOAD 1(GB), R0
+	SUB R1, R0
+	PUSH R0
+	POP R1
+	STORE R1, 1(GB)
+	BRA while1
+whileExit1:
+; yo
 	HALT
 ; Erreur : dépassement de pile
 pile_pleine:

@@ -94,7 +94,7 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
-  /*  @Override
+    @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
             // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = varName.getName().getName();
@@ -119,7 +119,7 @@ public class DeclVar extends AbstractDeclVar {
 
         compiler.addInstruction(new STORE(regInit, GB_Stack));
         compiler.registerHandler.SetFree(regInit);
-    }*/
+    }
 
     @Override
     protected void codeGenDeclVarMethod(DecacCompiler compiler) {
@@ -140,7 +140,7 @@ public class DeclVar extends AbstractDeclVar {
     }
 
      @Override
-    protected void codeGenDeclVar(DecacCompiler compiler) {
+    protected void codeGenDeclVar1(DecacCompiler compiler) {
           // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = varName.getName().getName();
         int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0); // Récupérer le compteur d'usage de la variable
@@ -162,8 +162,7 @@ public class DeclVar extends AbstractDeclVar {
         // Assigner un registre unique à chaque variable déclarée
         GPRegister newRegister = compiler.registerHandler.Get();
         if (newRegister == null) {
-            //fautdra faire declvar la methode d avant ou faire qqchose de plus opti
-            throw new RuntimeException("No free registers available for SSA");
+            codeGenDeclVar(compiler);
         }
         compiler.variableToRegister.put(varName.getName().getName(), newRegister);
     }
