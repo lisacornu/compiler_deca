@@ -1,3 +1,11 @@
+// Description:
+//    Programme de test de la génération de la table des méthodes avec B classe fille de A et qui override A.p()
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
 class A {
     void m() { }
     void p() { }

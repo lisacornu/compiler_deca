@@ -1,0 +1,31 @@
+	TSTO #1024
+	BOV pile_pleine
+	ADDSP #3
+; start main program
+; --------------------------------------------------
+; 		Code du programme principal
+; --------------------------------------------------
+; ---------- Déclaration des variables
+; ---------- Instructions
+	RINT
+	LOAD R1, R2
+	STORE R2, 1(GB)
+	LOAD 1(GB), R1
+	WINT
+	WNL
+	HALT
+code.Object.equals:
+	TSTO #2
+	BOV pile_pleine
+	PUSH R2
+	LOAD -3(LB), R2
+	CMP -2(LB), R2
+	SEQ R0
+	POP R2
+	RTS
+; Erreur : dépassement de pile
+pile_pleine:
+	WSTR "Erreur : dépassement de la taille de pile autorisée"
+	WNL
+	ERROR
+; end main program

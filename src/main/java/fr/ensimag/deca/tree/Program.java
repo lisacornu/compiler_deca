@@ -82,24 +82,19 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new HALT());
         classes.codeGenListDeclClass(compiler);
 
+        this.codeGenErrorMessage(compiler, "pile pleine", "pile_pleine", "dépassement de la taille de pile autorisée");
+        this.codeGenErrorMessage(compiler, "tas plein", "tas_plein", "allocation impossible, tas plein");
+        this.codeGenErrorMessage(compiler, "déréférencement nul", "dereferencement.null", "Déréférencement impossible");
+    }
 
-        //Depas
+    private void codeGenErrorMessage (DecacCompiler compiler, String cas, String label, String errorMsg) {
         compiler.addComment("--------------------------------------------------");
-        compiler.addComment("\t\tMessage d'erreur : pile pleine");
+        compiler.addComment("\t\tMessage d'erreur : " + cas);
         compiler.addComment("--------------------------------------------------");
-        compiler.addLabel(new Label("pile_pleine"));
-        compiler.addInstruction(new WSTR("Erreur : dépassement de la taille de pile autorisée"));
+        compiler.addLabel(new Label(label));
+        compiler.addInstruction(new WSTR("Erreur : " + errorMsg));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
-
-        compiler.addComment("--------------------------------------------------");
-        compiler.addComment("Message d'erreur : allocation impossible, tas plein");
-        compiler.addComment("--------------------------------------------------");
-        compiler.addLabel(new Label("tas_plein"));
-        compiler.addInstruction(new WSTR("Erreur : allocation impossible, tas plein"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
-
     }
 
     @Override

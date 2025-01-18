@@ -10,12 +10,13 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 public class MethodCall extends AbstractExpr{
-    private final AbstractExpr expr;
-    private final AbstractIdentifier methodIdent;
-    private final ListExpr rvalueStar;
+    private final AbstractExpr expr;                //objet
+    private final AbstractIdentifier methodIdent;   //méthode
+    private final ListExpr rvalueStar;              //param
 
     public MethodCall(AbstractExpr expr,AbstractIdentifier methoIdent,ListExpr rvalueStar){
         this.rvalueStar = rvalueStar;
@@ -57,13 +58,41 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler){
-        throw new UnsupportedOperationException("not implemented yet");
+        // on réserve la place pour les paramètres + le paramètre implicite (l'objet appelant)
+        compiler.addInstruction(new ADDSP(this.rvalueStar.getList().size() + 1));
+
+        // empilement du paramètre implicite (objet sur qui on appelle la méthode)
+        compiler.addInstruction(new LOAD(this.expr.codeGenExpr(compiler), GPRegister.R0));
+        compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(0, Register.SP)));
+
+        // empilement des paramètres de la méthode
+        int offset = -1;
+        for (AbstractExpr param : this.rvalueStar.getList()) {
+            DVal locationResult = param.codeGenExpr(compiler);
+            if (locationResult == null) {
+                compiler.addInstruction(new POP(Register.R1));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(offset, Register.SP)));
+            } else {
+                compiler.addInstruction(new STORE((GPRegister) locationResult, new RegisterOffset(offset, Register.SP)));
+            }
+            offset--;
+        }
+
+        // vérification que la paramètre implicite n'est pas null
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R0));
+        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+
+        // Récupération table des méthodes puis appel de la méthode en question
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
+        compiler.addInstruction(new BSR(new RegisterOffset(this.methodIdent.getMethodDefinition().getIndex(), Register.R0)));
+
+        compiler.addInstruction(new SUBSP(this.rvalueStar.getList().size() + 1));
+        return Register.R0;
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-
-        
         expr.decompile(s);
         s.print(".");
         methodIdent.decompile(s);
