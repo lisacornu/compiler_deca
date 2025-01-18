@@ -304,6 +304,8 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
+            $tree = new InstanceOf((AbstractIdentifier)$e1.tree, $type.tree);
+            setLocation($tree, $e1.start);
         }
     ;
 
@@ -425,6 +427,8 @@ primary_expr returns[AbstractExpr tree]
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
             assert($expr.tree != null);
+            $tree = new Cast((AbstractIdentifier)$expr.tree, $type.tree);
+            setLocation($tree, $cast);
         }
     | literal {
             assert($literal.tree != null);
