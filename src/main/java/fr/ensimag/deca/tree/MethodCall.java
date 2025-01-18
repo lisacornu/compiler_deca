@@ -39,6 +39,7 @@ public class MethodCall extends AbstractExpr{
                 if(!typeParam.sameType(signMeth.paramNumber(i))){
                     throw new ContextualError("ParamType is different than type you passed as argument", getLocation());
                 }
+                i++;
             }
             methodIdent.setDefinition(methodDef);
             setType(returnType);
