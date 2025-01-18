@@ -11,11 +11,17 @@ import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 public class MethodCall extends AbstractExpr{
-    private final AbstractExpr expr;
-    private final AbstractIdentifier methodIdent;
-    private final ListExpr rvalueStar;
+    private final AbstractExpr expr;                //objet
+    private final AbstractIdentifier methodIdent;   //méthode
+    private final ListExpr rvalueStar;              //param
 
     public MethodCall(AbstractExpr expr,AbstractIdentifier methoIdent,ListExpr rvalueStar){
         this.rvalueStar = rvalueStar;
@@ -56,13 +62,27 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler){
-        throw new UnsupportedOperationException("not implemented yet");
+        // on réserve la place pour les paramètres + le paramètre implicite (l'objet appelant)
+        compiler.addInstruction(new ADDSP(this.rvalueStar.getList().size() + 1));
+
+        //  TODO : demander à matéo pour l'endroit ou trouver l'adresse de l'objet
+        // compiler.addInstruction(new LOAD(adresse(GB), GPRegister.R0));
+
+        // empile param implicite (objet sur qui on appelle la méthode
+        compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(0, Register.SP)));
+
+        // ordre de parcours ?
+        for (AbstractExpr param : this.rvalueStar.getList()) {
+            System.out.println(param);
+//            DVal locationResult = param.codeGenExpr(compiler);
+//            compiler.addInstruction(new STORE(locationResult, new RegisterOffset(-1, Register.SP)));
+        }
+
+        return Register.R0;
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-
-        
         expr.decompile(s);
         s.print(".");
         methodIdent.decompile(s);

@@ -10,12 +10,8 @@ import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -71,9 +67,52 @@ public class InstanceOf extends AbstractExpr {
         type.prettyPrint(s, prefix, true);
     }
 
+    static private int cpt_instanceof = 0;
+
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("; -------------- instanceof : ");
+
+        compiler.addInstruction(new PUSH(GPRegister.getR(3)));
+        compiler.addInstruction(new ADDSP(1));
+
+        compiler.addInstruction(new LOAD(this.expr.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
+        compiler.addInstruction(new LOAD(this.type.getClassDefinition().getDefinitionAdress(), GPRegister.R1));
+
+        // test si expr null
+        compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R0));
+        compiler.addInstruction(new BEQ(new Label("instanceof_false_"+cpt_instanceof)));
+
+        // boucle pour remonter l'arborescence de classe de expr
+        compiler.addLabel(new Label("insantceof_loop_" + cpt_instanceof));
+
+        // test l'égalité des instances
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.R0), GPRegister.getR(3)));
+        compiler.addInstruction(new CMP(GPRegister.getR(3), GPRegister.R1));
+        compiler.addInstruction(new BEQ(new Label("instanceof_true_"+cpt_instanceof)));
+
+        //charge super classe
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(3)), GPRegister.R0));
+
+        compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R0));
+        compiler.addInstruction(new BNE(new Label("instanceof_loop_"+cpt_instanceof)));
+
+        // si on est la : pas trouvé d'instance commune
+        compiler.addLabel(new Label("instanceof_false_"+cpt_instanceof));
+        compiler.addInstruction(new LOAD(0, GPRegister.R0));
+        compiler.addInstruction(new BRA(new Label("instanceof_end_"+cpt_instanceof)));
+
+        // si on est la : instanceof est vrai !!
+        compiler.addLabel(new Label("instanceof_false_"+cpt_instanceof));
+        compiler.addInstruction(new LOAD(1, GPRegister.R0));
+
+        // fin de instanceof
+        compiler.addLabel(new Label("instanceof_end_"+cpt_instanceof));
+        compiler.addInstruction(new POP(GPRegister.getR(3)));
+        compiler.addInstruction(new SUBSP(1));
+
+        cpt_instanceof++;
+        return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
     }
 
 }

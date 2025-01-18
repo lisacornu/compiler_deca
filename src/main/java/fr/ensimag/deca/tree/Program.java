@@ -77,10 +77,12 @@ public class Program extends AbstractProgram {
         compiler.addComment("--------------------------------------------------");
         compiler.addComment("\t\tCode du programme principal");
         compiler.addComment("--------------------------------------------------");
+
         main.codeGenMain(compiler);
+        compiler.addInstruction(new HALT());
 
         classes.codeGenListDeclClass(compiler);
-        compiler.addInstruction(new HALT());
+
 
         // gestion de dépassement de pile
         compiler.addComment("Erreur : dépassement de pile");
