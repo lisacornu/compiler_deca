@@ -1,0 +1,47 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	WSTR "Devrait print 'ok' : "
+	WNL
+	LOAD #0, R2
+	LOAD R2, R0
+	CMP #0, R0
+	BEQ not_is_true0
+	LOAD #0, R0
+	BRA not_end_case0
+not_is_true0:
+	LOAD #1, R0
+not_end_case0:
+	LOAD R0, R3
+	CMP #1, R3
+	BNE elseStart0
+	WSTR "ok"
+	WNL
+	BRA ifThenElseExit0
+elseStart0:
+	WSTR "non"
+	WNL
+ifThenElseExit0:
+	WSTR "Devrait print 'non' : "
+	WNL
+	LOAD #1, R3
+	LOAD R3, R0
+	CMP #0, R0
+	BEQ not_is_true1
+	LOAD #0, R0
+	BRA not_end_case1
+not_is_true1:
+	LOAD #1, R0
+not_end_case1:
+	LOAD R0, R4
+	CMP #1, R4
+	BNE elseStart1
+	WSTR "ok"
+	WNL
+	BRA ifThenElseExit1
+elseStart1:
+	WSTR "non"
+	WNL
+ifThenElseExit1:
+	HALT
+; end main program

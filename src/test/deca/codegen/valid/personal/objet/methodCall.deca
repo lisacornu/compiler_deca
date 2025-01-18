@@ -7,10 +7,10 @@
 //    cree le 17/01/2025
 
 class A {
-    void p (int a, float b) { }
+    void move (int a, int b, int c) { }
 }
 
 {
     A a = new A();
-    a.p(1, 2.3);
+    a.move(1, 2, 3);
 }

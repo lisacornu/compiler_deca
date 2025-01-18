@@ -10,13 +10,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.ADDSP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 public class MethodCall extends AbstractExpr{
     private final AbstractExpr expr;                //objet
@@ -66,19 +61,33 @@ public class MethodCall extends AbstractExpr{
         // on réserve la place pour les paramètres + le paramètre implicite (l'objet appelant)
         compiler.addInstruction(new ADDSP(this.rvalueStar.getList().size() + 1));
 
-        //  TODO : demander à matéo pour l'endroit ou trouver l'adresse de l'objet
-        // compiler.addInstruction(new LOAD(adresse(GB), GPRegister.R0));
-
-        // empile param implicite (objet sur qui on appelle la méthode
+        // empilement du paramètre implicite (objet sur qui on appelle la méthode)
+        compiler.addInstruction(new LOAD(this.expr.codeGenExpr(compiler), GPRegister.R0));
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(0, Register.SP)));
 
-        // ordre de parcours ?
+        // empilement des paramètres de la méthode
+        int offset = -1;
         for (AbstractExpr param : this.rvalueStar.getList()) {
-            System.out.println(param);
-//            DVal locationResult = param.codeGenExpr(compiler);
-//            compiler.addInstruction(new STORE(locationResult, new RegisterOffset(-1, Register.SP)));
+            DVal locationResult = param.codeGenExpr(compiler);
+            if (locationResult == null) {
+                compiler.addInstruction(new POP(Register.R1));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(offset, Register.SP)));
+            } else {
+                compiler.addInstruction(new STORE((GPRegister) locationResult, new RegisterOffset(offset, Register.SP)));
+            }
+            offset--;
         }
 
+        // vérification que la paramètre implicite n'est pas null
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R0));
+        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+
+        // Récupération table des méthodes puis appel de la méthode en question
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
+        compiler.addInstruction(new BSR(new RegisterOffset(this.methodIdent.getMethodDefinition().getIndex(), Register.R0)));
+
+        compiler.addInstruction(new SUBSP(this.rvalueStar.getList().size() + 1));
         return Register.R0;
     }
 
