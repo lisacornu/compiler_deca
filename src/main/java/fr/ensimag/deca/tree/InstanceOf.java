@@ -1,12 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.RegisterHandler;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -34,7 +30,6 @@ public class InstanceOf extends AbstractExpr {
                 System.out.println(type.getName() + " " + expr.getName());
         Type typeExpr = expr.verifyExpr(compiler, localEnv, currentClass);
         Type typeType = type.verifyType(compiler);
-        System.out.println(typeExpr.isClass() + " " + typeType.isClass());
         if(!((typeExpr.isClass()|| typeExpr.isNull())||typeType.isClass())){
             throw new ContextualError("You cant do Instanceof " + typeExpr, getLocation());
         }
@@ -73,12 +68,21 @@ public class InstanceOf extends AbstractExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
+        if (!this.expr.getType().isClass()) {
+            compiler.addInstruction(new LOAD(0, GPRegister.R0));
+            return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
+        }
+
         compiler.addComment("; -------------- instanceof : ");
 
         compiler.addInstruction(new PUSH(GPRegister.getR(3)));
         compiler.addInstruction(new ADDSP(1));
 
-        compiler.addInstruction(new LOAD(this.expr.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
+        System.out.println("on essaie de print l'adresse de la classe : "+ this.expr.getType().getName().getName() + " -> " +((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress());
+        compiler.addInstruction(new LOAD(
+                ((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress(),
+                GPRegister.R0));
+
         compiler.addInstruction(new LOAD(this.type.getClassDefinition().getDefinitionAdress(), GPRegister.R1));
 
         // test si expr null

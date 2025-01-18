@@ -46,7 +46,7 @@ public class DeclVar extends AbstractDeclVar {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type typeType = type.verifyType(compiler);
-        
+
         if (typeType.isVoid()){
             throw new ContextualError("type is void", getLocation());
         }

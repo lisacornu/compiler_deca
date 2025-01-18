@@ -37,11 +37,12 @@ public class Cast extends AbstractExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type typeExpr = expr.verifyExpr(compiler, localEnv, currentClass);
         Type typeType = type.verifyType(compiler);
+        
         if(typeExpr.sameType(typeType)|| (typeExpr.isInt() && typeType.isFloat()) || (typeExpr.isFloat() && typeType.isInt())){
             setType(typeType);
-        } else if(expr.getClassDefinition().getType().isSubClassOf(type.getClassDefinition().getType())){
+        } else if(typeExpr.asClassType(null, getLocation()).isSubClassOf(type.getClassDefinition().getType())){
             setType(type.getClassDefinition().getType());
-        } else if(type.getClassDefinition().getType().isSubClassOf(expr.getClassDefinition().getType())){
+        } else if(type.getClassDefinition().getType().isSubClassOf(typeExpr.asClassType(null, getLocation()))){
             setType(type.getClassDefinition().getType());
         }else{
             throw new ContextualError("You cant convert "+ typeExpr + " into " + typeType, getLocation());

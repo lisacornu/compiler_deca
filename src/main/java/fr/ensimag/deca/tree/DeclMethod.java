@@ -88,13 +88,23 @@ public class DeclMethod extends AbstractDeclMethod {
                 throw new ContextualError("The method as already been declared before.", getLocation());
             }
         } else { // Pour le override
-            if(!nameClass.getSuperClass().getMembers().get(methodName.getName()).getType().sameType(type.verifyTypeMethod(compiler))){
+            ExpDefinition parentDef = nameClass.getSuperClass().getMembers().get(methodName.getName());
+            MethodDefinition parentMethodDef = (MethodDefinition) parentDef;
+            if(!parentDef.getType().sameType(type.verifyTypeMethod(compiler))){
                 throw new ContextualError("You overwrite a method without good type", getLocation());
             } else {
+                Signature parentSign = parentMethodDef.getSignature();
+                if (parentSign.size()!=sign.size()){
+                    throw new ContextualError("They are not the same number of parameters : " + parentSign.size() + " for parent class "+ sign.size() + " for class.", getLocation());
+                }
+                for (int i=0;i<parentSign.size();i++){
+                    if (!sign.paramNumber(i).sameType(parentSign.paramNumber(i))){
+                        throw new ContextualError("The signatures are not the same : "+ sign.paramNumber(i) + " should be " + parentSign.paramNumber(i), getLocation());
+                    }
+                }
                 try{
                 nameClass.incNumberOfMethods();
-                ExpDefinition parentDef = nameClass.getSuperClass().getMembers().get(methodName.getName());
-                MethodDefinition parentMethodDef = (MethodDefinition) parentDef;
+                
                 MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, parentMethodDef.getIndex());
                 methodName.setDefinition(methodDef);
                 methodName.setType(type.verifyTypeMethod(compiler));

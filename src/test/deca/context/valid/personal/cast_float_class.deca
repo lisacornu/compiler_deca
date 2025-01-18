@@ -1,0 +1,28 @@
+// Description:
+//    test du cast pour des float/int/class
+//
+// Resultats:
+// 
+//
+//
+// Historique:
+//    cree le 18/01/2025
+
+
+
+class B {
+    int a;
+
+}
+class A extends B {
+    protected float a;
+}
+
+{
+    A b;
+    B bprime = (B)(b);
+    int a = 4;
+    float br = 4.1;
+    int c = (int) (br);
+    float r = (float) (c);
+}
