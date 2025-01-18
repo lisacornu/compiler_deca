@@ -40,7 +40,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             }else if (righType.isFloat() && lefType.isInt()){
                 ConvFloat FloatTypeExpr = new ConvFloat(getLeftOperand());
                 FloatTypeExpr.setType(righType);
-                setRightOperand(FloatTypeExpr); 
+                setLeftOperand(FloatTypeExpr); 
                 this.setType(righType);
                 return righType;
 
