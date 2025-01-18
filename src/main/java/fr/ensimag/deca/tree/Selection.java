@@ -94,23 +94,29 @@ public class Selection extends AbstractLValue {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
+        //On récupère l'adresse de l'objet
         DVal exprAddr = expr.codeGenExpr(compiler);
         GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, GPRegister.R0);
 
-        DAddr varAddr = fieldIdent.getExpDefinition().getOperand();
-        compiler.addInstruction(new LOAD(varAddr,GPRegister.R1));
+        //Test de déferencement null
+        compiler.addInstruction(new CMP(new NullOperand(), exprReg));
+        compiler.addInstruction(new BEQ(new Label("deferencement.null")));
 
-        compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R1));
-        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+        //On accede au bon field
+        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),exprReg);
 
-        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),GPRegister.R1);
-        compiler.addInstruction(new STORE(exprReg, fieldHeapAddr));
-
-        return RegisterHandler.pushFromRegister(compiler, exprReg);
+        return RegisterHandler.pushFromDVal(compiler, fieldHeapAddr, GPRegister.R1);
     }
 
     @Override
     public void printExprValue(DecacCompiler compiler){
-        throw new UnsupportedOperationException("not implemented yet");
+        System.out.println(fieldIdent.getName().getName()+ " : "+fieldIdent.getFieldDefinition());
+
+        compiler.addInstruction(new LOAD(fieldIdent.getFieldDefinition().getOperand(), GPRegister.R1));
+        if (fieldIdent.getExpDefinition().getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        } else if (fieldIdent.getExpDefinition().getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
     }
 }

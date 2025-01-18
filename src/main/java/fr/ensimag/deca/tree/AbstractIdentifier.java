@@ -100,8 +100,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     public abstract Type verifyTypeMethod(DecacCompiler compiler) throws ContextualError;
 
     @Override
-    protected DVal codeGenExpr(DecacCompiler compiler) {
-        return getExpDefinition().getOperand();
-    }
+    abstract protected DVal codeGenExpr(DecacCompiler compiler);
 
 }
