@@ -77,7 +77,7 @@ public class DeclClass extends AbstractDeclClass {
             compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classDef);
             
         } catch (DoubleDefException e){
-            throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
+            throw new ContextualError("This class has already been defined "+compiler.getClass().getName(), getLocation());
         }
 
 

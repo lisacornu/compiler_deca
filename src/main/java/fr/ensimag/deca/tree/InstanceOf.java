@@ -27,7 +27,6 @@ public class InstanceOf extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-                System.out.println(type.getName() + " " + expr.getName());
         Type typeExpr = expr.verifyExpr(compiler, localEnv, currentClass);
         Type typeType = type.verifyType(compiler);
         if(!((typeExpr.isClass()|| typeExpr.isNull())||typeType.isClass())){
