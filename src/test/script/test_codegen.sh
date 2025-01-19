@@ -17,14 +17,14 @@ if [ ! -f pom.xml ]; then
 fi
 
 
-for cmd in "clean" "compile" "test-compile"; do
-    echo -e "${BOLD}Running 'mvn $cmd'...${NC}"
-    if ! mvn "$cmd"; then
-        echo -e "${RED}Error: 'mvn $cmd' failed. Aborting.${NC}"
-        exit 1
-    fi
-    echo -e "${GREEN}✓ 'mvn $cmd' succeeded.${NC}"
-done
+#for cmd in "clean" "compile" "test-compile"; do
+#    echo -e "${BOLD}Running 'mvn $cmd'...${NC}"
+#    if ! mvn "$cmd"; then
+#        echo -e "${RED}Error: 'mvn $cmd' failed. Aborting.${NC}"
+#        exit 1
+#    fi
+#    echo -e "${GREEN}✓ 'mvn $cmd' succeeded.${NC}"
+#done
 
 
 PERSONAL_TEST_DIR="src/test/deca/codegen/valid/personal/stdin"

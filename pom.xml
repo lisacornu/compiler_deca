@@ -238,16 +238,16 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                   <!-- <execution>
-                        <id>couverture-context</id>
+                   <execution>
+                        <id>test-codegen</id>
                         <configuration>
-                            <executable>./src/test/script/test_auto_jacoco_context.sh</executable>
+                            <executable>./src/test/script/test_codegen.sh</executable>
                         </configuration>
                         <phase>test</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
-                    </execution> -->
+                    </execution>
                     <execution>
                         <id>basic-gencode</id>
                         <configuration>
