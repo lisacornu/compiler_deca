@@ -77,10 +77,8 @@ public class InstanceOf extends AbstractExpr {
         compiler.addInstruction(new PUSH(GPRegister.getR(3)));
         compiler.addInstruction(new ADDSP(1));
 
-        // System.out.println("on essaie de print l'adresse de la classe : "+ this.expr.getType().getName().getName() + " -> " +((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress());
-        // compiler.addInstruction(new LOAD(
-        //         ((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress(),
-        //         GPRegister.R0));
+        ClassDefinition def = ((ClassDefinition) compiler.environmentType.defOfType(this.expr.getType().getName()));
+        compiler.addInstruction(new LOAD(def.getDefinitionAdress(), GPRegister.R0));
 
         compiler.addInstruction(new LOAD(this.type.getClassDefinition().getDefinitionAdress(), GPRegister.R1));
 

@@ -56,9 +56,9 @@ public class Program extends AbstractProgram {
     }
 
     @Override
-    public void codeGenVTable(DecacCompiler compiler) {
+    public int codeGenVTable(DecacCompiler compiler) {
         if (this.classes.getList().isEmpty())
-            return;
+            return 2;
 
         this.classes.getList().get(0).setParentClassAdress(1);
 
@@ -70,9 +70,11 @@ public class Program extends AbstractProgram {
 
         compiler.headOfGBStack+=2;
 
+        int methodTableSize = 2;
         for (AbstractDeclClass c : this.classes.getList()) {
-            c.codeGenVTable(compiler);
+            methodTableSize += c.codeGenVTable(compiler);
         }
+        return methodTableSize;
     }
 
     @Override

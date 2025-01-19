@@ -170,7 +170,8 @@ public class DeclClass extends AbstractDeclClass {
 
 
     @Override
-    protected void codeGenVTable(DecacCompiler compiler) {
+    protected int codeGenVTable(DecacCompiler compiler) {
+        int methodTableSize = 0;
         compiler.addComment("Code de la table des méthode de : " + this.className.getName().getName());
 
         // on stocke dans la classDefinition de cette classe l'@ de départ de sa table des méthodes
@@ -179,23 +180,28 @@ public class DeclClass extends AbstractDeclClass {
         // Génération de l'adresse de la super classe
         compiler.addInstruction(new LEA(this.parentClass.getClassDefinition().getDefinitionAdress(), GPRegister.R0));
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, GPRegister.GB)));
+        methodTableSize++;
 
         // construction du tableau des méthodes de cette classe
         this.buildMethodArray();
 
         // génération de la partie méthode de la table des méthodes
-        this.codeGenMethodsVTable(compiler);
+        methodTableSize += this.codeGenMethodsVTable(compiler);
 
         compiler.headOfGBStack++;
+        return methodTableSize;
     }
 
 
-    private void codeGenMethodsVTable (DecacCompiler compiler) {
+    private int codeGenMethodsVTable (DecacCompiler compiler) {
+        int methodTableSize = 0;
         for (String methodName : this.className.getClassDefinition().getMethodArray()) {
             compiler.headOfGBStack++;
             compiler.addInstruction(new LOAD(new LabelOperand(new Label(methodName)), GPRegister.R0));
             compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(compiler.headOfGBStack, Register.GB)));
+            methodTableSize++;
         }
+        return methodTableSize;
     }
 
 }

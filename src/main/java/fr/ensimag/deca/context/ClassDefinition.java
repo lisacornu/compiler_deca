@@ -70,7 +70,6 @@ public class ClassDefinition extends TypeDefinition {
     }
 
     public void setDefinitionAdress(int definitionAdress) {
-        System.out.println("on set l'adresse de " + this.getType().getName().getName() + " à : " + definitionAdress + " (GB)");
         this.definitionAdress = new RegisterOffset(definitionAdress, GPRegister.GB);
     }
 
