@@ -10,10 +10,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.BSR;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.SUBSP;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
 
 /**
@@ -86,7 +83,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         for (AbstractDeclField abstractDeclField : getList()) {
             abstractDeclField.codeGenDeclField(compiler);
         }
-
+        
     }
 
 

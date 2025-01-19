@@ -1,0 +1,10 @@
+class A {
+
+        asm("LOAD #1, R1\n WINT");
+
+}
+
+{
+    A a = new A();
+    a.meth();
+}

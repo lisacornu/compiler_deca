@@ -1,0 +1,13 @@
+class A {
+    int x;
+
+    void ecrire () {
+        println(this.x);
+    }
+
+}
+
+{
+    A a = new A();
+    a.ecrire();
+}

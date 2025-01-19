@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 import static org.mockito.ArgumentMatchers.isNotNull;
 
@@ -51,9 +53,11 @@ public class MethodAsmBody extends AbstractMethodBody {
         
     }
 
+    static int userMethodCpt = 0;
+
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass, String methodName) {
-
-        
+        compiler.addLabel(new Label("userMethod_"+userMethodCpt));
+        compiler.addInstruction(new WSTR(this.instructAss.getValue()));
     }
 }

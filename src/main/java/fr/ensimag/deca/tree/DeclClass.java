@@ -138,6 +138,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addLabel(new Label("init."+className.getName().getName()));
 
         listField.codeGenDeclField(compiler, parentClass.getClassDefinition().getNumberOfFields(), parentClass);
+        compiler.addInstruction(new RTS());
 
         //Methodes
         for(AbstractDeclMethod abstractMethod : listMethod.getList()) {

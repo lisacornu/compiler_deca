@@ -74,6 +74,8 @@ public class InstanceOf extends AbstractExpr {
 
         compiler.addComment("; -------------- instanceof : ");
 
+        compiler.addInstruction(new TSTO(1));
+        compiler.addInstruction(new BOV(new Label("pile_pleine")));
         compiler.addInstruction(new PUSH(GPRegister.getR(3)));
         compiler.addInstruction(new ADDSP(1));
 
