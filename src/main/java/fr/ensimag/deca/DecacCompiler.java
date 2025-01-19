@@ -59,9 +59,14 @@ public class DecacCompiler implements Callable<Boolean> {
 
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
-        this.compilerOptions = compilerOptions;
+        
+        if (compilerOptions==null){
+            this.compilerOptions = new CompilerOptions();
+        }else{
+            this.compilerOptions = compilerOptions;
+        }
         this.source = source;
-        this.registerHandler = new RegisterHandler(compilerOptions.getNbRegister());
+        this.registerHandler = new RegisterHandler(this.compilerOptions.getNbRegister());
         this.stackUsageWatcher = new StackUsageWatcher();
     }
 

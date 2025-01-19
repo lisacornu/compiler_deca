@@ -1,0 +1,20 @@
+// Description:
+//    Selection dans main protected
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+class A{   
+    protected int x;
+
+}
+class B{
+
+}
+{
+    B a = new B();
+    a.x;
+}
