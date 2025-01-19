@@ -61,7 +61,8 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
 
 
         //Si la classe n'a que Object en parent
-        if (superOffset <= 1) {
+        if (superOffset == 0) {
+
             for (AbstractDeclField abstractDeclField : getList())
                 abstractDeclField.codeGenObjectDirectChildDeclField(compiler);
             return;
