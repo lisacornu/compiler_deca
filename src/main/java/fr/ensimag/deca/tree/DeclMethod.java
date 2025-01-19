@@ -19,6 +19,8 @@ import java.lang.reflect.Parameter;
 import java.rmi.UnexpectedException;
 
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
@@ -149,9 +151,17 @@ public class DeclMethod extends AbstractDeclMethod {
         body.iter(f);
     }
 
+    private void setParamAdress () {
+        int index = -3;
+        for (AbstractDeclParam p : this.parameters.getList()) {
+            ((DeclParam)p).getNameParam().getExpDefinition().setOperand(new RegisterOffset(index, Register.LB));
+            index--;
+        }
+    }
+
     @Override
     protected void codeGenMethod(DecacCompiler compiler, DeclClass declClass) {
-
+        this.setParamAdress();
         compiler.addComment("---------- Code de la methode " + methodName.getName());
         compiler.addLabel(new Label("code."+declClass.getClassName().getName()+"."+methodName.getName()));
 
