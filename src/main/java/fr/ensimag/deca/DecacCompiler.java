@@ -202,6 +202,7 @@ public class DecacCompiler implements Callable<Boolean> {
         }
     }
 
+
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,
      * verification and code generation).
@@ -238,12 +239,12 @@ public class DecacCompiler implements Callable<Boolean> {
             return false;
         }
 
+
         addComment("start main program");
-        prog.codeGenVTable(this);
+        int methodTableSize = prog.codeGenVTable(this);
         prog.codeGenProgram(this);
 
         // ajouté par lisa !! gestion du débordement de la pile
-        int methodTableSize = 2; // dans le cas du sans objet
         program.addFirst(new ADDSP(stackUsageWatcher.nbVariables + methodTableSize));
         program.addFirst(new BOV(new Label("pile_pleine")));
         program.addFirst(new TSTO(1024));

@@ -12,7 +12,7 @@ import fr.ensimag.deca.context.ContextualError;
  */
 public abstract class AbstractProgram extends Tree {
     public abstract void verifyProgram(DecacCompiler compiler) throws ContextualError;
-    public abstract void codeGenVTable(DecacCompiler compiler);
+    public abstract int codeGenVTable(DecacCompiler compiler);
     public abstract void codeGenProgram(DecacCompiler compiler) ;
 
 }
