@@ -1,0 +1,19 @@
+// Description:
+//    Selection dans main
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+class A{   
+   int x;
+
+}
+{
+    int b = 2;
+    int c;
+    A a = new A();
+    a.x;
+}
