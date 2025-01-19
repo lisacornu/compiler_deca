@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -45,17 +46,20 @@ public class Return extends AbstractInst {
         rvalue.setType(returnType);
     }
 
+    protected void codeGenInst(DecacCompiler compiler) {}
+
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
         DVal result = this.rvalue.codeGenExpr(compiler);
         compiler.addInstruction(new LOAD(result, Register.R0));
-//        compiler.addInstruction(
-//                new BRA(
-//                        new Label("fin."+ this.classDefinition.getType().getName().getName()+"."+this.methodName.getName().getName()
-//                        )
-//                )
-//        );
+        compiler.registerHandler.SetFree(result);
+        compiler.addInstruction(
+                new BRA(
+                        new Label("fin."+ this.classDefinition.getType().getName().getName()+"."+methodName
+                        )
+                )
+        );
     }
 
 

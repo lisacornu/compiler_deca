@@ -87,7 +87,7 @@ public class InstanceOf extends AbstractExpr {
         compiler.addInstruction(new BEQ(new Label("instanceof_false_"+cpt_instanceof)));
 
         // boucle pour remonter l'arborescence de classe de expr
-        compiler.addLabel(new Label("insantceof_loop_" + cpt_instanceof));
+        compiler.addLabel(new Label("instanceof_loop_" + cpt_instanceof));
 
         // test l'égalité des instances
         compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.R0), GPRegister.getR(3)));
@@ -106,7 +106,7 @@ public class InstanceOf extends AbstractExpr {
         compiler.addInstruction(new BRA(new Label("instanceof_end_"+cpt_instanceof)));
 
         // si on est la : instanceof est vrai !!
-        compiler.addLabel(new Label("instanceof_false_"+cpt_instanceof));
+        compiler.addLabel(new Label("instanceof_true_"+cpt_instanceof));
         compiler.addInstruction(new LOAD(1, GPRegister.R0));
 
         // fin de instanceof

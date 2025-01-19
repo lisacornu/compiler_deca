@@ -155,7 +155,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addComment("---------- Code de la methode " + methodName.getName());
         compiler.addLabel(new Label("code."+declClass.getClassName().getName()+"."+methodName.getName()));
 
-        body.codeGenMethodBody(compiler, declClass);
+        body.codeGenMethodBody(compiler, declClass, methodName.getName().getName());
 
         if (this.type.getType().isVoid()) {
             compiler.addInstruction(new BRA(new Label("fin."+ declClass.getClassName().getName().getName()+"."+this.methodName.getName().getName())));

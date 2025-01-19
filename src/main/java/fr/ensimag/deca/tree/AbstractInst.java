@@ -39,7 +39,7 @@ public abstract class AbstractInst extends Tree {
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
 
-
+    protected abstract void codeGenInst(DecacCompiler compiler, String methodName);
 
     /**
      * Decompile the tree, considering it as an instruction.

@@ -72,6 +72,10 @@ public class IfThenElse extends AbstractInst {
         compiler.addLabel(endLabel); //Fin du if-else
     }
 
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
+        this.codeGenInst(compiler);
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
 

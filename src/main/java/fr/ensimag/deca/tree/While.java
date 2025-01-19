@@ -66,6 +66,10 @@ public class While extends AbstractInst {
         compiler.addLabel(finWhile);
     }
 
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
+        this.codeGenInst(compiler);
+    }
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
