@@ -53,7 +53,9 @@ public class Selection extends AbstractLValue {
             fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
         }
         
-        
+        if(fieldDef==null){
+            throw new ContextualError("You cant get visibility because your types dont correspond", getLocation());
+        }
         if (fieldDef.getVisibility()==Visibility.PROTECTED){
             if (currentClass==null){
                 throw new ContextualError("You cant get a protected type", getLocation());
