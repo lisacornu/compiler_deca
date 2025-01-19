@@ -72,6 +72,7 @@ public class MethodCall extends AbstractExpr{
         int offset = -1;
         for (AbstractExpr param : this.rvalueStar.getList()) {
             DVal locationResult = param.codeGenExpr(compiler);
+
             if (locationResult == null) {
                 compiler.addInstruction(new POP(Register.R1));
                 compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(offset, Register.SP)));

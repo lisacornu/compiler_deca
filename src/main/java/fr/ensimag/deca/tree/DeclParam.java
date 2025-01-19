@@ -28,6 +28,10 @@ public class DeclParam extends AbstractDeclParam {
     final private AbstractIdentifier type;
     final private AbstractIdentifier nameParam;
 
+    public AbstractIdentifier getNameParam () {
+        return this.nameParam;
+    }
+
     public DeclParam(AbstractIdentifier type,AbstractIdentifier nameParam) {
         this.type = type;
         this.nameParam = nameParam;

@@ -76,12 +76,11 @@ public class InstanceOf extends AbstractExpr {
 
         compiler.addInstruction(new TSTO(1));
         compiler.addInstruction(new BOV(new Label("pile_pleine")));
-        compiler.addInstruction(new PUSH(GPRegister.getR(3)));
+        compiler.addInstruction(new PUSH(GPRegister.getR(2)));
         compiler.addInstruction(new ADDSP(1));
 
         ClassDefinition def = ((ClassDefinition) compiler.environmentType.defOfType(this.expr.getType().getName()));
         compiler.addInstruction(new LOAD(def.getDefinitionAdress(), GPRegister.R0));
-
         compiler.addInstruction(new LOAD(this.type.getClassDefinition().getDefinitionAdress(), GPRegister.R1));
 
         // test si expr null
@@ -92,12 +91,12 @@ public class InstanceOf extends AbstractExpr {
         compiler.addLabel(new Label("instanceof_loop_" + cpt_instanceof));
 
         // test l'égalité des instances
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.R0), GPRegister.getR(3)));
-        compiler.addInstruction(new CMP(GPRegister.getR(3), GPRegister.R1));
+        //compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.R0), GPRegister.getR(2)));
+        compiler.addInstruction(new CMP(GPRegister.R0, GPRegister.R1));
         compiler.addInstruction(new BEQ(new Label("instanceof_true_"+cpt_instanceof)));
 
         //charge super classe
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(3)), GPRegister.R0));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(2)), GPRegister.R0));
 
         compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R0));
         compiler.addInstruction(new BNE(new Label("instanceof_loop_"+cpt_instanceof)));
@@ -113,7 +112,7 @@ public class InstanceOf extends AbstractExpr {
 
         // fin de instanceof
         compiler.addLabel(new Label("instanceof_end_"+cpt_instanceof));
-        compiler.addInstruction(new POP(GPRegister.getR(3)));
+        compiler.addInstruction(new POP(GPRegister.getR(2)));
         compiler.addInstruction(new SUBSP(1));
 
         cpt_instanceof++;

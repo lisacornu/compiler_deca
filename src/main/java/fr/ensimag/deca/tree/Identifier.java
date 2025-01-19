@@ -214,7 +214,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public void printExprValue(DecacCompiler compiler) {
-        if (this.getExpDefinition().getNature().equals("variable")) {
+        if (this.getExpDefinition().getNature().equals("variable") || this.getExpDefinition().isParam()) {
             compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
             if (this.getExpDefinition().getType().isFloat())
                 compiler.addInstruction(new WFLOAT());
