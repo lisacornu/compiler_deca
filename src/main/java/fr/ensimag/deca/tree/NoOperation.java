@@ -29,6 +29,10 @@ public class NoOperation extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
+        this.codeGenInst(compiler);
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(";");

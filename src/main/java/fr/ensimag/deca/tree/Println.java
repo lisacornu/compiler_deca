@@ -24,6 +24,10 @@ public class Println extends AbstractPrint {
         compiler.addInstruction(new WNL());
     }
 
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
+        this.codeGenInst(compiler);
+    }
+
     @Override
     String getSuffix() {
         return "ln";
