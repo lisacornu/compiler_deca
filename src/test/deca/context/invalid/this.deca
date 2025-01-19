@@ -9,10 +9,9 @@
 
 
 class A{
-    
+    void p() {}
 }
 {
-    A a;
-    a.p(1.5);
+    this.a=4;
 
 }

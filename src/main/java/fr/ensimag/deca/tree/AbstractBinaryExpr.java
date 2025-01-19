@@ -5,9 +5,7 @@ import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -76,6 +74,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     public void printExprValue(DecacCompiler compiler) {
         DVal result = this.codeGenExpr(compiler);
+        compiler.registerHandler.SetFree(result);
         compiler.addInstruction(new LOAD(result, GPRegister.R1));
         if (this.getLeftOperand().getType().isFloat() || this.getRightOperand().getType().isFloat())
             compiler.addInstruction(new WFLOAT());
@@ -89,7 +88,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         // Generation du codes des branches
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
-        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler); // POP exp2
+        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
+
 
         // On pop de la pile si besoin (et on déplace dans un registre leftOperandResult si besoin)
         DVal op1 = RegisterHandler.popIntoDVal(compiler, rightOperandResult, Register.R1);
@@ -101,6 +101,18 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         // On push dans la pile si besoin (et on déplace op2 si c'est un registre temporaire dans un nv registre/dans la pile)
         return RegisterHandler.pushFromRegister(compiler, op2);
+    }
+
+    public void branchIfZero(DecacCompiler compiler, DVal op) {
+
+        GPRegister cmpReg = RegisterHandler.popIntoRegister(compiler, op, Register.R1);
+
+        if (getRightOperand().getType().isInt()) {
+            compiler.addInstruction(new CMP(0, cmpReg));
+        } else {
+            compiler.addInstruction(new CMP(new ImmediateFloat(0.0f), cmpReg));
+        }
+        compiler.addInstruction(new BEQ(new Label("division_zero")));
     }
 
 

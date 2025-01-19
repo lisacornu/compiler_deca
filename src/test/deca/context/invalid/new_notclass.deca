@@ -9,10 +9,10 @@
 
 
 class A{
-    
+    void p() {}
 }
 {
-    A a;
-    a.p(1.5);
+    int B;
+    B a = new B();
 
 }

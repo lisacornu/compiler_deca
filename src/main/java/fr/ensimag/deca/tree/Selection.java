@@ -133,7 +133,9 @@ public class Selection extends AbstractLValue {
     @Override
     public void printExprValue(DecacCompiler compiler){
 
+
         DVal exprAddr = codeGenExpr(compiler);
+        compiler.registerHandler.SetFree(exprAddr);
         GPRegister exprReg =  RegisterHandler.popIntoRegister(compiler, exprAddr, Register.R1);
         compiler.addInstruction(new LOAD(exprReg, GPRegister.R1));
 

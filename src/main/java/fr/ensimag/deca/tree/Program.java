@@ -91,6 +91,7 @@ public class Program extends AbstractProgram {
         this.codeGenErrorMessage(compiler, "pile pleine", "pile_pleine", "dépassement de la taille de pile autorisée");
         this.codeGenErrorMessage(compiler, "tas plein", "tas_plein", "allocation impossible, tas plein");
         this.codeGenErrorMessage(compiler, "déréférencement nul", "dereferencement.null", "Déréférencement impossible");
+        this.codeGenErrorMessage(compiler, "division par 0", "division_zero", "Division par zero");
     }
 
     private void codeGenErrorMessage (DecacCompiler compiler, String cas, String label, String errorMsg) {
