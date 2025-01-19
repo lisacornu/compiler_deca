@@ -16,4 +16,5 @@ class A{
     int c;
     A a = new A();
     a.x;
+    b.x;
 }
