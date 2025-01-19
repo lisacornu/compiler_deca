@@ -17,10 +17,7 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -261,13 +258,22 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    //Renvoi un register offset en cas d'assign (si l'identifier est un champ)
+    public DAddr codeGenExprAddr(DecacCompiler compiler, GPRegister tempReg) {
+        RegisterOffset objectAddress = new RegisterOffset(-2, Register.LB);
+        compiler.addInstruction(new LOAD(objectAddress, tempReg));
+        RegisterOffset fielHeapAddress = new RegisterOffset(getFieldDefinition().getIndex(), tempReg);
+        return fielHeapAddress;
+    }
+
     protected DVal codeGenExpr(DecacCompiler compiler) {
-//        if (getDefinition().isField()) {
-//            RegisterOffset objectAddress = new RegisterOffset(-2, Register.LB);
-//            compiler.addInstruction(new LOAD(objectAddress, GPRegister.R0));
-//            RegisterOffset regOff = new RegisterOffset(getFieldDefinition().getIndex(),GPRegister.R0);
-//            RegisterHandler.popIntoRegister(compiler, )
-//        }
+        if (getDefinition().isField()) {
+            RegisterOffset objectAddress = new RegisterOffset(-2, Register.LB);
+            compiler.addInstruction(new LOAD(objectAddress, GPRegister.R0));
+            RegisterOffset fielHeapAddress = new RegisterOffset(getFieldDefinition().getIndex(), GPRegister.R0);
+            compiler.addInstruction(new LOAD(fielHeapAddress, GPRegister.R0));
+            return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
+        }
         return getExpDefinition().getOperand();
     }
 }

@@ -107,7 +107,7 @@ public class Selection extends AbstractLValue {
         return RegisterHandler.pushFromDVal(compiler, fieldHeapAddr, GPRegister.R1);
     }
 
-
+    //Renvoi un register offset en cas d'assign
     public DAddr codeGenExprAddr(DecacCompiler compiler, GPRegister tempReg) {
 
         //On récupère l'adresse de l'objet

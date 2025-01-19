@@ -64,10 +64,17 @@ public class Assign extends AbstractBinaryExpr {
 
         //On recupere l'adresse de la Lvalue
         DAddr varAddress;
-        if (getLeftOperand() instanceof Selection)
-            varAddress = ((Selection)getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
-        else
-            varAddress = ((Identifier)getLeftOperand()).getExpDefinition().getOperand();
+        if (getLeftOperand() instanceof Selection) {
+            varAddress = ((Selection) getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+        } else {
+            Identifier leftOperandIdent =  (Identifier)getLeftOperand();
+            if (leftOperandIdent.getDefinition().isField()) {
+                varAddress = ((Identifier)getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+            } else {
+                varAddress = ((Identifier)getLeftOperand()).getExpDefinition().getOperand();
+            }
+        }
+
 
         // On recupere rightOperandResult dans un registre
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);

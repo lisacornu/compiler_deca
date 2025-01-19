@@ -140,28 +140,25 @@ public class DeclField extends AbstractDeclField {
     }
 
     //Initialise le champ et renvoi son adresse dans le tas
-    private RegisterOffset initField(DecacCompiler compiler, GPRegister initReg, GPRegister objReg, int superOffset) {
-
-        int fieldOffset = superOffset + fieldName.getFieldDefinition().getIndex();
+    private void initField(DecacCompiler compiler, GPRegister initReg, GPRegister objReg) {
+        int fieldOffset = fieldName.getFieldDefinition().getIndex();
         RegisterOffset heapFieldAddress = new RegisterOffset(fieldOffset, objReg);
         compiler.addInstruction(new STORE(initReg, heapFieldAddress));
-        return heapFieldAddress;
     }
 
     //Initialisation du champ par sa valeur par défault
     @Override
-    protected void codeGenDefaultDeclField(DecacCompiler compiler, int superOffset) {
+    protected void codeGenDefaultDeclField(DecacCompiler compiler) {
 
         GPRegister initReg = defaultInitField(compiler, GPRegister.R0); //On charge la valeur par default dans R0
         GPRegister objReg = loadObjectAdress(compiler, GPRegister.R1); // On récupère l'adresse de l'objet dans R1
-        RegisterOffset heapFieldAddress = initField(compiler, initReg, objReg, superOffset); // On store l'initialisation dans le bon field de l'objet
-        //fieldName.getExpDefinition().setOperand(heapFieldAddress); //On set l'operand
+        initField(compiler, initReg, objReg); // On store l'initialisation dans le bon field de l'objet
     }
 
 
     //Initialisation du field par sa valeur explicite
     @Override
-    protected void codeGenDeclField(DecacCompiler compiler, int superOffset) {
+    protected void codeGenDeclField(DecacCompiler compiler) {
 
         if (initialization instanceof NoInitialization) return; //Champs déjà initialiser par la valeur par défault
 
@@ -169,13 +166,13 @@ public class DeclField extends AbstractDeclField {
         GPRegister initReg = RegisterHandler.popIntoRegister(compiler, initAddrStack, GPRegister.R0);
 
         GPRegister objReg = loadObjectAdress(compiler, GPRegister.R1); // On récupère l'adresse de l'objet dans R1
-        initField(compiler, initReg, objReg, superOffset); // On store l'initialisation dans le bon field de l'objet
+        initField(compiler, initReg, objReg); // On store l'initialisation dans le bon field de l'objet
         compiler.registerHandler.SetFree(initReg); //On libère le registre utilisé
     }
 
 
     //Initialisation du field si la classe est un enfant direct de Object (n'a pas d'extend)
-    protected void codeGenObjectDirectChildDeclField(DecacCompiler compiler, int superOffset) {
+    protected void codeGenObjectDirectChildDeclField(DecacCompiler compiler) {
 
         GPRegister initReg;
         if (initialization instanceof Initialization) {
@@ -187,8 +184,7 @@ public class DeclField extends AbstractDeclField {
         }
 
         GPRegister objReg = loadObjectAdress(compiler, GPRegister.R1); // On récupère l'adresse de l'objet
-        RegisterOffset heapFieldAddress = initField(compiler, initReg, objReg, superOffset); // On store l'initialisation dans le bon field de l'objet
-        fieldName.getExpDefinition().setOperand(heapFieldAddress); //On set l'operand
+        initField(compiler, initReg, objReg); // On store l'initialisation dans le bon field de l'objet
         compiler.registerHandler.SetFree(initReg); //On libère le registre utilisé
     }
 
