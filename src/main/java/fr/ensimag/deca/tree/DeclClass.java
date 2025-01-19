@@ -55,13 +55,14 @@ public class DeclClass extends AbstractDeclClass {
         s.unindent();
         s.println("}");
 
-        // TODO : print pour les methodes et field
         
     }
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         // throw new UnsupportedOperationException("not yet implemented");
+        
+        // TODO : à vérifier : le verifyType s'en occupe deja car on ne peut définir que des classes avant une autre classe donc nécessairement pas défini
         if (!parentClass.verifyType(compiler).isClass()){
             throw new ContextualError("The superClass is not a class", getLocation());
         }

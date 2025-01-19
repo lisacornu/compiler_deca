@@ -1,0 +1,22 @@
+// Description:
+//    Cast impossible
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class B{
+    
+}
+
+class A {   
+    
+}
+{
+    B a;
+    A c;
+    c = (A) (a);
+}
