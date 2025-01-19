@@ -10,7 +10,9 @@ import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
@@ -51,6 +53,7 @@ public class ReadInt extends AbstractReadExpr {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
         compiler.addInstruction(new RINT());
+        compiler.addInstruction(new BOV(new Label("erreur_lecture")));
         return RegisterHandler.pushFromRegister(compiler, Register.R1);
     }
 

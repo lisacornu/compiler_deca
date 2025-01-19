@@ -17,6 +17,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
@@ -98,7 +99,10 @@ public class DeclVar extends AbstractDeclVar {
         compiler.headOfGBStack++;
         compiler.stackUsageWatcher.nbVariables++;
 
-        if (initialization instanceof NoInitialization) return;
+        if (initialization instanceof NoInitialization) {
+            return;
+        };
+
         Initialization initExpression = (Initialization) initialization;
 
         DVal addrInit = initExpression.codeGenInit(compiler);

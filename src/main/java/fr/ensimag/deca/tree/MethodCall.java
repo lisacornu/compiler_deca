@@ -106,14 +106,15 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        expr.iter(f);
+
+        if (expr != null) expr.iter(f);
         methodIdent.iter(f);
         rvalueStar.iter(f);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        expr.prettyPrint(s, prefix, false);
+        if (expr != null) expr.prettyPrint(s, prefix, false);
         methodIdent.prettyPrint(s,prefix,false);
         rvalueStar.prettyPrint(s,prefix,true);
     }

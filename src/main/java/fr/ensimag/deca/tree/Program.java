@@ -92,6 +92,8 @@ public class Program extends AbstractProgram {
         this.codeGenErrorMessage(compiler, "tas plein", "tas_plein", "allocation impossible, tas plein");
         this.codeGenErrorMessage(compiler, "déréférencement nul", "dereferencement.null", "Déréférencement impossible");
         this.codeGenErrorMessage(compiler, "division par 0", "division_zero", "Division par zero");
+        this.codeGenErrorMessage(compiler, "débordement arithmétique", "debordement_arithmetique", "Débordement arithmétique");
+        this.codeGenErrorMessage(compiler, "erreur lecture", "erreur_lecture", "Valeur entrée pas dans le type attendu");
     }
 
     private void codeGenErrorMessage (DecacCompiler compiler, String cas, String label, String errorMsg) {
