@@ -33,15 +33,20 @@ public class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        if(currentClass==null){
+            throw new ContextualError("You can't return in the main", getLocation());
+        }
         this.classDefinition = currentClass;
-
+        
         Type type = rvalue.verifyExpr(compiler, localEnv, currentClass);
-        if (type.isVoid()){
+        if (returnType.isVoid()){
             throw new UnsupportedOperationException("This return type is void");
         }
         rvalue.verifyRValue(compiler, localEnv, currentClass, type);
         if (returnType.isFloat() && rvalue.getType().isInt()){
             rvalue = new ConvFloat(rvalue);
+        }if(!returnType.sameType(type)){
+            throw new ContextualError("Both types are different.", getLocation());
         }
         rvalue.setType(returnType);
     }
