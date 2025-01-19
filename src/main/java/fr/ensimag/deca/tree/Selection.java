@@ -40,6 +40,11 @@ public class Selection extends AbstractLValue {
             ClassDefinition currentClass)
             throws ContextualError {
         Type type = expr.verifyExpr(compiler, localEnv, currentClass);
+        if(!type.isClass()){
+            throw new ContextualError("The class is not defined for this type : " + type, getLocation());
+        }
+
+
         FieldDefinition fieldDef;
         if (currentClass==null){
             ClassDefinition classParentDef = (ClassDefinition)compiler.environmentType.defOfType(type.getName()); 
@@ -48,9 +53,7 @@ public class Selection extends AbstractLValue {
             fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
         }
         
-        if(!type.isClass()){
-            throw new ContextualError("The class is not defined", getLocation());
-        }
+        
         if (fieldDef.getVisibility()==Visibility.PROTECTED){
             if (currentClass==null){
                 throw new ContextualError("You cant get a protected type", getLocation());
