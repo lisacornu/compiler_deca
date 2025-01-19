@@ -95,23 +95,50 @@ public class Selection extends AbstractLValue {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
 
+        //On récupère l'adresse de l'objet
         DVal exprAddr = expr.codeGenExpr(compiler);
         GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, GPRegister.R0);
 
-        DAddr varAddr = fieldIdent.getExpDefinition().getOperand();
-        compiler.addInstruction(new LOAD(varAddr,GPRegister.R1));
-
-        compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R1));
+        //Test de déferencement null
+        compiler.addInstruction(new CMP(new NullOperand(), exprReg));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
 
-        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),GPRegister.R1);
-        compiler.addInstruction(new STORE(exprReg, fieldHeapAddr));
+        //On accede au bon field
+        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),exprReg);
 
-        return RegisterHandler.pushFromRegister(compiler, exprReg);
+        //On return la valeur du register offset
+        return RegisterHandler.pushFromDVal(compiler, fieldHeapAddr, GPRegister.R1);
+    }
+
+    //Renvoi un register offset en cas d'assign
+    public DAddr codeGenExprAddr(DecacCompiler compiler, GPRegister tempReg) {
+
+        //On récupère l'adresse de l'objet
+        DVal exprAddr = expr.codeGenExpr(compiler);
+        GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, tempReg);
+
+        //Test de déferencement null
+        compiler.addInstruction(new CMP(new NullOperand(), exprReg));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+
+        //On accede au bon field
+        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),exprReg);
+
+        //On return le register offset
+        return fieldHeapAddr;
     }
 
     @Override
     public void printExprValue(DecacCompiler compiler){
-        throw new UnsupportedOperationException("not implemented yet");
+
+        DVal exprAddr = codeGenExpr(compiler);
+        GPRegister exprReg =  RegisterHandler.popIntoRegister(compiler, exprAddr, Register.R1);
+        compiler.addInstruction(new LOAD(exprReg, GPRegister.R1));
+
+        if (fieldIdent.getExpDefinition().getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        } else if (fieldIdent.getExpDefinition().getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
     }
 }

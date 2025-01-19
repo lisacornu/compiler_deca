@@ -63,13 +63,13 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         //Si la classe n'a que Object en parent
         if (superOffset <= 1) {
             for (AbstractDeclField abstractDeclField : getList())
-                abstractDeclField.codeGenObjectDirectChildDeclField(compiler, superOffset);
+                abstractDeclField.codeGenObjectDirectChildDeclField(compiler);
             return;
         }
 
         //On charge la valeur par défault pour chaque field
         for (AbstractDeclField abstractDeclField : getList()) {
-            abstractDeclField.codeGenDefaultDeclField(compiler, superOffset);
+            abstractDeclField.codeGenDefaultDeclField(compiler);
         }
 
         //On récupère l'adresse de l'objet qu'on push dans la pile
@@ -83,7 +83,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
 
         //Initialisation explicite des champs de la classe
         for (AbstractDeclField abstractDeclField : getList()) {
-            abstractDeclField.codeGenDeclField(compiler, superOffset);
+            abstractDeclField.codeGenDeclField(compiler);
         }
 
     }
