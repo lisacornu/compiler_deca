@@ -17,9 +17,9 @@ import org.apache.commons.lang.Validate;
  * @date 15/01/2025
  */
 public class InstanceOf extends AbstractExpr {
-    private AbstractIdentifier expr;
+    private AbstractExpr expr;
     private AbstractIdentifier type;
-    public InstanceOf(AbstractIdentifier expr, AbstractIdentifier type) {
+    public InstanceOf(AbstractExpr expr, AbstractIdentifier type) {
         this.type = type;
         this.expr = expr;
     }
@@ -77,10 +77,10 @@ public class InstanceOf extends AbstractExpr {
         compiler.addInstruction(new PUSH(GPRegister.getR(3)));
         compiler.addInstruction(new ADDSP(1));
 
-        System.out.println("on essaie de print l'adresse de la classe : "+ this.expr.getType().getName().getName() + " -> " +((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress());
-        compiler.addInstruction(new LOAD(
-                ((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress(),
-                GPRegister.R0));
+        // System.out.println("on essaie de print l'adresse de la classe : "+ this.expr.getType().getName().getName() + " -> " +((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress());
+        // compiler.addInstruction(new LOAD(
+        //         ((ClassType) this.expr.getVariableDefinition().getType()).getDefinition().getDefinitionAdress(),
+        //         GPRegister.R0));
 
         compiler.addInstruction(new LOAD(this.type.getClassDefinition().getDefinitionAdress(), GPRegister.R1));
 
