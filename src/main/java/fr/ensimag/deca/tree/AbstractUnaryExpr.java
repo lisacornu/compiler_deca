@@ -31,6 +31,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     @Override
     public void printExprValue(DecacCompiler compiler) {
         DVal result = this.codeGenExpr(compiler);
+        compiler.registerHandler.SetFree(result);
         compiler.addInstruction(new LOAD(result, GPRegister.R1));
         if (this.getType().isFloat())
             compiler.addInstruction(new WFLOAT());

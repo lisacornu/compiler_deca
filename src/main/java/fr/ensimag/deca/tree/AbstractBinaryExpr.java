@@ -76,6 +76,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     public void printExprValue(DecacCompiler compiler) {
         DVal result = this.codeGenExpr(compiler);
+        compiler.registerHandler.SetFree(result);
         compiler.addInstruction(new LOAD(result, GPRegister.R1));
         if (this.getLeftOperand().getType().isFloat() || this.getRightOperand().getType().isFloat())
             compiler.addInstruction(new WFLOAT());
