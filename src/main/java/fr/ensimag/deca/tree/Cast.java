@@ -25,9 +25,9 @@ import org.apache.commons.lang.Validate;
  * @date 15/01/2025
  */
 public class Cast extends AbstractExpr {
-    private AbstractIdentifier expr;
+    private AbstractExpr expr;
     private AbstractIdentifier type;
-    public Cast(AbstractIdentifier expr, AbstractIdentifier type) {
+    public Cast(AbstractExpr expr, AbstractIdentifier type) {
         this.type = type;
         this.expr = expr;
     }
