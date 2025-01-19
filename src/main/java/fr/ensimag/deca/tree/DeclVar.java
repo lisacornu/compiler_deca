@@ -47,13 +47,14 @@ public class DeclVar extends AbstractDeclVar {
             throws ContextualError {
         Type typeType = type.verifyType(compiler);
 
-        if (typeType.isVoid()){
-            throw new ContextualError("type is void", getLocation());
-        }
+        
         type.setType(typeType);
         try{
 
-            varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
+            varName.setDefinition(new VariableDefinition(typeType, getLocation()));
+            varName.setType(typeType);
+            type.setDefinition(varName.getDefinition());
+
             localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
 
         }catch(DoubleDefException e){
