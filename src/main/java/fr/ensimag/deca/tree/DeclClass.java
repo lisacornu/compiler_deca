@@ -69,10 +69,6 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(parentClass.getName());
         ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
         ClassDefinition classDef = new ClassDefinition(classType, getLocation(), parentClassDef);
-
-
-       //classDef.setDefinitionAdress(1000);
-
         className.setDefinition(classDef);
         className.setType(classType);
         
@@ -80,7 +76,7 @@ public class DeclClass extends AbstractDeclClass {
             compiler.environmentType.addOfTypeClass(compiler,className.getName().getName(), classDef);
             
         } catch (DoubleDefException e){
-            throw new ContextualError("This class as already been defined "+compiler.getClass().getName(), getLocation());
+            throw new ContextualError("This class has already been defined "+compiler.getClass().getName(), getLocation());
         }
 
 
