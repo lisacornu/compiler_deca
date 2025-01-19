@@ -1,0 +1,17 @@
+// Description:
+//    Selection dans main protected
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class A{
+    void p() {}
+}
+{
+    this.a=4;
+
+}

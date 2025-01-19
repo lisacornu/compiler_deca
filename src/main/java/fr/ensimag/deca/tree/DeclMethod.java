@@ -19,6 +19,7 @@ import java.lang.reflect.Parameter;
 import java.rmi.UnexpectedException;
 
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -154,13 +155,17 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addComment("---------- Code de la methode " + methodName.getName());
         compiler.addLabel(new Label("code."+declClass.getClassName().getName()+"."+methodName.getName()));
 
-        body.codeGenMethodBody(compiler, declClass);
+        body.codeGenMethodBody(compiler, declClass, methodName.getName().getName());
+
+        if (this.type.getType().isVoid()) {
+            compiler.addInstruction(new BRA(new Label("fin."+ declClass.getClassName().getName().getName()+"."+this.methodName.getName().getName())));
+        }
 
         //Si il manque un return :
         compiler.addInstruction(new WSTR("Erreur : sortie de la methode "+declClass.getClassName().getName()+"."+methodName.getName()+" sans return"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
-        compiler.addLabel(new Label("fin."+declClass.getClassName().getName()+"."+methodName.getName()));
+        compiler.addLabel(new Label("fin."+declClass.getClassName().getName().getName()+"."+methodName.getName()));
     }
 
 }

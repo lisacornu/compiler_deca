@@ -1,0 +1,18 @@
+// Description:
+//    Selection dans main protected
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class A{
+    
+}
+{
+    A a;
+    a.p(1.5);
+
+}

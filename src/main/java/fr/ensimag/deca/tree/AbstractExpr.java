@@ -156,6 +156,8 @@ public abstract class AbstractExpr extends AbstractInst {
         compiler.registerHandler.SetFree(reg);
     }
 
+    protected void codeGenInst(DecacCompiler compiler, String methodName) { };
+
     protected abstract DVal codeGenExpr(DecacCompiler compiler);
 
 

@@ -35,6 +35,9 @@ public class MethodCall extends AbstractExpr{
             Type returnType = methodDef.getType();
             Signature signMeth = methodDef.getSignature();
             int i = 0;
+            if(rvalueStar.getList().size()!=signMeth.size()){
+                throw new ContextualError("They are not the same number of param", getLocation());
+            }
             for (AbstractExpr rval : rvalueStar.getList()){
                 Type typeParam = rval.verifyExpr(compiler, localEnv, currentClass);
                 if(!typeParam.sameType(signMeth.paramNumber(i))){

@@ -1,0 +1,18 @@
+// Description:
+//    Parent class doesnt exist
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class B{
+    void p(int a) {}
+}
+
+class A extends B{   
+    void p(int a) {}
+    void p(int c) {}
+}

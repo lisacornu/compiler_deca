@@ -1,0 +1,21 @@
+// Description:
+//    Parent class doesnt exist
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class B{
+    
+}
+
+class A extends B{   
+    
+}
+
+{
+    A a = new B();
+}

@@ -1,15 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.codegen.RegisterHandler;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.IMAProgram;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * Return
@@ -20,6 +23,8 @@ import fr.ensimag.ima.pseudocode.IMAProgram;
 public class Return extends AbstractInst {
     private AbstractExpr rvalue;
 
+    private ClassDefinition classDefinition;
+
     public Return(AbstractExpr rvalue){
         this.rvalue = rvalue;
     }
@@ -28,6 +33,8 @@ public class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        this.classDefinition = currentClass;
+
         Type type = rvalue.verifyExpr(compiler, localEnv, currentClass);
         if (type.isVoid()){
             throw new UnsupportedOperationException("This return type is void");
@@ -39,12 +46,21 @@ public class Return extends AbstractInst {
         rvalue.setType(returnType);
     }
 
+    protected void codeGenInst(DecacCompiler compiler) {}
+
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        // TODO
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
+        DVal result = this.rvalue.codeGenExpr(compiler);
+        compiler.addInstruction(new LOAD(result, Register.R0));
+        compiler.registerHandler.SetFree(result);
+        compiler.addInstruction(
+                new BRA(
+                        new Label("fin."+ this.classDefinition.getType().getName().getName()+"."+methodName
+                        )
+                )
+        );
     }
-
 
 
 

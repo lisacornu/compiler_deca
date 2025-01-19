@@ -1,0 +1,21 @@
+// Description:
+//    Cast subclass
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class B{
+    
+}
+
+class A extends B{   
+    
+}
+{
+    B a;
+    A c = (A) (a);
+}
