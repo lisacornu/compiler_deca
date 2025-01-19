@@ -1,0 +1,10 @@
+class C {
+    int x = 0;
+}
+
+{
+    C c1 = new C();
+    C c2 = new C();
+    c1.x = 6;
+    println(c1.x,c2.x);
+}

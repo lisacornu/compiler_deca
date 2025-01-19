@@ -1,0 +1,23 @@
+// Description:
+//    Programme de test du return d'une méthode
+//
+// Resultats:
+//      0
+//
+// Historique:
+//    cree le 19/01/2025
+
+class A {
+    int x;
+
+    int getX() {
+        return x;
+    }
+}
+
+
+{
+    A a = new A();
+    int b = a.getX();
+    println(b);
+}
