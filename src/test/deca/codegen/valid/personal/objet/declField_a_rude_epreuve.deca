@@ -1,0 +1,29 @@
+
+class E {
+    int z = 3;
+    int zz = z+1+2+z;
+}
+
+class D extends E {
+    int y = z = 2;
+    int yy = 22+z+y*2;
+}
+
+class C extends D {
+    int x = y = 1;
+    int xx = x+z+y+1;
+}
+
+{
+    C c = new C();
+    println(c.xx,",",c.yy,",",c.zz);
+    c.xx = 1;
+    c.xx = 1;
+    c.xx = 1;
+    c.xx = 1;
+    c.xx = 1;
+    c.yy = 1;
+    c.zz = 1;
+    println(c.xx,",",c.yy,",",c.zz);
+    println(c.x,",",c.y,",",c.z);
+}

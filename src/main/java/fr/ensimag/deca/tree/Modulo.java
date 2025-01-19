@@ -47,6 +47,9 @@ public class Modulo extends AbstractOpArith {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
+
+        branchIfZero(compiler, op1);
+
         compiler.addInstruction(new REM(op1, op2));
     }
 }
