@@ -47,6 +47,10 @@ public class DeclField extends AbstractDeclField {
         this.initialization = initialization;
     }
 
+    public AbstractIdentifier getFieldName() {
+        return fieldName;
+    }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -75,11 +79,9 @@ public class DeclField extends AbstractDeclField {
             FieldDefinition fieldDefinition = (FieldDefinition) expDefinition;
         }
 
+        nameClass.incNumberOfFields();
         FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
 
-        fieldDef.setOperand(nameClass.getDefinitionAdress());
-        System.out.println(fieldDef.getType().getName().getName() + " : "+fieldDef);
-        nameClass.incNumberOfFields();
 
         // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
             try{
@@ -93,8 +95,6 @@ public class DeclField extends AbstractDeclField {
         fieldName.setType(type.getType());
         fieldName.setDefinition(fieldDef);
         type.setDefinition(fieldDef);
-        
-
     }
 
     
@@ -142,7 +142,7 @@ public class DeclField extends AbstractDeclField {
     //Initialise le champ et renvoi son adresse dans le tas
     private RegisterOffset initField(DecacCompiler compiler, GPRegister initReg, GPRegister objReg, int superOffset) {
 
-        int fieldOffset = 1 + superOffset + fieldName.getFieldDefinition().getIndex();
+        int fieldOffset = superOffset + fieldName.getFieldDefinition().getIndex();
         RegisterOffset heapFieldAddress = new RegisterOffset(fieldOffset, objReg);
         compiler.addInstruction(new STORE(initReg, heapFieldAddress));
         return heapFieldAddress;
@@ -180,6 +180,7 @@ public class DeclField extends AbstractDeclField {
         GPRegister initReg;
         if (initialization instanceof Initialization) {
             DVal initAddrStack = initialization.codeGenInit(compiler); // On récupère la valeur de l'initialisation dans initReg
+
             initReg = RegisterHandler.popIntoRegister(compiler, initAddrStack, GPRegister.R0);
         } else {
             initReg = defaultInitField(compiler, GPRegister.R0); //Initialisation de la valeur par default
@@ -187,7 +188,7 @@ public class DeclField extends AbstractDeclField {
 
         GPRegister objReg = loadObjectAdress(compiler, GPRegister.R1); // On récupère l'adresse de l'objet
         RegisterOffset heapFieldAddress = initField(compiler, initReg, objReg, superOffset); // On store l'initialisation dans le bon field de l'objet
-        //fieldName.getExpDefinition().setOperand(heapFieldAddress); //On set l'operand
+        fieldName.getExpDefinition().setOperand(heapFieldAddress); //On set l'operand
         compiler.registerHandler.SetFree(initReg); //On libère le registre utilisé
     }
 

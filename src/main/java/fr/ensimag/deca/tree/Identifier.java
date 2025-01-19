@@ -16,10 +16,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
@@ -265,12 +262,12 @@ public class Identifier extends AbstractIdentifier {
     }
 
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        if( definition.isField()) {
-           compiler.addInstruction(new LOAD(getFieldDefinition().getOperand(), GPRegister.R0));
-           RegisterOffset heapAddr = new RegisterOffset(getFieldDefinition().getIndex(), GPRegister.R0);
-           compiler.addInstruction(new LEA(heapAddr, GPRegister.R0));
-           return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
-        }
+//        if (getDefinition().isField()) {
+//            RegisterOffset objectAddress = new RegisterOffset(-2, Register.LB);
+//            compiler.addInstruction(new LOAD(objectAddress, GPRegister.R0));
+//            RegisterOffset regOff = new RegisterOffset(getFieldDefinition().getIndex(),GPRegister.R0);
+//            RegisterHandler.popIntoRegister(compiler, )
+//        }
         return getExpDefinition().getOperand();
     }
 }

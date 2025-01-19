@@ -98,19 +98,40 @@ public class Selection extends AbstractLValue {
 
         //Test de déferencement null
         compiler.addInstruction(new CMP(new NullOperand(), exprReg));
-        compiler.addInstruction(new BEQ(new Label("deferencement.null")));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
 
         //On accede au bon field
         RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),exprReg);
 
+        //On return la valeur du register offset
         return RegisterHandler.pushFromDVal(compiler, fieldHeapAddr, GPRegister.R1);
+    }
+
+
+    public DAddr codeGenExprAddr(DecacCompiler compiler, GPRegister tempReg) {
+
+        //On récupère l'adresse de l'objet
+        DVal exprAddr = expr.codeGenExpr(compiler);
+        GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, tempReg);
+
+        //Test de déferencement null
+        compiler.addInstruction(new CMP(new NullOperand(), exprReg));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+
+        //On accede au bon field
+        RegisterOffset fieldHeapAddr = new RegisterOffset(fieldIdent.getFieldDefinition().getIndex(),exprReg);
+
+        //On return le register offset
+        return fieldHeapAddr;
     }
 
     @Override
     public void printExprValue(DecacCompiler compiler){
-        System.out.println(fieldIdent.getName().getName()+ " : "+fieldIdent.getFieldDefinition());
 
-        compiler.addInstruction(new LOAD(fieldIdent.getFieldDefinition().getOperand(), GPRegister.R1));
+        DVal exprAddr = codeGenExpr(compiler);
+        GPRegister exprReg =  RegisterHandler.popIntoRegister(compiler, exprAddr, Register.R1);
+        compiler.addInstruction(new LOAD(exprReg, GPRegister.R1));
+
         if (fieldIdent.getExpDefinition().getType().isFloat()) {
             compiler.addInstruction(new WFLOAT());
         } else if (fieldIdent.getExpDefinition().getType().isInt()) {

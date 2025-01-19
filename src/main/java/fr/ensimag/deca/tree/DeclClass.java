@@ -69,7 +69,10 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition parentClassDef = (ClassDefinition) compiler.environmentType.defOfType(parentClass.getName());
         ClassType classType = new ClassType(className.getName(), getLocation(), parentClassDef);
         ClassDefinition classDef = new ClassDefinition(classType, getLocation(), parentClassDef);
-        classDef.setDefinitionAdress(1000);
+
+
+       //classDef.setDefinitionAdress(1000);
+
         className.setDefinition(classDef);
         className.setType(classType);
         
