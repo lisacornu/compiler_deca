@@ -28,7 +28,7 @@ import org.apache.commons.lang.Validate;
 
 /**
  * Declaration of a field
- * 
+ *
  * @author Fabien Galzi
  * @date 14/01/2025
  */
@@ -38,13 +38,17 @@ public class DeclField extends AbstractDeclField {
     final private AbstractIdentifier type;
     final private AbstractIdentifier fieldName;
     final private AbstractInitialization initialization;
-    
+
 
     public DeclField(Visibility visibility,AbstractIdentifier type,AbstractIdentifier fieldName, AbstractInitialization initialization) {
         this.visibility = visibility;
         this.type = type;
         this.fieldName = fieldName;
         this.initialization = initialization;
+    }
+
+    public AbstractIdentifier getFieldName() {
+        return fieldName;
     }
 
 
@@ -56,43 +60,44 @@ public class DeclField extends AbstractDeclField {
         fieldName.decompile(s);
         initialization.decompile(s);
         s.print(";");
-        // TODO 
-        
+        // TODO
+
     }
 
     @Override
-    protected void verifyFieldMembers(DecacCompiler compiler, 
-                               ClassDefinition nameClass, 
-                               EnvironmentExp envExp) throws ContextualError {
-                                
-        type.verifyType(compiler);
-        
+    protected void verifyFieldMembers(DecacCompiler compiler,
+                                      ClassDefinition nameClass,
+                                      EnvironmentExp envExp) throws ContextualError {
+
+        if (type.verifyType(compiler).isVoid()){
+            throw new ContextualError("The type of this field is void.", getLocation());
+        }
+
         ExpDefinition expDefinition = nameClass.getMembers().get(fieldName.getName());
 
         if (expDefinition!=null){
             FieldDefinition fieldDefinition = (FieldDefinition) expDefinition;
         }
 
-        FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
         nameClass.incNumberOfFields();
+        FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
+
 
         // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
-            try{
-                nameClass.getMembers().declare(fieldName.getName(), fieldDef);
-            } catch (DoubleDefException e){
-                throw new ContextualError("The field as already been declared before.", getLocation());
-            }
+        try{
+            nameClass.getMembers().declare(fieldName.getName(), fieldDef);
+        } catch (DoubleDefException e){
+            throw new ContextualError("The field as already been declared before.", getLocation());
+        }
         // } else {
         //     throw new ContextualError("You cant update the environnement", getLocation());
         // }
         fieldName.setType(type.getType());
         fieldName.setDefinition(fieldDef);
         type.setDefinition(fieldDef);
-        
-
     }
 
-    
+
     @Override
     protected void verifyFieldBody(DecacCompiler compiler, fr.ensimag.deca.context.ClassDefinition nameClass) throws ContextualError {
         // TODO : remonter un type
@@ -135,28 +140,25 @@ public class DeclField extends AbstractDeclField {
     }
 
     //Initialise le champ et renvoi son adresse dans le tas
-    private RegisterOffset initField(DecacCompiler compiler, GPRegister initReg, GPRegister objReg, int superOffset) {
-
-        int fieldOffset = 1 + superOffset + fieldName.getFieldDefinition().getIndex();
+    private void initField(DecacCompiler compiler, GPRegister initReg, GPRegister objReg) {
+        int fieldOffset = fieldName.getFieldDefinition().getIndex();
         RegisterOffset heapFieldAddress = new RegisterOffset(fieldOffset, objReg);
         compiler.addInstruction(new STORE(initReg, heapFieldAddress));
-        return heapFieldAddress;
     }
 
     //Initialisation du champ par sa valeur par défault
     @Override
-    protected void codeGenDefaultDeclField(DecacCompiler compiler, int superOffset) {
+    protected void codeGenDefaultDeclField(DecacCompiler compiler) {
 
         GPRegister initReg = defaultInitField(compiler, GPRegister.R0); //On charge la valeur par default dans R0
         GPRegister objReg = loadObjectAdress(compiler, GPRegister.R1); // On récupère l'adresse de l'objet dans R1
-        RegisterOffset heapFieldAddress = initField(compiler, initReg, objReg, superOffset); // On store l'initialisation dans le bon field de l'objet
-        fieldName.getExpDefinition().setOperand(heapFieldAddress); //On set l'operand
+        initField(compiler, initReg, objReg); // On store l'initialisation dans le bon field de l'objet
     }
 
 
     //Initialisation du field par sa valeur explicite
     @Override
-    protected void codeGenDeclField(DecacCompiler compiler, int superOffset) {
+    protected void codeGenDeclField(DecacCompiler compiler) {
 
         if (initialization instanceof NoInitialization) return; //Champs déjà initialiser par la valeur par défault
 
@@ -164,25 +166,25 @@ public class DeclField extends AbstractDeclField {
         GPRegister initReg = RegisterHandler.popIntoRegister(compiler, initAddrStack, GPRegister.R0);
 
         GPRegister objReg = loadObjectAdress(compiler, GPRegister.R1); // On récupère l'adresse de l'objet dans R1
-        initField(compiler, initReg, objReg, superOffset); // On store l'initialisation dans le bon field de l'objet
+        initField(compiler, initReg, objReg); // On store l'initialisation dans le bon field de l'objet
         compiler.registerHandler.SetFree(initReg); //On libère le registre utilisé
     }
 
 
     //Initialisation du field si la classe est un enfant direct de Object (n'a pas d'extend)
-    protected void codeGenObjectDirectChildDeclField(DecacCompiler compiler, int superOffset) {
+    protected void codeGenObjectDirectChildDeclField(DecacCompiler compiler) {
 
         GPRegister initReg;
         if (initialization instanceof Initialization) {
             DVal initAddrStack = initialization.codeGenInit(compiler); // On récupère la valeur de l'initialisation dans initReg
+
             initReg = RegisterHandler.popIntoRegister(compiler, initAddrStack, GPRegister.R0);
         } else {
             initReg = defaultInitField(compiler, GPRegister.R0); //Initialisation de la valeur par default
         }
 
         GPRegister objReg = loadObjectAdress(compiler, GPRegister.R1); // On récupère l'adresse de l'objet
-        RegisterOffset heapFieldAddress = initField(compiler, initReg, objReg, superOffset); // On store l'initialisation dans le bon field de l'objet
-        fieldName.getExpDefinition().setOperand(heapFieldAddress); //On set l'operand
+        initField(compiler, initReg, objReg); // On store l'initialisation dans le bon field de l'objet
         compiler.registerHandler.SetFree(initReg); //On libère le registre utilisé
     }
 
