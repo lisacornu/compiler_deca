@@ -18,9 +18,9 @@ import java.io.PrintStream;
 public class MethodAsmBody extends AbstractMethodBody {
 
     
-    final private AbstractStringLiteral instructAss;
+    final private StringLiteral instructAss;
 
-    public MethodAsmBody(AbstractStringLiteral instructAss) {
+    public MethodAsmBody(StringLiteral instructAss) {
         this.instructAss = instructAss;
     }
 
