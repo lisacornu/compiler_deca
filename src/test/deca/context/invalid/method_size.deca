@@ -1,5 +1,5 @@
 // Description:
-//    Parent class doesnt exist
+//    Overwrite a method with bad parameters
 //
 // Resultats:
 //
@@ -14,4 +14,5 @@ class B{
 
 class A extends B{   
     void p(int a, float b) {}
+
 }
