@@ -9,10 +9,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.context.NullType;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
@@ -40,13 +37,13 @@ public class Null extends AbstractExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        return new NullOperand();
     }
 
 
     @Override
     public void printExprValue(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addInstruction(new WSTR("null"));
     }
 
 

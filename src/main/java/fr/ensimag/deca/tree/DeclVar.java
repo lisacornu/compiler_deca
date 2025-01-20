@@ -116,9 +116,9 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDeclVarMethod(DecacCompiler compiler) {
         //Ajout de l'operand à LB
-        RegisterOffset LB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.LB);
+        RegisterOffset LB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(LB_Stack);
-        compiler.headOfLBStack++;
+        compiler.headOfGBStack++;
         compiler.stackUsageWatcher.nbVariables++;
 
         if (initialization instanceof NoInitialization) return;

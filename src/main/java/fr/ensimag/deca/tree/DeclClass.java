@@ -59,7 +59,6 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
         
         // TODO : à vérifier : le verifyType s'en occupe deja car on ne peut définir que des classes avant une autre classe donc nécessairement pas défini
         if (!parentClass.verifyType(compiler).isClass()){
@@ -78,8 +77,6 @@ public class DeclClass extends AbstractDeclClass {
         } catch (DoubleDefException e){
             throw new ContextualError("This class has already been defined "+compiler.getClass().getName(), getLocation());
         }
-
-
 
     }
 
