@@ -158,7 +158,7 @@ public class CompilerOptions {
         System.out.println(
             "-b (banner) : affiche une bannière indiquant le nom de l'équipe.\n" +
             "-p (parse) : arrête decac après l'étape de construction de l'arbre, et affiche la décompilation de ce dernier (i.e. s'il n'y a qu'un fichier source à compiler, la sortie doit être un programme deca syntaxiquement correct)\n" +
-            "-v (verification) : arrête decac après l'étape de vérifications (ne produit aucune sortie en l'absence d'erreur)\n" +
+            "-v (verification) : arrête decac après l'étape de vérifications (ne produit aucune sortie en l'absence de probleme)\n" +
             "-n (no check) : supprime les tests à l'exécution spécifiés dans les points 11.1 et 11.3 de la sémantique de Deca.\n" +
             "-r X (registers) : limite les registres banalisés disponibles à R0 ... R{X-1}, avec 4 <= X <= 16\n" +
             "-d (debug) : active les traces de debug. Répéter l'option plusieurs fois pour avoir plus de traces.\n" +

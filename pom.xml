@@ -238,16 +238,6 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                   <execution>
-                        <id>test-codegen</id>
-                        <configuration>
-                            <executable>./src/test/script/test_codegen.sh</executable>
-                        </configuration>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
                     <execution>
                         <id>basic-gencode</id>
                         <configuration>
@@ -272,6 +262,26 @@
                         <id>common-tests</id>
                         <configuration>
                             <executable>./src/test/script/common-tests.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-context</id>
+                        <configuration>
+                            <executable>./src/test/script/test_auto_jacoco_context.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-codegen</id>
+                        <configuration>
+                            <executable>./src/test/script/test_codegen.sh</executable>
                         </configuration>
                         <phase>test</phase>
                         <goals>

@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Signature;
@@ -30,8 +31,16 @@ public class MethodCall extends AbstractExpr{
     public Type verifyExpr(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError{
-        Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
-        ClassDefinition classDef = (ClassDefinition) compiler.environmentType.defOfType(type2.getName());
+        ClassDefinition classDef;
+        if(expr==null && currentClass!=null){
+            classDef = currentClass;
+        }else if(expr==null && currentClass==null){
+            throw new ContextualError("You cant call the method on nothing while you are not in the class", getLocation());
+        } else{
+            Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
+            classDef = (ClassDefinition) compiler.environmentType.defOfType(type2.getName());
+        }
+        
         if(classDef.getMembers().get(methodIdent.getName())!=null){
             MethodDefinition methodDef = (MethodDefinition)classDef.getMembers().get(methodIdent.getName());
             Type returnType = methodDef.getType();
@@ -67,7 +76,12 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new ADDSP(this.rvalueStar.getList().size() + 1));
 
         // empilement du paramètre implicite (objet sur qui on appelle la méthode)
-        compiler.addInstruction(new LOAD(this.expr.codeGenExpr(compiler), GPRegister.R0));
+
+        if (expr == null) { //this implicite
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.R0));
+        } else {
+            compiler.addInstruction(new LOAD(this.expr.codeGenExpr(compiler), GPRegister.R0));
+        }
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(0, Register.SP)));
 
         // empilement des paramètres de la méthode
@@ -90,10 +104,13 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
 
-        // Récupération table des méthodes puis appel de la méthode en question
+        // Récupération table des méthodes, sauvegarde des registres puis appel de la méthode en question
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
+        ArrayList<GPRegister> savedRegs = compiler.registerHandler.saveFullRegs(compiler);
         compiler.addInstruction(new BSR(new RegisterOffset(this.methodIdent.getMethodDefinition().getIndex(), Register.R0)));
 
+        // restauration des registres et de la pile
+        compiler.registerHandler.restoreRegs(compiler, savedRegs);
         compiler.addInstruction(new SUBSP(this.rvalueStar.getList().size() + 1));
         return Register.R0;
     }
@@ -118,6 +135,9 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
+
+        //expr.prettyPrint(s, prefix, false);
+
         if (expr != null) expr.prettyPrint(s, prefix, false);
         methodIdent.prettyPrint(s,prefix,false);
         rvalueStar.prettyPrint(s,prefix,true);
