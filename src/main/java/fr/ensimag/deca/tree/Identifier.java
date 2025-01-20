@@ -218,8 +218,9 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
             if (this.getExpDefinition().getType().isFloat())
                 compiler.addInstruction(new WFLOAT());
-            else if (this.getExpDefinition().getType().isInt())
+            else if (this.getExpDefinition().getType().isInt()) {
                 compiler.addInstruction(new WINT());
+            }
         }
 
         if (getExpDefinition().getNature().equals("field")) {

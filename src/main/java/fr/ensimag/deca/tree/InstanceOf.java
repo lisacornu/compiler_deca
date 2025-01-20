@@ -67,37 +67,62 @@ public class InstanceOf extends AbstractExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-//        Label instanceOfBeginning = new Label("InstanceOfBegin"+compiler.getInstanceOfCounter());
-//        Label instanceOfSucceeded = new Label("InstanceOfSuccess"+compiler.getInstanceOfCounter());
+        throw new UnsupportedOperationException("Instanceof n'a pas pu être implémenter");
 
-        DVal locationResult = this.expr.codeGenExpr(compiler);
-        GPRegister reg = RegisterHandler.popIntoRegister(compiler, locationResult, Register.R1);
-
-
-//        DAddr addr = type.getClassDefinition().write(compiler).getAddr();
-//        compiler.allocR2();
-//        compiler.addInstruction(new LEA(addr,Register.getR(2)));
-//        compiler.addLabel(instanceOfBeginning);
-//
-//        compiler.addInstruction(new CMP(Register.getR(2),Register.R0));
-//        compiler.addInstruction(new SEQ(Register.R1));
-//        compiler.addInstruction(new CMP(new ImmediateInteger(1),Register.R1));
-//        compiler.addInstruction(new BEQ(instanceOfSucceeded));
-//        compiler.addInstruction(new LOAD(Register.R0,Register.R0));
-//        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-//        compiler.addInstruction(new BEQ(instanceOfSucceeded));
-//        compiler.addInstruction(new BRA(instanceOfBeginning));
-//
-//        compiler.addLabel(instanceOfSucceeded);
-//
-//        if (reg.isGPRegister()) {
-//            compiler.addInstruction(new LOAD(Register.R1,(GPRegister) reg));
+//        if (!this.expr.getType().isClass()) {
+//            compiler.addInstruction(new LOAD(0, GPRegister.R0));
+//            return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
 //        }
-//        else if ( reg.isRegisterOffset() ) {
-//            compiler.addInstruction(new STORE(Register.R1,compiler.translate( (RegisterOffset) reg )));
-//        }
-
-        return reg;
+//
+//
+//        compiler.addComment("; -------------- instanceof : ");
+//
+//        compiler.addInstruction(new TSTO(1));
+//        compiler.addInstruction(new BOV(new Label("pile_pleine")));
+//        compiler.addInstruction(new PUSH(GPRegister.getR(2)));
+//        //compiler.addInstruction(new ADDSP(1));
+//
+//        ClassDefinition def = ((ClassDefinition) compiler.environmentType.defOfType(this.expr.getType().getName()));
+//        compiler.addInstruction(new LOAD(def.getDefinitionAdress(), GPRegister.R0));
+//        compiler.addInstruction(new LOAD(this.type.getClassDefinition().getDefinitionAdress(), GPRegister.R1));
+//
+//        // test si expr null
+//        compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R0));
+//        compiler.addInstruction(new BEQ(new Label("instanceof_false_"+cpt_instanceof)));
+//
+//        // boucle pour remonter l'arborescence de classe de expr
+//        compiler.addLabel(new Label("instanceof_loop_" + cpt_instanceof));
+//
+//        // test l'égalité des instances
+//        //compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.R0), GPRegister.getR(2)));
+//        compiler.addInstruction(new CMP(GPRegister.R0, GPRegister.R1));
+//        compiler.addInstruction(new BEQ(new Label("instanceof_true_"+cpt_instanceof)));
+//
+//        //charge super classe
+//        compiler.addInstruction(new LEA(new RegisterOffset(0, GPRegister.R0), GPRegister.R0));
+//
+//        compiler.addInstruction(new CMP(new RegisterOffset(1, Register.GB), GPRegister.R0));
+//        compiler.addInstruction(new BEQ(new Label("instanceof_false_"+cpt_instanceof)));
+//        compiler.addInstruction(new CMP(GPRegister.R1, GPRegister.R0));
+//        compiler.addInstruction(new BEQ(new Label("instanceof_true_"+cpt_instanceof)));
+//        compiler.addInstruction(new BRA(new Label("instanceof_loop_"+cpt_instanceof)));
+//
+//        // si on est la : pas trouvé d'instance commune
+//        compiler.addLabel(new Label("instanceof_false_"+cpt_instanceof));
+//        compiler.addInstruction(new LOAD(0, GPRegister.R0));
+//        compiler.addInstruction(new BRA(new Label("instanceof_end_"+cpt_instanceof)));
+//
+//        // si on est la : instanceof est vrai !!
+//        compiler.addLabel(new Label("instanceof_true_"+cpt_instanceof));
+//        compiler.addInstruction(new LOAD(1, GPRegister.R0));
+//
+//        // fin de instanceof
+//        compiler.addLabel(new Label("instanceof_end_"+cpt_instanceof));
+//        compiler.addInstruction(new POP(GPRegister.getR(2)));
+//        //compiler.addInstruction(new SUBSP(1));
+//
+//        cpt_instanceof++;
+//        return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
     }
 
 }
