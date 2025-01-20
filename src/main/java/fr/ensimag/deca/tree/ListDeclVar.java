@@ -22,8 +22,6 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     public void decompile(IndentPrintStream s) {
         for(AbstractDeclVar declVar : getList()) {
             declVar.decompile(s);
-            s.print("\n");
-            s.indent();
         }
     }
 
