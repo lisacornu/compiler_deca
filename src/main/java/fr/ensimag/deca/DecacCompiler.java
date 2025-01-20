@@ -242,7 +242,11 @@ public class DecacCompiler implements Callable<Boolean> {
 
         addComment("start main program");
         int methodTableSize = prog.codeGenVTable(this);
-        prog.codeGenProgram(this);
+        try {
+            prog.codeGenProgram(this);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());;
+        }
 
         // ajouté par lisa !! gestion du débordement de la pile
         program.addFirst(new ADDSP(stackUsageWatcher.nbVariables + methodTableSize));
