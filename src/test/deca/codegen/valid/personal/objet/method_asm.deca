@@ -1,7 +1,5 @@
 class A {
-
-        asm("LOAD #1, R1\n WINT");
-
+    void asmMethod() asm("LOAD #1, R1\n WINT");
 }
 
 {
