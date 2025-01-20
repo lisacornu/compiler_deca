@@ -73,6 +73,7 @@ public class DeclVar extends AbstractDeclVar {
         varName.decompile(s);
         initialization.decompile(s);
         s.print(";");
+        s.println();
     }
 
     @Override

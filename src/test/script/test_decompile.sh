@@ -20,20 +20,18 @@ test_file() {
     local file="$1"
     total_tests=$((total_tests + 1))
 
-    # Créer un fichier temporaire
+    # Créer un fichier temporaire et y stocker la sortie de decac -p
     temp_file=$(mktemp)
-
-    # Exécuter decac -p et rediriger la sortie vers le fichier temporaire
     ./src/main/bin/decac -p "$file" > "$temp_file" 2>/dev/null
 
-    # Exécuter decac -p une deuxième fois et comparer avec le fichier temporaire
-    if ./src/main/bin/decac -p "$file" 2>/dev/null | diff - "$temp_file" >/dev/null; then
+    # Comparer la sortie directe de decac -p avec celle obtenue en l'appliquant sur le fichier temporaire
+    if diff <(./src/main/bin/decac -p "$temp_file" 2>/dev/null) <(./src/main/bin/decac -p "$file" 2>/dev/null); then
         echo -e "${GREEN}✓ Test passed${NC}: $file"
         passed_tests=$((passed_tests + 1))
     else
         echo -e "${RED}✗ Test failed${NC}: $file"
         echo "Differences trouvées entre les deux exécutions:"
-        ./src/main/bin/decac -p "$file" 2>/dev/null | diff - "$temp_file"
+        diff <(./src/main/bin/decac -p "$temp_file" 2>/dev/null) <(./src/main/bin/decac -p "$file" 2>/dev/null)
         failed_tests=$((failed_tests + 1))
     fi
 
