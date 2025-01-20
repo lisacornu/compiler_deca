@@ -76,26 +76,26 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new ADDSP(this.rvalueStar.getList().size() + 1));
 
         // empilement du paramètre implicite (objet sur qui on appelle la méthode)
-
+        GPRegister exprReg;
         if (expr == null) { //this implicite
-            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.R0));
+            exprReg = Register.R0;
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), exprReg));
         } else {
-            compiler.addInstruction(new LOAD(this.expr.codeGenExpr(compiler), GPRegister.R0));
+            DVal exprAddr = expr.codeGenExpr(compiler);
+            exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, Register.R0);
         }
-        compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(0, Register.SP)));
+        compiler.addInstruction(new STORE(exprReg, new RegisterOffset(0, Register.SP)));
+        compiler.registerHandler.SetFree(exprReg);
 
         // empilement des paramètres de la méthode
         int offset = -1;
         for (AbstractExpr param : this.rvalueStar.getList()) {
-            DVal locationResult = param.codeGenExpr(compiler);
 
-            if (locationResult == null) {
-                compiler.addInstruction(new POP(Register.R1));
-                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(offset, Register.SP)));
-            } else {
-                GPRegister locationResultReg = RegisterHandler.popIntoRegister(compiler, locationResult, Register.R1);
-                compiler.addInstruction(new STORE(locationResultReg, new RegisterOffset(offset, Register.SP)));
-            }
+            DVal locationResult = param.codeGenExpr(compiler);
+            GPRegister locationResultReg = RegisterHandler.popIntoRegister(compiler, locationResult, Register.R1);
+            compiler.addInstruction(new STORE(locationResultReg, new RegisterOffset(offset, Register.SP)));
+            compiler.registerHandler.SetFree(locationResultReg);
+
             offset--;
         }
 
@@ -106,13 +106,14 @@ public class MethodCall extends AbstractExpr{
 
         // Récupération table des méthodes, sauvegarde des registres puis appel de la méthode en question
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
+        GPRegister objReg = RegisterHandler.pushFromRegister(compiler, Register.R0);
+
         ArrayList<GPRegister> savedRegs = compiler.registerHandler.saveFullRegs(compiler);
         compiler.addInstruction(new BSR(new RegisterOffset(this.methodIdent.getMethodDefinition().getIndex(), Register.R0)));
-
-        // restauration des registres et de la pile
         compiler.registerHandler.restoreRegs(compiler, savedRegs);
+
         compiler.addInstruction(new SUBSP(this.rvalueStar.getList().size() + 1));
-        return Register.R0;
+        return objReg;
     }
 
     @Override
