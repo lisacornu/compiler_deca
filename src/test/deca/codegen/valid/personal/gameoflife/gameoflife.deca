@@ -18,21 +18,33 @@ class Line {
 
     //Récupérer l'état d'indice i d'une ligne
     int GetState(Line l, int i) {
-        if (l == null || i < 0 || i >= 32) {return 0;}
+        if (l == null || i < 0 || i >= 31) {return 0;}
         return (l.states/TwoPower(i)) % 2;
     }
+
+    //Récupérer l'état d'indice i d'une ligne
+        int GetNextState(Line l, int i) {
+            if (l == null || i < 0 || i >= 31) {return 0;}
+            return (l.nextStates/TwoPower(i)) % 2;
+        }
     
     //Defini l'état d'indice i d'une ligne
     void SetNextState(Line l, int i, int state) {
-        if (state == 1 && l.GetState(l, i) == 0) {
-            l.nextStates = l.nextStates + TwoPower(i);
-        } else if (state == 0 && l.GetState(l, i) == 1) {
-            l.nextStates = l.nextStates - TwoPower(i);
-        }
+        int bitValue = TwoPower(i);
+            if (state == 1) {
+                if ((l.nextStates / bitValue) % 2 == 0) {
+                    l.nextStates = l.nextStates + bitValue;
+                }
+            } else if (state == 0) {
+                if ((l.nextStates / bitValue) % 2 == 1) {
+                    l.nextStates = l.nextStates - bitValue;
+                }
+            }
     }
 
     //Renvoi le nombre de voisins vivant d'une cellule
     int GetNbNeighLivingCells(int i) {
+
         int nb = GetState(top, i-1)  + GetState(top, i) + GetState(top, i+1) +
                  GetState(this, i-1) +                    GetState(this, i+1) +
                  GetState(bot, i-1)  + GetState(bot, i) + GetState(bot, i+1);
@@ -49,28 +61,31 @@ class Line {
     void CalcNextLine() {
         int i = 0;
         int state;
-        while(i < 32) {
+        while(i < 31) {
             state = CalcNextState(i);
             SetNextState(this,i,state);
             i = i + 1;
         }
+
     }
     
     void printState(int i) {
         int state = GetState(this,i);
-        if (state == 0) {
-            print("  ");
-        } else {
+        if (state == 1) {
             print("██");
+        } else {
+            print("  ");
         }
     }
     
     void printLine() {
         int i = 0;
-        while(i < 32) {
+        while(i < 31) {
             printState(i);
+            i = i + 1;
         }
-        println("");
+        println();
+
     }
     
 }
@@ -173,8 +188,8 @@ Table map = new Table();
     map.init();
 
     while(true) {
+       println(); println(); println(); println(); println();
         map.printTab();
         map.CalcNextTab();
-        readInt();
     }
 }

@@ -221,6 +221,16 @@ public class Identifier extends AbstractIdentifier {
             else if (this.getExpDefinition().getType().isInt())
                 compiler.addInstruction(new WINT());
         }
+
+        if (getExpDefinition().getNature().equals("field")) {
+            DVal exprAddr = codeGenExpr(compiler);
+            GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, GPRegister.R1);
+            compiler.addInstruction(new LOAD(exprReg, GPRegister.R1));
+            if (this.getExpDefinition().getType().isFloat())
+                compiler.addInstruction(new WFLOAT());
+            else if (this.getExpDefinition().getType().isInt())
+                compiler.addInstruction(new WINT());
+        }
     }
 
 
