@@ -42,7 +42,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public void decompile(IndentPrintStream s) {
         if (parentClass!=null || parentClass.getName().getName()!="Object"){
-            s.println("class  "+ className.getName().getName() + "  extends " + parentClass.getName().getName());
+            s.println("class "+ className.getName().getName() + " extends " + parentClass.getName().getName());
         } else {
             s.println("class " + className.getName().getName());
         }
@@ -50,7 +50,6 @@ public class DeclClass extends AbstractDeclClass {
         s.indent();
         listMethod.decompile(s);
         s.println();
-        s.indent();
         listField.decompile(s);
         s.unindent();
         s.println("}");
