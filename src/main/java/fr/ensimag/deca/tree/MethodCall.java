@@ -28,8 +28,16 @@ public class MethodCall extends AbstractExpr{
     public Type verifyExpr(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError{
-        Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
-        ClassDefinition classDef = (ClassDefinition) compiler.environmentType.defOfType(type2.getName());
+        ClassDefinition classDef;
+        if(expr==null && currentClass!=null){
+            classDef = currentClass;
+        }else if(expr==null && currentClass==null){
+            throw new ContextualError("You cant call the method on nothing while you are not in the class", getLocation());
+        } else{
+            Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
+            classDef = (ClassDefinition) compiler.environmentType.defOfType(type2.getName());
+        }
+        
         if(classDef.getMembers().get(methodIdent.getName())!=null){
             MethodDefinition methodDef = (MethodDefinition)classDef.getMembers().get(methodIdent.getName());
             Type returnType = methodDef.getType();
@@ -106,14 +114,14 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        expr.iter(f);
+        //expr.iter(f);
         methodIdent.iter(f);
         rvalueStar.iter(f);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        expr.prettyPrint(s, prefix, false);
+        //expr.prettyPrint(s, prefix, false);
         methodIdent.prettyPrint(s,prefix,false);
         rvalueStar.prettyPrint(s,prefix,true);
     }
