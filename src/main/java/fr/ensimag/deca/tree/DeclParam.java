@@ -42,7 +42,6 @@ public class DeclParam extends AbstractDeclParam {
         type.decompile(s);
         s.print(" ");
         nameParam.decompile(s);
-        // TODO 
         
     }
 
@@ -72,7 +71,6 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // visibility.prettyPrint(s,prefix,false);
         type.prettyPrint(s, prefix,false);
         nameParam.prettyPrint(s,prefix,true);
     }

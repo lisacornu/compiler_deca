@@ -29,10 +29,7 @@ public class Modulo extends AbstractOpArith {
         Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
         if (lefType.isInt() && righType.isInt()){
-            // IntLiteral rightValue = (IntLiteral) getRightOperand();
-            // if(rightValue.getValue() == 0){
-            //     throw new ContextualError("Divison par 0", getLocation());
-            // }
+            
             setType(righType);
             return righType;
         }

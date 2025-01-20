@@ -37,7 +37,6 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // on vérifie rvalue (si je comprends bien, on regarde si meme type ou si flaot int)
         getExpression().verifyRValue(compiler, localEnv, currentClass, t);
         if (getExpression().getType().isInt() && t.isFloat()){
             setExpression(new ConvFloat(getExpression()));
