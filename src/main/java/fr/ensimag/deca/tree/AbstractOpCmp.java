@@ -25,7 +25,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         // TODO : Probablement problèmes de int et float à traiter
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if ((lefType.isInt() || lefType.isFloat()) && (righType.isInt() || righType.isFloat())){
+        if ((lefType.isInt() || lefType.isFloat()) && (righType.isInt() || righType.isFloat())||lefType.isNull()||righType.isNull()||(righType.sameType(lefType))){
             Type booleanType = new BooleanType(compiler.createSymbol("boolean"));
             this.setType(booleanType);
             return booleanType;
