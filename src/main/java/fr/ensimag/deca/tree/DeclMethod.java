@@ -21,10 +21,7 @@ import java.rmi.UnexpectedException;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -75,10 +72,7 @@ public class DeclMethod extends AbstractDeclMethod {
     protected void verifyMethodMembers(DecacCompiler compiler, 
                                        ClassDefinition nameClass) throws ContextualError {
 
-        // TODO : Override pas encore fait
-        // if (type.verifyType(compiler).isVoid()){
-        //     throw new ContextualError("The type of this method is void.", getLocation());
-        // }
+       
         Signature sign = parameters.verifyListParamMembers(compiler, nameClass);
         if (nameClass.getSuperClass().getMembers().get(methodName.getName())==null){
             try{
@@ -86,7 +80,7 @@ public class DeclMethod extends AbstractDeclMethod {
                 MethodDefinition methodDef = new MethodDefinition(type.verifyTypeMethod(compiler), getLocation(), sign, nameClass.getNumberOfMethods());
                 nameClass.getMembers().declare(methodName.getName(), methodDef);
                 methodName.setDefinition(methodDef);
-                methodName.setType(type.verifyTypeMethod(compiler)); // ou mettre en parametre le envExp
+                methodName.setType(type.verifyTypeMethod(compiler)); 
             } catch (DoubleDefException e){
                 throw new ContextualError("The method as already been declared before.", getLocation());
             }
@@ -175,7 +169,9 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addInstruction(new WSTR("Erreur : sortie de la methode "+declClass.getClassName().getName()+"."+methodName.getName()+" sans return"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+
         compiler.addLabel(new Label("fin."+declClass.getClassName().getName().getName()+"."+methodName.getName()));
+        compiler.addInstruction(new RTS());
     }
 
 }

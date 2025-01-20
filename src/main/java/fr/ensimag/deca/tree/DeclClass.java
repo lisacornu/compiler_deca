@@ -59,9 +59,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
         
-        // TODO : à vérifier : le verifyType s'en occupe deja car on ne peut définir que des classes avant une autre classe donc nécessairement pas défini
         if (!parentClass.verifyType(compiler).isClass()){
             throw new ContextualError("The superClass is not a class", getLocation());
         }
@@ -79,17 +77,13 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("This class has already been defined "+compiler.getClass().getName(), getLocation());
         }
 
-
-
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        // className.getClassDefinition().setNumberOfFields(listField.size());
         className.getClassDefinition().setNumberOfFields(parentClass.getClassDefinition().getNumberOfFields());
         listField.verifyListFieldMembers(compiler, className.getClassDefinition());
-        // className.getClassDefinition().setNumberOfMethods(listMethod.size());
         className.getClassDefinition().setNumberOfMethods(parentClass.getClassDefinition().getNumberOfMethods());
         listMethod.verifyListMethodMembers(compiler, className.getClassDefinition());
 
@@ -97,7 +91,6 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        // TODO : apres tests ajouter la condition 3.5
         listField.verifyListFieldBody(compiler, className.getClassDefinition());
         listMethod.verifyListMethodBody(compiler, className.getClassDefinition());
     }

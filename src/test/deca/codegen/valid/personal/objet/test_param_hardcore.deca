@@ -1,3 +1,11 @@
+// Description:
+//    Programme de test de l'appel des méthodes avec des paramètres, mis à rude épreuve
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
 class A {
 
     int x = 1;
@@ -5,12 +13,10 @@ class A {
     int z = 3;
 
     int initalpha(int a, int b) {
-        print("a");
         return a+b;
     }
 
     int initbeta(int a, int b) {
-        print("b");
         return a-b;
     }
 
@@ -30,7 +36,6 @@ class A {
 {
     A a = new A();
     int calcul;
-    println("test");
     calcul = a.superCalcul(1,2,3,4);
     print(calcul);
 }

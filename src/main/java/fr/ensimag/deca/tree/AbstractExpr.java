@@ -90,7 +90,7 @@ public abstract class AbstractExpr extends AbstractInst {
         if(type.sameType(expectedType)){
             setType(type);
             return this;
-        }else if ((type.isInt() && expectedType.isFloat()) ){ //|| (type.isFloat() && expectedType.isInt())
+        }else if ((type.isInt() && expectedType.isFloat()) ){ 
             return this;
         }else if (type.isClass()){
             ClassType classType = type.asClassType(null, getLocation());

@@ -67,12 +67,21 @@ public class MethodCall extends AbstractExpr{
     
     @Override
     public void printExprValue(DecacCompiler compiler){
-        throw new UnsupportedOperationException("not implemented yet");
+        DVal locationResult = this.codeGenExpr(compiler);
+        GPRegister reg = RegisterHandler.popIntoRegister(compiler, locationResult, Register.R1);
+        compiler.addInstruction(new LOAD(reg, Register.R1));
+
+        if (this.methodIdent.getMethodDefinition().getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        } else if (this.methodIdent.getMethodDefinition().getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
     }
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler){
         // on réserve la place pour les paramètres + le paramètre implicite (l'objet appelant)
+        ArrayList<GPRegister> savedRegs = compiler.registerHandler.saveFullRegs(compiler);
         compiler.addInstruction(new ADDSP(this.rvalueStar.getList().size() + 1));
 
         // empilement du paramètre implicite (objet sur qui on appelle la méthode)
@@ -106,14 +115,14 @@ public class MethodCall extends AbstractExpr{
 
         // Récupération table des méthodes, sauvegarde des registres puis appel de la méthode en question
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
-        GPRegister objReg = RegisterHandler.pushFromRegister(compiler, Register.R0);
 
-        ArrayList<GPRegister> savedRegs = compiler.registerHandler.saveFullRegs(compiler);
+
         compiler.addInstruction(new BSR(new RegisterOffset(this.methodIdent.getMethodDefinition().getIndex(), Register.R0)));
-        compiler.registerHandler.restoreRegs(compiler, savedRegs);
+
 
         compiler.addInstruction(new SUBSP(this.rvalueStar.getList().size() + 1));
-        return objReg;
+        compiler.registerHandler.restoreRegs(compiler, savedRegs);
+        return RegisterHandler.pushFromRegister(compiler, Register.R0);
     }
 
     @Override

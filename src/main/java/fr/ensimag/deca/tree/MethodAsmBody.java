@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -30,7 +31,7 @@ public class MethodAsmBody extends AbstractMethodBody {
     protected void verifyMethodBody(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-            
+            instructAss.setType(new StringType(compiler.createSymbol("String")));
     }
 
     
