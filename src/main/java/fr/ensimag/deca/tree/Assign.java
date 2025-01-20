@@ -89,8 +89,6 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        System.out.println(op1);
-        System.out.println(op2);
         compiler.addInstruction(new STORE(op2,(DAddr)op1));
     }
 

@@ -96,7 +96,7 @@ public class InstanceOf extends AbstractExpr {
         compiler.addInstruction(new BEQ(new Label("instanceof_true_"+cpt_instanceof)));
 
         //charge super classe
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(2)), GPRegister.R0));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.R0), GPRegister.R0));
 
         compiler.addInstruction(new CMP(new NullOperand(), GPRegister.R0));
         compiler.addInstruction(new BNE(new Label("instanceof_loop_"+cpt_instanceof)));
