@@ -80,9 +80,9 @@ public class While extends AbstractInst {
         s.print("while (");
         getCondition().decompile(s);
         s.println(") {");
-        s.indent();
+        //s.indent();
         getBody().decompile(s);
-        s.unindent();
+        //s.unindent();
         s.print("}");
     }
 
