@@ -64,9 +64,9 @@ public abstract class AbstractPrint extends AbstractInst {
 
         String print = "print" + getSuffix() + (printHex ? "x" : "");
 
-        s.print(print+"(");
+        s.print(print+"(\"");
         arguments.decompile(s);
-        s.print(");");
+        s.print("\");");
     }
 
     @Override
