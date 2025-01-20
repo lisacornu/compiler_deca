@@ -60,7 +60,6 @@ public class DeclField extends AbstractDeclField {
         fieldName.decompile(s);
         initialization.decompile(s);
         s.print(";");
-        // TODO
 
     }
 
@@ -80,15 +79,12 @@ public class DeclField extends AbstractDeclField {
         FieldDefinition fieldDef = new FieldDefinition(type.getType(), getLocation(), visibility, nameClass, nameClass.getNumberOfFields());
 
 
-        // if (nameClass.getSuperClass().getMembers().get(fieldName.getName())==null){
         try{
             nameClass.getMembers().declare(fieldName.getName(), fieldDef);
         } catch (DoubleDefException e){
             throw new ContextualError("The field as already been declared before.", getLocation());
         }
-        // } else {
-        //     throw new ContextualError("You cant update the environnement", getLocation());
-        // }
+        
         fieldName.setType(type.getType());
         fieldName.setDefinition(fieldDef);
         type.setDefinition(fieldDef);
@@ -97,15 +93,13 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void verifyFieldBody(DecacCompiler compiler, fr.ensimag.deca.context.ClassDefinition nameClass) throws ContextualError {
-        // TODO : remonter un type
-        // nameClass.getType();
+       
         initialization.verifyInitialization(compiler, type.verifyType(compiler), nameClass.getMembers(), nameClass);
     }
 
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // visibility.prettyPrint(s,prefix,false);
         type.prettyPrint(s, prefix,false);
         fieldName.prettyPrint(s,prefix,false);
         initialization.prettyPrint(s, prefix, true);
