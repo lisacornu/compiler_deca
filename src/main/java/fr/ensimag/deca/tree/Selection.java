@@ -51,7 +51,7 @@ public class Selection extends AbstractLValue {
             fieldDef = (FieldDefinition) classParentDef.getMembers().get(fieldIdent.getName());
         }else if(currentClass.getType() !=type){
             ClassDefinition classParentDef = (ClassDefinition)compiler.environmentType.defOfType(type.getName());
-            fieldDef = (FieldDefinition) classParentDef.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
+            fieldDef = (FieldDefinition) classParentDef.getMembers().get(fieldIdent.getName()); 
         }else{
             fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName());
         }

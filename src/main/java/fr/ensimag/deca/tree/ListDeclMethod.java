@@ -29,7 +29,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    public void verifyListMethodMembers(DecacCompiler compiler, ClassDefinition nameClass) throws ContextualError { //mettre envExp si besoin
+    public void verifyListMethodMembers(DecacCompiler compiler, ClassDefinition nameClass) throws ContextualError { 
         LOG.debug("verify listMethodMembers: start");
         for (AbstractDeclMethod m : getList()){
             m.verifyMethodMembers(compiler, nameClass);

@@ -9,5 +9,15 @@ package fr.ensimag.deca.tree;
 
 public enum Visibility {
     PUBLIC,
-    PROTECTED
+    PROTECTED;
+
+
+    @Override
+    public String toString() {
+        if (this == PUBLIC){
+            return "public";
+        }
+
+        return "protected";
+    }
 }
