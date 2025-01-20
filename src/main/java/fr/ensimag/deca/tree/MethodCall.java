@@ -67,7 +67,15 @@ public class MethodCall extends AbstractExpr{
     
     @Override
     public void printExprValue(DecacCompiler compiler){
-        throw new UnsupportedOperationException("not implemented yet");
+        DVal locationResult = this.codeGenExpr(compiler);
+        GPRegister reg = RegisterHandler.popIntoRegister(compiler, locationResult, Register.R1);
+        compiler.addInstruction(new LOAD(reg, Register.R1));
+
+        if (this.methodIdent.getMethodDefinition().getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        } else if (this.methodIdent.getMethodDefinition().getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
     }
 
     @Override
