@@ -1,6 +1,5 @@
 // Description:
-//    Selection dans main protected
-//
+//    Mauvais typage du parametre dans MethodCall
 // Resultats:
 //
 //
@@ -9,7 +8,7 @@
 
 
 class A{
-    
+    void p(int a){}
 }
 {
     A a;
