@@ -57,7 +57,7 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler, DeclClass declClass, String methodName) {
-        compiler.addLabel(new Label("userMethod_"+userMethodCpt));
+        compiler.addLabel(new Label(methodName+"_"+userMethodCpt));
         compiler.addInstruction(new WSTR(this.instructAss.getValue()));
     }
 }
