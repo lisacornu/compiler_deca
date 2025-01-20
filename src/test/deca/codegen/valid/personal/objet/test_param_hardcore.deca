@@ -1,0 +1,36 @@
+class A {
+
+    int x = 1;
+    int y = 2;
+    int z = 3;
+
+    int initalpha(int a, int b) {
+        print("alpha");
+        return a+b;
+    }
+
+    int initbeta(int a, int b) {
+        print("beta");
+        return a-b;
+    }
+
+    int superCalcul(int a, int b, int c, int d) {
+
+        int alpha = this.initalpha(1,1);
+        int beta = this.initbeta(2,1);
+        println("test");
+        a = a + x*y - beta;
+        beta = 1;
+        b = c = a + beta - alpha;
+        return d - b;
+    }
+
+}
+
+{
+    A a = new A();
+    int calcul;
+    println("test");
+    calcul = a.superCalcul(1,2,3,4);
+    print(calcul);
+}
