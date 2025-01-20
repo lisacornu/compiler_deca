@@ -53,7 +53,7 @@ public class Cast extends AbstractExpr {
 
     @Override
     public void printExprValue(DecacCompiler compiler) {
-        // TODO
+        throw new UnsupportedOperationException("Le print du cast n'a pas pu être implémenter");
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Cast extends AbstractExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        throw new UnsupportedOperationException("Le cast n'a pas pu être implémenter");
     }
 
 }
