@@ -49,10 +49,13 @@ public class Selection extends AbstractLValue {
         if (currentClass==null){
             ClassDefinition classParentDef = (ClassDefinition)compiler.environmentType.defOfType(type.getName()); 
             fieldDef = (FieldDefinition) classParentDef.getMembers().get(fieldIdent.getName());
+        }else if(currentClass.getType() !=type){
+            ClassDefinition classParentDef = (ClassDefinition)compiler.environmentType.defOfType(type.getName());
+            fieldDef = (FieldDefinition) classParentDef.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
         }else{
-            fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName()); //cette ligne bizarre pck pas sur de bien avoir le bon type
+            fieldDef = (FieldDefinition) currentClass.getMembers().get(fieldIdent.getName());
         }
-        
+
         if(fieldDef==null){
             throw new ContextualError("You cant get visibility because your types dont correspond", getLocation());
         }
