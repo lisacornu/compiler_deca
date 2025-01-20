@@ -22,7 +22,6 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
-        // TODO : Probablement problèmes de int et float à traiter
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         if ((lefType.isInt() || lefType.isFloat()) && (righType.isInt() || righType.isFloat())||lefType.isNull()||righType.isNull()||(righType.sameType(lefType))){
