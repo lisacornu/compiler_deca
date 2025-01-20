@@ -602,7 +602,7 @@ decl_method returns [DeclMethod tree]
         setLocation(methodBody, $block.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
-        StringLiteral methodContent = new StringLiteral($code.text.substring(1, $code.text.length() - 1)); //On retire les guillemets
+        StringLiteral methodContent = new StringLiteral($code.text); //On retire les guillemets
         setLocation(methodContent, $ASM);
         methodBody = new MethodAsmBody(methodContent);
         setLocation(methodBody, $ASM);
