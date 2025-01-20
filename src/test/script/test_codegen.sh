@@ -16,22 +16,11 @@ if [ ! -f pom.xml ]; then
     exit 1
 fi
 
-
-#for cmd in "clean" "compile" "test-compile"; do
-#    echo -e "${BOLD}Running 'mvn $cmd'...${NC}"
-#    if ! mvn "$cmd"; then
-#        echo -e "${RED}Error: 'mvn $cmd' failed. Aborting.${NC}"
-#        exit 1
-#    fi
-#    echo -e "${GREEN}✓ 'mvn $cmd' succeeded.${NC}"
-#done
-
-
 PERSONAL_TEST_DIR="src/test/deca/codegen/valid/personal/stdin"
+GAME_OF_LIFE_DIR="src/test/deca/codegen/valid/personal/game_of_life"
 GENERAL_TEST_DIR="src/test/deca/codegen/valid"
 INVALID_TEST_DIR="src/test/deca/codegen/invalid"
 EXPECTED_DIR="src/test/deca/codegen/valid/expected"
-
 
 if [ ! -d "$PERSONAL_TEST_DIR" ]; then
     echo -e "${RED}Error: Personal test directory not found: $PERSONAL_TEST_DIR${NC}"
@@ -46,7 +35,6 @@ if [ ! -d "$INVALID_TEST_DIR" ]; then
     exit 1
 fi
 
-
 total_files=0
 successful_compilations=0
 successful_executions=0
@@ -56,8 +44,8 @@ total_executions=0
 successful_invalid=0
 failed_invalid=0
 
-# Gère les .deca qu'il faut juste compiler (ceux avec entrées)
-process_personal_file() {
+# Gère les fichiers .deca qui nécessitent uniquement une compilation
+process_compile_only_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
 
@@ -66,7 +54,6 @@ process_personal_file() {
     # Compile
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # Si la sortie contient . ou / la compilation est echouée
     if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
@@ -79,7 +66,7 @@ process_personal_file() {
     echo "----------------------------------------"
 }
 
-# execution et compilation d'un .deca
+# Gère les fichiers .deca standards (compilation et exécution)
 process_general_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
@@ -88,25 +75,23 @@ process_general_file() {
 
     echo "Processing (compilation and execution): $deca_file"
 
-    # Compile les .deca
+    # Compile
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # Compilation échoué si la sortie contient . ou /
     if [ -z "$compilation_output" ] || ! [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Compilation successful${NC}"
         ((successful_compilations++))
 
-        # Vérif que les .ass sont générés
+        # Vérifie que les fichiers .ass sont générés
         if [ -f "$dir_name/$base_name.ass" ]; then
             ((total_executions++))
 
             ima_output=$(ima "$dir_name/$base_name.ass" 2>&1)
 
-            # Vérifie que les fichiers existent
+            # Vérifie si un fichier attendu existe
             if [ -f "$expected_file" ]; then
                 expected_output=$(<"$expected_file")
 
-                # Compare les sorties
                 if [ "$ima_output" == "$expected_output" ]; then
                     echo -e "${GREEN}✓ Execution matches expected output${NC}"
                     ((successful_executions++))
@@ -123,7 +108,7 @@ process_general_file() {
                 ((failed_executions++))
             fi
 
-            # Retire les .ass
+            # Supprime les fichiers .ass générés
             rm -f "$dir_name/$base_name.ass"
         else
             echo -e "${RED}✗ Assembly file not generated: $dir_name/$base_name.ass${NC}"
@@ -138,7 +123,14 @@ process_general_file() {
     echo "----------------------------------------"
 }
 
-# Gère les fichiers .deca invalide
+# Traite les fichiers dans src/test/deca/codegen/valid/personal/game_of_life
+process_game_of_life_file() {
+    local deca_file="$1"
+    echo "Processing (game_of_life, compilation only): $deca_file"
+    process_compile_only_file "$deca_file"
+}
+
+# Gère les fichiers invalides
 process_invalid_file() {
     local deca_file="$1"
     local base_name=$(basename "$deca_file" .deca)
@@ -148,7 +140,6 @@ process_invalid_file() {
     # Compile
     compilation_output=$(decac "$deca_file" 2>&1)
 
-    # Si la sortie contient . ou / elle est considéré comme échoué
     if [[ "$compilation_output" =~ [./] ]]; then
         echo -e "${GREEN}✓ Invalid test passed${NC}"
         ((successful_invalid++))
@@ -159,44 +150,38 @@ process_invalid_file() {
         ((failed_invalid++))
     fi
 
-    # retire les fichiers .ass générés
     rm -f "$(dirname "$deca_file")/$base_name.ass"
-
     echo "----------------------------------------"
 }
 
-
-# shellcheck disable=SC2044
+# Parcours des fichiers
 for deca_file in $(find "$PERSONAL_TEST_DIR" -type f -name "*.deca"); do
     ((total_files++))
     process_personal_file "$deca_file"
 done
 
-
-# shellcheck disable=SC2044
 for deca_file in $(find "$GENERAL_TEST_DIR" -type f -name "*.deca" ! -path "$PERSONAL_TEST_DIR/*"); do
     ((total_files++))
-    process_general_file "$deca_file"
+    if [[ "$deca_file" == "$GAME_OF_LIFE_DIR/"* ]]; then
+        process_game_of_life_file "$deca_file"
+    else
+        process_general_file "$deca_file"
+    fi
 done
 
-
-# shellcheck disable=SC2044
 for deca_file in $(find "$INVALID_TEST_DIR" -type f -name "*.deca"); do
     ((total_files++))
     process_invalid_file "$deca_file"
 done
 
-total_compilation_sucess=$((successful_compilations + successful_invalid))
+total_compilation_success=$((successful_compilations + successful_invalid))
 total_compilation_fail=$((failed_compilations + failed_invalid))
 
 echo -e "\n${BOLD}Testing Summary:${NC}"
-
-echo -e "\n${BOLD}Compiling Tests Summary:${NC}"
 echo "Total files compiled: $total_files"
-echo -e "${GREEN}Successful compilations tests: $total_compilation_sucess${NC}"
-echo -e "${RED}Failed compilations tests : $total_compilation_fail${NC}"
-
-echo -e "\n${BOLD}Executing Tests Summary:${NC}"
+echo -e "${GREEN}Successful compilations: $total_compilation_success${NC}"
+echo -e "${RED}Failed compilations: $total_compilation_fail${NC}"
+echo -e "\n${BOLD}Execution Summary:${NC}"
 echo "Total executions attempted: $total_executions"
 echo -e "${GREEN}Successful executions: $successful_executions${NC}"
 echo -e "${RED}Failed executions: $failed_executions${NC}"
