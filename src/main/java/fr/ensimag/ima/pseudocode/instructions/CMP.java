@@ -14,9 +14,6 @@ public class CMP extends BinaryInstructionDValToReg {
 
     public CMP(DVal op1, GPRegister op2) {
         super(op1, op2);
-        System.out.println("cmp");
-        System.out.println(op1);
-        System.out.println(op2);
     }
 
     public CMP(int val, GPRegister op2) {

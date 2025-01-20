@@ -51,8 +51,6 @@ public class Return extends AbstractInst {
         rvalue.setType(returnType);
     }
 
-    protected void codeGenInst(DecacCompiler compiler) {}
-
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, String methodName) {

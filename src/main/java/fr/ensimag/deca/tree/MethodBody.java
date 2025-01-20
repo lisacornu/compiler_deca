@@ -70,7 +70,7 @@ public class MethodBody extends AbstractMethodBody {
         ArrayList<GPRegister> savedRegs = compiler.registerHandler.saveFullRegs(compiler);
 
         listVar.codeGenListDeclVarMethod(compiler);
-        listInst.codeGenMethodListInst(compiler, methodName);
+        listInst.codeGenListInst(compiler, methodName);
 
         compiler.registerHandler.restoreRegs(compiler, savedRegs);
     }

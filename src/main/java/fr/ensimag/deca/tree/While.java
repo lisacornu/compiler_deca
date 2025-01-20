@@ -42,7 +42,7 @@ public class While extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
 
 
         nbNestedWhiles++;
@@ -59,16 +59,13 @@ public class While extends AbstractInst {
 
         compiler.addInstruction(new BNE(finWhile)); //saut si la condition n'est pas vérifiée
 
-        body.codeGenListInst(compiler); //génère le code du corps de la boucle
+        body.codeGenListInst(compiler, methodName); //génère le code du corps de la boucle
 
         compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
 
         compiler.addLabel(finWhile);
     }
 
-    protected void codeGenInst(DecacCompiler compiler, String methodName) {
-        this.codeGenInst(compiler);
-    }
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,

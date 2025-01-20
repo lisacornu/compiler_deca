@@ -37,8 +37,6 @@ public abstract class AbstractInst extends Tree {
      *
      * @param compiler
      */
-    protected abstract void codeGenInst(DecacCompiler compiler);
-
     protected abstract void codeGenInst(DecacCompiler compiler, String methodName);
 
     /**
