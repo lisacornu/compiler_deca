@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Signature;
@@ -103,10 +104,13 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
 
-        // Récupération table des méthodes puis appel de la méthode en question
+        // Récupération table des méthodes, sauvegarde des registres puis appel de la méthode en question
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
+        ArrayList<GPRegister> savedRegs = compiler.registerHandler.saveFullRegs(compiler);
         compiler.addInstruction(new BSR(new RegisterOffset(this.methodIdent.getMethodDefinition().getIndex(), Register.R0)));
 
+        // restauration des registres et de la pile
+        compiler.registerHandler.restoreRegs(compiler, savedRegs);
         compiler.addInstruction(new SUBSP(this.rvalueStar.getList().size() + 1));
         return Register.R0;
     }
