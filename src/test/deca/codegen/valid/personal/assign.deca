@@ -10,8 +10,10 @@
 
 {
     int x;
+    int y;
     x = 2;
     println(x);
     x = 5;
+    y = 9;
     println(x);
 }
