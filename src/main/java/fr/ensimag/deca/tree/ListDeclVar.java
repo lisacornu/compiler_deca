@@ -23,6 +23,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         for(AbstractDeclVar declVar : getList()) {
             declVar.decompile(s);
             s.print("\n");
+            s.indent();
         }
     }
 
