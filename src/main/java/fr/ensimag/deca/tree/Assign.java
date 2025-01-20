@@ -1,5 +1,5 @@
 package fr.ensimag.deca.tree;
-
+import java.util.ArrayList;
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
@@ -13,7 +13,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
-
+import java.util.HashMap;
 /**
  * Assignment, i.e. lvalue = expr.
  *
@@ -33,6 +33,48 @@ public class Assign extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    
+    public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);   
+        AbstractExpr rightExpDefinition = getRightOperand().verifyRValue(compiler, localEnv, currentClass, lefType);
+        this.setType(lefType);
+        if (lefType.isFloat() && rightExpDefinition.getType().isInt()){
+            ConvFloat conversionFloat = new ConvFloat(rightExpDefinition);
+            conversionFloat.verifyExpr(compiler, localEnv, currentClass);
+            setRightOperand(conversionFloat);
+        }else{
+            setRightOperand(rightExpDefinition);
+        }
+        if(getRightOperand() instanceof Identifier){
+            ((Identifier)getRightOperand()).usage(compiler);
+        }
+        if (getLeftOperand() instanceof Identifier) {
+            // Récupérer le nom de la variable
+            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+            int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
+            if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
+                ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
+                dynamicInfo.add(0);
+                dynamicInfo.set(dynamicInfo.size() - 1, usageCount > 0 ? 1 : 0);
+           //     compiler.variableUsageCountdyna.put(varNameStr, dynamicInfo);
+            }
+
+            // Mettre à jour l'indice pour la variable
+            int previousIndice = compiler.variableLast.getOrDefault(varNameStr, 0);
+            int newIndice = previousIndice + 1;
+            ((Identifier) getLeftOperand()).indice = newIndice;
+            compiler.variableLast.put(varNameStr, newIndice);
+            compiler.variableUsageCount.put(varNameStr, 0);
+        }
+
+        // Incrémenter l'usage de la variable dans la table de hachage
+       // String varNameStr = getName().toString();
+       // compiler.variableUsageCount.put(varNameStr, compiler.variableUsageCount.get(varNameStr) + 1);  // Incrémenter l'usage
+        return lefType;
+        
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -50,7 +92,6 @@ public class Assign extends AbstractBinaryExpr {
         
     }
 
-
     @Override
     protected String getOperatorName() {
         return "=";
@@ -58,7 +99,17 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
+           // Vérifier l'utilisation de la variable dans la table de hachage
+        String varNameStr = ((Identifier)getLeftOperand()).getName().getName();
+        if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
+            ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
 
+            // Vérifier le premier élément du tableau
+            if (dynamicInfo.get(((Identifier)getLeftOperand()).indice) == 0  && compiler.opti==1) {
+                compiler.addComment("Variable " + varNameStr + ((Identifier)getLeftOperand()).indice +" n'a pas besoin d'etre assigné");
+                return null; // Ne pas générer la déclaration de la variable
+            }
+        }
         // Generation du codes des branches
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
@@ -81,5 +132,51 @@ public class Assign extends AbstractBinaryExpr {
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
+/*
+    @Override 
+    protected Type verifyExpr_ifthen(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass,HashMap<String, Integer> assignments) throws ContextualError {
+                Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);   
+                AbstractExpr rightExpDefinition = getRightOperand().verifyRValue(compiler, localEnv, currentClass, lefType);
+                this.setType(lefType);
+                if (lefType.isFloat() && rightExpDefinition.getType().isInt()){
+                    ConvFloat conversionFloat = new ConvFloat(rightExpDefinition);
+                    conversionFloat.verifyExpr(compiler, localEnv, currentClass);
+                    setRightOperand(conversionFloat);
+                }else{
+                    setRightOperand(rightExpDefinition);
+                }
+                if(getRightOperand() instanceof Identifier){
+                    ((Identifier)getRightOperand()).usage(compiler);
+                }
+                if (getLeftOperand() instanceof Identifier) {
+                    // Récupérer le nom de la variable
+                    String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+                                // Récupérer ou initialiser l'utilisation de la variable
+                    int usageCount_ifthen = assignments.getOrDefault(varNameStr, 0);
+                    assignments.put(varNameStr, usageCount_ifthen + 1); // Incrémenter dans "assignments"
+                    int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
+                    if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
+                        ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
+                        dynamicInfo.add(0);
+                        dynamicInfo.set(dynamicInfo.size() - 1, usageCount > 0 ? 1 : 0);
+                //     compiler.variableUsageCountdyna.put(varNameStr, dynamicInfo);
+                    }
+
+                    // Mettre à jour l'indice pour la variable
+                    int previousIndice = compiler.variableLast.getOrDefault(varNameStr, 0);
+                    int newIndice = previousIndice + 1;
+                    ((Identifier) getLeftOperand()).indice = newIndice;
+                    compiler.variableLast.put(varNameStr, newIndice);
+                    compiler.variableUsageCount.put(varNameStr, 0);
+                }
+
+                // Incrémenter l'usage de la variable dans la table de hachage
+            // String varNameStr = getName().toString();
+            // compiler.variableUsageCount.put(varNameStr, compiler.variableUsageCount.get(varNameStr) + 1);  // Incrémenter l'usage
+                return lefType;
+        }*/
+
+
 
 }

@@ -1,5 +1,5 @@
 package fr.ensimag.deca.tree;
-
+import java.util.HashMap;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -115,6 +115,22 @@ public abstract class AbstractExpr extends AbstractInst {
             throw new UnsupportedOperationException("This is not inst type");
         }
     }
+    protected Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+                return verifyExpr(compiler, localEnv, currentClass);
+            }
+
+    @Override
+    protected void verifyInst_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass, Type returnType)
+            throws ContextualError {
+            Type type = verifyExpr_opti(compiler, localEnv, currentClass);
+        if (!(type.isBoolean() || type.isFloat() || type.isInt() || type.isString()|| type.isVoid()|| type.isClass())){
+            throw new UnsupportedOperationException("This is not inst type");
+        }
+    }
+    
+        
 
     /**
      * Verify the expression as a condition, i.e. check that the type is

@@ -9,5 +9,28 @@
 
 {   
     int x;
+    int y;
+    x=1;
+    x=5;
+    x=7;
     x=3;
+    y=x;
+    if(false){
+        y=5;
+       
+    }
+    else{
+        x=18;
+    }
+    y=5;
+    y=4;
+    y=79;
+    while(x==18){
+        x=x-1;
+        y=5;
+    }
+
+    println(x);
+    println(y);
+   
 }

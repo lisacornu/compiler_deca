@@ -1,0 +1,51 @@
+	TSTO #1024
+	BOV pile_pleine
+	ADDSP #3
+; start main program
+; --------------------------------------------------
+; 		Code du programme principal
+; --------------------------------------------------
+; ---------- Déclaration des variables
+; ---------- Instructions
+	LOAD #2, R2
+	STORE R2, 1(GB)
+	LOAD 1(GB), R1
+	WINT
+	WNL
+	LOAD #5, R2
+	STORE R2, 1(GB)
+	LOAD 1(GB), R1
+	WINT
+	WNL
+	HALT
+code.Object.equals:
+	TSTO #2
+	BOV pile_pleine
+	PUSH R2
+	LOAD -3(LB), R2
+	CMP -2(LB), R2
+	SEQ R0
+	POP R2
+	RTS
+; --------------------------------------------------
+; 		Message d'erreur : pile pleine
+; --------------------------------------------------
+pile_pleine:
+	WSTR "Erreur : dépassement de la taille de pile autorisée"
+	WNL
+	ERROR
+; --------------------------------------------------
+; 		Message d'erreur : tas plein
+; --------------------------------------------------
+tas_plein:
+	WSTR "Erreur : allocation impossible, tas plein"
+	WNL
+	ERROR
+; --------------------------------------------------
+; 		Message d'erreur : déréférencement nul
+; --------------------------------------------------
+dereferencement.null:
+	WSTR "Erreur : Déréférencement impossible"
+	WNL
+	ERROR
+; end main program

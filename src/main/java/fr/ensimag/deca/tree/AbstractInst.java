@@ -9,7 +9,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.IMAProgram;
-
+import java.util.HashMap;
 import java.util.ArrayList;
 
 /**
@@ -38,9 +38,16 @@ public abstract class AbstractInst extends Tree {
      * @param compiler
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
-
-
-
+/*
+    protected void verifyInst_ifthen(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType,HashMap<String, Integer> assignments)
+            throws ContextualError {
+                verifyInst(compiler,localEnv,currentClass,returnType);
+            }
+*/
+     protected void verifyInst_opti(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
+            throws ContextualError {
+                verifyInst(compiler,localEnv,currentClass,returnType);
+            }
     /**
      * Decompile the tree, considering it as an instruction.
      *

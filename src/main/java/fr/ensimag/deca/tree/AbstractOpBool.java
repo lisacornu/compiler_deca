@@ -22,6 +22,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(getRightOperand() instanceof Identifier){
+            ((Identifier)getRightOperand()).usage(compiler);
+        }
+        if(getLeftOperand() instanceof Identifier){
+            ((Identifier)getLeftOperand()).usage(compiler);
+        }
         if (lefType.isBoolean() && righType.isBoolean()){
             this.setType(righType);
             return righType;

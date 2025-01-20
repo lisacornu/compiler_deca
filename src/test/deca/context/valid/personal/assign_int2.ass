@@ -1,0 +1,47 @@
+	TSTO #1024
+	BOV pile_pleine
+	ADDSP #2
+; start main program
+; Main program
+	LOAD #1, R2
+	STORE R2, 3(GB)
+	LOAD #0, R2
+	STORE R2, 4(GB)
+; Beginning of main instructions:
+	LOAD #7, R2
+	STORE R2, 5(GB)
+	LOAD 5(GB), R0
+	SUB 5(GB), R0
+	LOAD R0, R2
+	STORE R2, 6(GB)
+	LOAD 6(GB), R1
+	WINT
+	WNL
+	LOAD #7, R2
+	LOAD 5(GB), R0
+	CMP R2, R0
+	BNE not_equal0
+	LOAD #1, R0
+	BRA equal_0
+not_equal0:
+	LOAD #0, R0
+equal_0:
+	LOAD R0, R2
+	CMP #1, R2
+	BNE elseStart0
+	LOAD #3, R2
+	STORE R2, 7(GB)
+	BRA ifThenElseExit0
+elseStart0:
+	LOAD #5, R2
+	STORE R2, 8(GB)
+ifThenElseExit0:
+	LOAD 8(GB), R1
+	WINT
+	HALT
+; Erreur : dépassement de pile
+pile_pleine:
+	WSTR "Erreur : dépassement de la taille de pile autorisée"
+	WNL
+	ERROR
+; end main program

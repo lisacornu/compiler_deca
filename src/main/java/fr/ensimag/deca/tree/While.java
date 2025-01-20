@@ -43,7 +43,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-
+        compiler.opti=0;
 
         nbNestedWhiles++;
         Label debutWhile = new Label ("while" + nbNestedWhiles);
@@ -64,6 +64,7 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
 
         compiler.addLabel(finWhile);
+        compiler.opti=1;
     }
 
     @Override
@@ -72,6 +73,7 @@ public class While extends AbstractInst {
             throws ContextualError {
         condition.verifyExpr(compiler, localEnv, currentClass);
         body.verifyListInst(compiler, localEnv, currentClass, returnType);
+     //   compiler.opti=0;
     }
 
     @Override

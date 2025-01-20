@@ -10,7 +10,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.context.VariableDefinition;
-
+import java.util.HashMap;
 import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.io.PrintStream;
@@ -55,7 +55,14 @@ public class DeclVar extends AbstractDeclVar {
 
             varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
             localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
-
+             // Ajouter le suivi de l'utilisation de la variable dans la table de hachage
+            String varNameStr = varName.getName().getName(); // Récupérer le nom de la variable
+            compiler.variableUsageCount.putIfAbsent(varNameStr, 0); // Initialiser si nécessaire
+            compiler.variableLast.putIfAbsent(varNameStr,0);
+            ArrayList<Integer> dynamicInfo = new ArrayList<>();
+            dynamicInfo.add(0);
+            dynamicInfo.set(0, 0);
+            compiler.variableUsageCountdyna.putIfAbsent(varNameStr, dynamicInfo);
         }catch(DoubleDefException e){
             throw new ContextualError("The type as already been define for the variable " + varName.getName(), getLocation());
         }
@@ -90,7 +97,8 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
-
+           // Vérifier l'utilisation de la variable dans la table de hachage
+        String varNameStr = varName.getName().getName();
         //Ajout de l'operand à GB
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
@@ -99,7 +107,15 @@ public class DeclVar extends AbstractDeclVar {
 
         if (initialization instanceof NoInitialization) return;
         Initialization initExpression = (Initialization) initialization;
+        if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
+            ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
 
+            // Vérifier le premier élément du tableau
+            if (dynamicInfo.get(((Identifier)varName).indice) == 0) {
+                compiler.addComment("Variable " + varNameStr + " n'a pas besoin de  l'initialisation, pas de code généré.");
+                return; // Ne pas générer la déclaration de la variable
+            }
+        }
         DVal addrInit = initExpression.codeGenInit(compiler);
         GPRegister regInit = RegisterHandler.popIntoRegister(compiler, addrInit, Register.R0);
 

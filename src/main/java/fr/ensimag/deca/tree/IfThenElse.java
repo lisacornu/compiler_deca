@@ -1,5 +1,5 @@
 package fr.ensimag.deca.tree;
-
+import java.util.HashMap;
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
@@ -26,6 +26,9 @@ public class IfThenElse extends AbstractInst {
     private final AbstractExpr condition; 
     private final ListInst thenBranch;
     private ListInst elseBranch;
+    HashMap<String, Integer> thenAssignments = new HashMap<>();
+    HashMap<String, Integer> elseAssignments = new HashMap<>();
+
     private static int branchIndex = 0;//Index static
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
@@ -44,11 +47,12 @@ public class IfThenElse extends AbstractInst {
         condition.verifyExpr(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+   //     compiler.opti=0;
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-
+        compiler.opti=0;
        // On récupère le résultat de la condition (qui était dans la pile/un registre)
         DVal condAddr = condition.codeGenExpr(compiler);
         GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
@@ -70,6 +74,7 @@ public class IfThenElse extends AbstractInst {
         compiler.addLabel(startLabel);// Début du else
         elseBranch.codeGenListInst(compiler); // Exécution du else
         compiler.addLabel(endLabel); //Fin du if-else
+        compiler.opti=1;
     }
 
     @Override

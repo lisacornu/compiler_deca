@@ -1,5 +1,5 @@
 package fr.ensimag.deca.tree;
-
+import java.util.ArrayList;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -30,7 +30,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public class Identifier extends AbstractIdentifier {
-    
+    public int indice=0;
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -171,12 +171,13 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+            ClassDefinition currentClass) throws ContextualError {   
         if (localEnv.get(getName()) != null){                
             Definition expr = localEnv.get(getName());
             if (expr.isExpression()){
                 setDefinition(expr);
                 setType(expr.getType());
+                
                 return getType();
             }else{
                 throw new ContextualError("This is not an expression.", getLocation());
@@ -185,6 +186,14 @@ public class Identifier extends AbstractIdentifier {
             throw new ContextualError("There is no definition for this name : "+getName(), getLocation());
         }
         
+    }
+    public void usage(DecacCompiler compiler){
+        // Incrémenter l'usage de la variable dans la table de hachage
+        String varNameStr = getName().toString();
+        compiler.variableUsageCount.put(varNameStr, compiler.variableUsageCount.get(varNameStr) + 1);  // Incrémenter l'usage
+        ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
+        int i = compiler.variableLast.getOrDefault(varNameStr,0);
+        dynamicInfo.set(i, 1);
     }
 
     /**
