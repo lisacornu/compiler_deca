@@ -1,11 +1,10 @@
 class Factorielle {
 
-    // Fonction récursive pour calculer la factorielle
     int factorielle(int n) {
         if (n == 0) {
-            return 1; // Cas de base : 0! = 1
+            return 1;
         } else {
-            return n * factorielle(n - 1); // Appel récursif
+            return n * this.factorielle(n - 1);
         }
     }
 }
@@ -13,21 +12,10 @@ class Factorielle {
  // Méthode principale
 {
     // Lecture de l'entier n
-    int n = 0;
+    int n = 7;
     int resultat;
     Factorielle f = new Factorielle();
 
-    print("Entrez un entier positif n : ");
-    n = readInt();
-
-    // Vérification si n est valide
-    if (n < 0) {
-        println("Erreur : n doit être un entier positif.");
-        return 0;
-    }
-
-
-    // Appel de la fonction récursive et affichage du résultat
     resultat = f.factorielle(n);
-    println("La factorielle de " + n + " est : " + resultat);
+    print(resultat);
 }

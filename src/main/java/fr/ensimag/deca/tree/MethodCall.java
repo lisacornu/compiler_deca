@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 import java.rmi.UnexpectedException;
+
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -77,7 +79,8 @@ public class MethodCall extends AbstractExpr{
                 compiler.addInstruction(new POP(Register.R1));
                 compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(offset, Register.SP)));
             } else {
-                compiler.addInstruction(new STORE((GPRegister) locationResult, new RegisterOffset(offset, Register.SP)));
+                GPRegister locationResultReg = RegisterHandler.popIntoRegister(compiler, locationResult, Register.R1);
+                compiler.addInstruction(new STORE(locationResultReg, new RegisterOffset(offset, Register.SP)));
             }
             offset--;
         }
