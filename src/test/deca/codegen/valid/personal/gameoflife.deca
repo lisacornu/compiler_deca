@@ -51,13 +51,13 @@ class Line {
         int state;
         while(i < 32) {
             state = CalcNextState(i);
-            SetNextState(l,i,state);
+            SetNextState(this,i,state);
             i = i + 1;
         }
     }
     
     void printState(int i) {
-        int state = GetState(l,i);
+        int state = GetState(this,i);
         if (state == 0) {
             print("  ");
         } else {
