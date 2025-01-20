@@ -71,8 +71,7 @@ public class StringLiteral extends AbstractStringLiteral {
         return "StringLiteral (" + value + ")";
     }
 
+    // jamais appelé
     @Override
-    protected DVal codeGenExpr(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    protected DVal codeGenExpr(DecacCompiler compiler) { return null; }
 }

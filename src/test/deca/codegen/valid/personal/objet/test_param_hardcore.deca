@@ -1,3 +1,11 @@
+// Description:
+//    Programme de test de l'appel des méthodes avec des paramètres, mis à rude épreuve
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
 class A {
 
     int x = 1;
@@ -16,12 +24,12 @@ class A {
 
     int superCalcul(int a, int b, int c, int d) {
 
-        int alpha = initalpha(1,1);
-        int beta = initbeta(2,1);
+        int alpha = initalpha(1,1); //2
+        int beta = initbeta(2,1);   //1
         println("test");
-        a = a + x*y - beta;
+        a = a + x*y - beta;         //2
         beta = 1;
-        b = c = a + beta - alpha;
+        b = c = a + beta - alpha;   //1
         return d - b;
     }
 
