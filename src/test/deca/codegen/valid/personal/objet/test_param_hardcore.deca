@@ -5,19 +5,19 @@ class A {
     int z = 3;
 
     int initalpha(int a, int b) {
-        print("alpha");
+        print("a");
         return a+b;
     }
 
     int initbeta(int a, int b) {
-        print("beta");
+        print("b");
         return a-b;
     }
 
     int superCalcul(int a, int b, int c, int d) {
 
-        int alpha = this.initalpha(1,1);
-        int beta = this.initbeta(2,1);
+        int alpha = initalpha(1,1);
+        int beta = initbeta(2,1);
         println("test");
         a = a + x*y - beta;
         beta = 1;

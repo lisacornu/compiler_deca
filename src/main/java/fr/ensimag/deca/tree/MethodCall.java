@@ -75,7 +75,12 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new ADDSP(this.rvalueStar.getList().size() + 1));
 
         // empilement du paramètre implicite (objet sur qui on appelle la méthode)
-        compiler.addInstruction(new LOAD(this.expr.codeGenExpr(compiler), GPRegister.R0));
+
+        if (expr == null) { //this implicite
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.R0));
+        } else {
+            compiler.addInstruction(new LOAD(this.expr.codeGenExpr(compiler), GPRegister.R0));
+        }
         compiler.addInstruction(new STORE(GPRegister.R0, new RegisterOffset(0, Register.SP)));
 
         // empilement des paramètres de la méthode
