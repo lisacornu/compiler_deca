@@ -34,13 +34,7 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
-    public void codeGenListInst(DecacCompiler compiler) {
-        for (AbstractInst i : getList()) {
-            i.codeGenInst(compiler);
-        }
-    }
-
-    public void codeGenMethodListInst(DecacCompiler compiler, String methodName) {
+    public void codeGenListInst(DecacCompiler compiler, String methodName) {
         for (AbstractInst i : getList()) {
             i.codeGenInst(compiler, methodName);
         }

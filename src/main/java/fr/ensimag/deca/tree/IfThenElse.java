@@ -47,7 +47,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
 
        // On récupère le résultat de la condition (qui était dans la pile/un registre)
         DVal condAddr = condition.codeGenExpr(compiler);
@@ -64,17 +64,14 @@ public class IfThenElse extends AbstractInst {
         compiler.addInstruction(new BNE(startLabel));//On saute à startLabel quand la condition est false (else)
         branchIndex++; //Incrémentation de l'index
 
-        thenBranch.codeGenListInst(compiler); //Sinon on éxécute le then (if)
+        thenBranch.codeGenListInst(compiler, methodName); //Sinon on éxécute le then (if)
         compiler.addInstruction(new BRA(endLabel)); //Puis on saute à la fin du if-else
 
         compiler.addLabel(startLabel);// Début du else
-        elseBranch.codeGenListInst(compiler); // Exécution du else
+        elseBranch.codeGenListInst(compiler, methodName); // Exécution du else
         compiler.addLabel(endLabel); //Fin du if-else
     }
 
-    protected void codeGenInst(DecacCompiler compiler, String methodName) {
-        this.codeGenInst(compiler);
-    }
 
     @Override
     public void decompile(IndentPrintStream s) {

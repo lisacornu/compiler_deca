@@ -90,13 +90,15 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 
-
         // On pop de la pile si besoin (et on déplace dans un registre leftOperandResult si besoin)
         DVal op1 = RegisterHandler.popIntoDVal(compiler, rightOperandResult, Register.R1);
         GPRegister op2 = RegisterHandler.popIntoRegister(compiler, leftOperandResult, Register.R0);
 
         // Generation du code de l'expression (résultat enregistré dans op2)
         codeGenBinaryExpr(compiler, op1, op2);
+        compiler.addInstruction(new BOV(new Label("debordement_arithmetique")));
+
+
         compiler.registerHandler.SetFree(op1); //On libère le registre de op1 (car il est maintenant inutile)
 
         // On push dans la pile si besoin (et on déplace op2 si c'est un registre temporaire dans un nv registre/dans la pile)
@@ -114,6 +116,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
         compiler.addInstruction(new BEQ(new Label("division_zero")));
     }
+
+
+
 
 
 

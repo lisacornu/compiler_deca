@@ -18,10 +18,6 @@ class C extends D {
     C c = new C();
     println(c.xx,",",c.yy,",",c.zz);
     c.xx = 1;
-    c.xx = 1;
-    c.xx = 1;
-    c.xx = 1;
-    c.xx = 1;
     c.yy = 1;
     c.zz = 1;
     println(c.xx,",",c.yy,",",c.zz);

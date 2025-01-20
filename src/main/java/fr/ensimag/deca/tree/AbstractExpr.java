@@ -151,12 +151,11 @@ public abstract class AbstractExpr extends AbstractInst {
 
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
         DVal reg = codeGenExpr(compiler);
         compiler.registerHandler.SetFree(reg);
     }
 
-    protected void codeGenInst(DecacCompiler compiler, String methodName) { };
 
     protected abstract DVal codeGenExpr(DecacCompiler compiler);
 

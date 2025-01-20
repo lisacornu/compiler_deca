@@ -46,7 +46,7 @@ public class Main extends AbstractMain {
         compiler.addComment("---------- Déclaration des variables");
         declVariables.codeGenListDeclVar(compiler);
         compiler.addComment("---------- Instructions");
-        insts.codeGenListInst(compiler);
+        insts.codeGenListInst(compiler, null);
     }
     
     @Override

@@ -83,7 +83,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         for (AbstractDeclField abstractDeclField : getList()) {
             abstractDeclField.codeGenDeclField(compiler);
         }
-        
+
     }
 
 
