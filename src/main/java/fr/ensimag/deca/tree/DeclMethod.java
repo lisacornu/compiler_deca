@@ -21,10 +21,7 @@ import java.rmi.UnexpectedException;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -175,7 +172,9 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addInstruction(new WSTR("Erreur : sortie de la methode "+declClass.getClassName().getName()+"."+methodName.getName()+" sans return"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+
         compiler.addLabel(new Label("fin."+declClass.getClassName().getName().getName()+"."+methodName.getName()));
+        compiler.addInstruction(new RTS());
     }
 
 }

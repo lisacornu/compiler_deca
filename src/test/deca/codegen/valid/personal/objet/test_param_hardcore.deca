@@ -31,6 +31,6 @@ class A {
     A a = new A();
     int calcul;
     println("test");
-    calcul = a.superCalcul(1,2,3,4);
+    calcul = 1 + a.superCalcul(1,2,3,4) + 1;
     print(calcul);
 }
