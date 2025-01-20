@@ -51,12 +51,6 @@ find src/test/deca/syntax/valid -name "*.deca" -type f | while read -r file; do
     test_file "$file"
 done
 
-# Afficher les statistiques
-echo -e "\nRésultats des tests:"
-echo "Total des tests: $total_tests"
-echo -e "${GREEN}Tests réussis: $passed_tests${NC}"
-echo -e "${RED}Tests échoués: $failed_tests${NC}"
-
 # Sortir avec un code d'erreur si des tests ont échoué
 if [ $failed_tests -gt 0 ]; then
     exit 1
