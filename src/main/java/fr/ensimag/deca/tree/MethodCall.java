@@ -122,7 +122,7 @@ public class MethodCall extends AbstractExpr{
 
         compiler.addInstruction(new SUBSP(this.rvalueStar.getList().size() + 1));
         compiler.registerHandler.restoreRegs(compiler, savedRegs);
-        return Register.R0;
+        return RegisterHandler.pushFromRegister(compiler, Register.R0);
     }
 
     @Override

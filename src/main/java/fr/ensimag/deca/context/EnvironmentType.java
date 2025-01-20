@@ -8,7 +8,6 @@ import java.util.Map;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
 
-// A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
  * Environment containing types. Initially contains predefined identifiers, more
  * classes can be added with declareClass().
@@ -39,7 +38,6 @@ public class EnvironmentType {
 
         Symbol stringSymb = compiler.createSymbol("String");
         STRING = new StringType(stringSymb);
-        // envTypes.put(stringSymb, new TypeDefinition(STRING, Location.BUILTIN));
 
         // not added to envTypes, it's not visible for the user.
         Symbol objectSymb = compiler.createSymbol("Object");
@@ -58,7 +56,6 @@ public class EnvironmentType {
     public void addOfTypeClass(DecacCompiler compiler, String nameOfClass, ClassDefinition nameClassDef) throws DoubleDefException{
         Symbol newSymb = compiler.createSymbol(nameOfClass);
         if (defOfType(newSymb)==null){
-            // envTypes.put(newSymb, new TypeDefinition(new ClassType(newSymb), null));
             envTypes.put(newSymb, nameClassDef);
         } else{
             throw new DoubleDefException();

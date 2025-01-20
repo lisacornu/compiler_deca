@@ -20,9 +20,6 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
  * @date 01/01/2025
  */
 public class EnvironmentExp {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
 
     EnvironmentExp parentEnvironment;
     Map<Symbol, Definition> envMap;

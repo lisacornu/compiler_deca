@@ -13,23 +13,21 @@ class A {
     int z = 3;
 
     int initalpha(int a, int b) {
-        print("a");
         return a+b;
     }
 
     int initbeta(int a, int b) {
-        print("b");
         return a-b;
     }
 
     int superCalcul(int a, int b, int c, int d) {
 
-        int alpha = initalpha(1,1); //2
-        int beta = initbeta(2,1);   //1
+        int alpha = initalpha(1,1);
+        int beta = initbeta(2,1);
         println("test");
-        a = a + x*y - beta;         //2
+        a = a + x*y - beta;
         beta = 1;
-        b = c = a + beta - alpha;   //1
+        b = c = a + beta - alpha;
         return d - b;
     }
 
@@ -38,7 +36,6 @@ class A {
 {
     A a = new A();
     int calcul;
-    println("test");
-    calcul = 1 + a.superCalcul(1,2,3,4) + 1;
+    calcul = a.superCalcul(1,2,3,4);
     print(calcul);
 }

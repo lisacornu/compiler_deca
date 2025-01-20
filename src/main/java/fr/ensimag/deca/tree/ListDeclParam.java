@@ -33,7 +33,6 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
      */
     public fr.ensimag.deca.context.Signature verifyListParamMembers(DecacCompiler compiler, fr.ensimag.deca.context.ClassDefinition nameClass) throws ContextualError {
         LOG.debug("verify listParamMembers: start");
-        // throw new UnsupportedOperationException("not yet implemented");
         Signature sign = new fr.ensimag.deca.context.Signature();
         for (AbstractDeclParam p : getList()){
             Type typeSign = p.verifyParamMembers(compiler);
@@ -48,7 +47,6 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
      */
     public void verifyListParamBody(DecacCompiler compiler, EnvironmentExp localEnv) throws ContextualError {
         LOG.debug("verify listFieldBody: start");
-        // throw new UnsupportedOperationException("not yet implemented");
         for (AbstractDeclParam p : getList()){
             p.verifyParamBody(compiler, localEnv);
         }

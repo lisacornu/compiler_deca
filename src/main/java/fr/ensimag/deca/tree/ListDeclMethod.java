@@ -31,7 +31,6 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
      */
     public void verifyListMethodMembers(DecacCompiler compiler, ClassDefinition nameClass) throws ContextualError { //mettre envExp si besoin
         LOG.debug("verify listMethodMembers: start");
-        // throw new UnsupportedOperationException("not yet implemented");
         for (AbstractDeclMethod m : getList()){
             m.verifyMethodMembers(compiler, nameClass);
         }
@@ -43,7 +42,6 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
      */
     public void verifyListMethodBody(DecacCompiler compiler, ClassDefinition nameClass) throws ContextualError {
         LOG.debug("verify listMethodBody: start");
-        // throw new UnsupportedOperationException("not yet implemented");
         for (AbstractDeclMethod m : getList()){
             m.verifyMethodBody(compiler, nameClass);
         }
