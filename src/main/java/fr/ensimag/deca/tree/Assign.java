@@ -122,22 +122,44 @@ public class Assign extends AbstractBinaryExpr {
                 return null; // Ne pas générer la déclaration de la variable
             }
         }
-        // Generation du codes des branches
+
+        // Generation des codes des branches
         DVal leftOperandResult = getLeftOperand().codeGenExpr_opti(compiler);
         DVal rightOperandResult;
-        if(getRightOperand() instanceof Identifier && compiler.opti==1){
-                
-              if(((Identifier)getLeftOperand()).literal!=null){
-                compiler.addComment("jspquoidire");
-                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr_opti(compiler);
-              }
-              else{
+
+
+        if(compiler.opti == 1){
+
+            //On fait le constant folding si la variable est un int ou un float
+            //sinon on ne peut rien faire
+            Type leftOperandType = getLeftOperand().getType();
+            if(leftOperandType.isFloat() || leftOperandType.isInt()){
+                //On récupère la valeur de l'expression de droite
+                getLeftOperand().printExprValue(compiler);
+                //System.out.println("Évaluation de la valeur : " + getRightOperand().evalValue());
+            }
+
+
+
+
+
+            if(getRightOperand() instanceof Identifier){
+                if(((Identifier)getLeftOperand()).literal != null){
+                    compiler.addComment("jspquoidire");
+                    rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr_opti(compiler);
+                }
+                else{
+                    rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+                }
+            }
+            else{
                 rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
-              }
+            }
         }
         else{
             rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
         }
+
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
         DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);
