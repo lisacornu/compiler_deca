@@ -41,7 +41,36 @@ public class DeclVar extends AbstractDeclVar {
         this.varName = varName;
         this.initialization = initialization;
     }
+      @Override
+    protected void verifyDeclVar(DecacCompiler compiler,
+            EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        Type typeType = type.verifyType(compiler);
 
+        if (typeType.isVoid()){
+            throw new ContextualError("type is void", getLocation());
+        }
+        type.setType(typeType);
+        try{
+
+            varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
+            localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
+             // Ajouter le suivi de l'utilisation de la variable dans la table de hachage
+            String varNameStr = varName.getName().getName(); // Récupérer le nom de la variable
+            compiler.variableUsageCount.putIfAbsent(varNameStr, 0); // Initialiser si nécessaire
+            compiler.variableLast.putIfAbsent(varNameStr,0);
+            ArrayList<Integer> dynamicInfo = new ArrayList<>();
+            dynamicInfo.add(0);
+            dynamicInfo.set(0, 0);
+            compiler.variableUsageCountdyna.putIfAbsent(varNameStr, dynamicInfo);
+            compiler.variablePropa.putIfAbsent(varNameStr,null);
+        }catch(DoubleDefException e){
+            throw new ContextualError("The type as already been define for the variable " + varName.getName(), getLocation());
+        }
+        
+        initialization.verifyInitialization(compiler, typeType, localEnv, currentClass);
+    }
+/*
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -63,7 +92,7 @@ public class DeclVar extends AbstractDeclVar {
         }
         
         initialization.verifyInitialization(compiler, typeType, localEnv, currentClass);
-    }
+    }*/
 
     
     @Override
@@ -91,21 +120,27 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
-    @Override
+       @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
-
+           // Vérifier l'utilisation de la variable dans la table de hachage
+        String varNameStr = varName.getName().getName();
         //Ajout de l'operand à GB
         RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
         varName.getExpDefinition().setOperand(GB_Stack);
         compiler.headOfGBStack++;
         compiler.stackUsageWatcher.nbVariables++;
 
-        if (initialization instanceof NoInitialization) {
-            return;
-        };
-
+        if (initialization instanceof NoInitialization) return;
         Initialization initExpression = (Initialization) initialization;
+        if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
+            ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
 
+            // Vérifier le premier élément du tableau
+            if (dynamicInfo.get(((Identifier)varName).indice) == 0) {
+                compiler.addComment("Variable " + varNameStr + " n'a pas besoin de  l'initialisation, pas de code généré.");
+                return; // Ne pas générer la déclaration de la variable
+            }
+        }
         DVal addrInit = initExpression.codeGenInit(compiler);
         GPRegister regInit = RegisterHandler.popIntoRegister(compiler, addrInit, Register.R0);
 
@@ -113,6 +148,8 @@ public class DeclVar extends AbstractDeclVar {
         compiler.registerHandler.SetFree(regInit);
     }
 
+    
+    
 
     @Override
     protected void codeGenDeclVarMethod(DecacCompiler compiler) {
