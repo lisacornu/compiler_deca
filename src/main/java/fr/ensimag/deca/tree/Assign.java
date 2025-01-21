@@ -48,6 +48,12 @@ public class Assign extends AbstractBinaryExpr {
         }
         if(getRightOperand() instanceof Identifier){
             ((Identifier)getRightOperand()).usage(compiler);
+            String varNameStr_r = ((Identifier) getRightOperand()).getName().toString();
+            if(compiler.variablePropa.get(varNameStr_r)!=null){
+                String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+                ((Identifier)getLeftOperand()).literal=new IntLiteral(compiler.variablePropa.get(varNameStr_r));
+                compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));
+            }
         }
         if (getLeftOperand() instanceof Identifier) {
             // Récupérer le nom de la variable
@@ -67,7 +73,16 @@ public class Assign extends AbstractBinaryExpr {
             compiler.variableLast.put(varNameStr, newIndice);
             compiler.variableUsageCount.put(varNameStr, 0);
         }
-
+        if(getRightOperand() instanceof IntLiteral){
+            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+            ((Identifier)getLeftOperand()).literal=new IntLiteral(((IntLiteral)(getRightOperand())).getValue());
+            compiler.variablePropa.put(varNameStr,((IntLiteral)(getRightOperand())).getValue());
+        }
+        else{
+            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+            compiler.variablePropa.put(varNameStr,null);
+        }
+        
         // Incrémenter l'usage de la variable dans la table de hachage
        // String varNameStr = getName().toString();
        // compiler.variableUsageCount.put(varNameStr, compiler.variableUsageCount.get(varNameStr) + 1);  // Incrémenter l'usage
@@ -112,8 +127,20 @@ public class Assign extends AbstractBinaryExpr {
         }
         // Generation du codes des branches
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
-        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
-
+        DVal rightOperandResult;
+        if(getRightOperand() instanceof Identifier){
+                
+              if(((Identifier)getLeftOperand()).literal!=null){
+                compiler.addComment("jspquoidire");
+                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
+              }
+              else{
+                rightOperandResult = getRightOperand().codeGenExpr(compiler);
+              }
+        }
+        else{
+            rightOperandResult = getRightOperand().codeGenExpr(compiler);
+        }
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
         DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);

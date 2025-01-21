@@ -10,49 +10,18 @@
 ; Variable x1 n'a pas besoin d'etre assigné
 ; Variable x2 n'a pas besoin d'etre assigné
 ; Variable x3 n'a pas besoin d'etre assigné
-	LOAD #3, R2
-	STORE R2, 1(GB)
-; Variable y1 n'a pas besoin d'etre assigné
-	LOAD #0, R2
-	CMP #1, R2
-	BNE elseStart0
-	LOAD #5, R2
-	STORE R2, 2(GB)
-	BRA ifThenElseExit0
-elseStart0:
-	LOAD #18, R2
-	STORE R2, 1(GB)
-ifThenElseExit0:
-; Variable y2 n'a pas besoin d'etre assigné
-; Variable y3 n'a pas besoin d'etre assigné
-	LOAD #79, R2
-	STORE R2, 2(GB)
-while1:
-	LOAD #18, R2
-	LOAD 1(GB), R0
-	CMP R2, R0
-	BNE not_equal0
-	LOAD #1, R0
-	BRA equal_0
-not_equal0:
-	LOAD #0, R0
-equal_0:
-	LOAD R0, R2
-	CMP #1, R2
-	BNE whileExit1
-	LOAD #1, R2
-	LOAD 1(GB), R0
-	SUB R2, R0
-	LOAD R0, R2
-	STORE R2, 1(GB)
-	LOAD #5, R2
-	STORE R2, 2(GB)
-	BRA while1
-whileExit1:
-	LOAD 1(GB), R1
-	WINT
-	WNL
+	LOAD #8, R0
+	PUSH R0
+	POP R1
+	STORE R1, 1(GB)
+; jspquoidire
+	LOAD #8, R0
+	PUSH R0
+	POP R1
+	STORE R1, 2(GB)
 	LOAD 2(GB), R1
+	WINT
+	LOAD 1(GB), R1
 	WINT
 	WNL
 	HALT

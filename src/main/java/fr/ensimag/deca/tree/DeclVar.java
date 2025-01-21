@@ -63,6 +63,7 @@ public class DeclVar extends AbstractDeclVar {
             dynamicInfo.add(0);
             dynamicInfo.set(0, 0);
             compiler.variableUsageCountdyna.putIfAbsent(varNameStr, dynamicInfo);
+            compiler.variablePropa.putIfAbsent(varNameStr,null);
         }catch(DoubleDefException e){
             throw new ContextualError("The type as already been define for the variable " + varName.getName(), getLocation());
         }
