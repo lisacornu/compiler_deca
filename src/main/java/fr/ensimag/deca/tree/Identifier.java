@@ -1,4 +1,6 @@
 package fr.ensimag.deca.tree;
+import java.util.ArrayList;
+
 
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
@@ -27,7 +29,9 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public class Identifier extends AbstractIdentifier {
-    
+    public int indice=0;
+    public IntLiteral literal=null;
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -287,4 +291,13 @@ public class Identifier extends AbstractIdentifier {
         }
         return getExpDefinition().getOperand();
     }
+      public void usage(DecacCompiler compiler){
+        // Incrémenter l'usage de la variable dans la table de hachage
+        String varNameStr = getName().toString();
+        compiler.variableUsageCount.put(varNameStr, compiler.variableUsageCount.get(varNameStr) + 1);  // Incrémenter l'usage
+        ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
+        int i = compiler.variableLast.getOrDefault(varNameStr,0);
+        dynamicInfo.set(i, 1);
+    }
+
 }
