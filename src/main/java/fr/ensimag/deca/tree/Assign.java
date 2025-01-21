@@ -139,7 +139,6 @@ public class Assign extends AbstractBinaryExpr {
       if(leftOperandType.isFloat() || leftOperandType.isInt()){
           //On récupère la valeur de l'expression de droite
           getLeftOperand().printExprValue(compiler);
-          compiler.addComment("commentaire de test");
       }
 
 
@@ -174,7 +173,7 @@ public class Assign extends AbstractBinaryExpr {
     }
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-
+        compiler.addComment("commentaire de test");
         // Generation du code de la branch de droite
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 
