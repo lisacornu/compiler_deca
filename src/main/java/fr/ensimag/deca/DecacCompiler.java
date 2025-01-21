@@ -50,7 +50,7 @@ public class DecacCompiler implements Callable<Boolean> {
     public HashMap<String, ArrayList<Integer>> variableUsageCountdyna = new HashMap<>();
     public HashMap<String, Integer> variableLast=new HashMap<>(); 
     public HashMap<String, Integer> variablePropa=new HashMap<>(); 
-    public int opti=1;
+    public int opti=0;
 
     public int headOfGBStack = 1;
     public int headOfLBStack = 0;
