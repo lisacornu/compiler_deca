@@ -38,3 +38,31 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
 
 }
+
+ @Override
+    public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+
+        // TODO : Probablement problèmes de int et float à traiter
+        Type lefType = getLeftOperand().verifyExpr_opti(compiler, localEnv, currentClass);
+        Type righType = getRightOperand().verifyExpr_opti(compiler, localEnv, currentClass);
+        if(getRightOperand() instanceof Identifier){
+            ((Identifier)getRightOperand()).usage(compiler);
+        }
+        if(getLeftOperand() instanceof Identifier){
+            ((Identifier)getLeftOperand()).usage(compiler);
+        }
+        if ((lefType.isInt() || lefType.isFloat()) && (righType.isInt() || righType.isFloat())){
+            Type booleanType = new BooleanType(compiler.createSymbol("boolean"));
+            this.setType(booleanType);
+            return booleanType;
+        }else if (lefType.isBoolean() && righType.isBoolean()){
+            setType(righType);
+            return righType;
+        }else{
+            throw new ContextualError("Both are not same type : " + lefType + " and " + righType,getLocation());
+        }
+    }
+
+
+}
