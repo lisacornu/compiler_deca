@@ -44,7 +44,7 @@ public class While extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler, String methodName) {
 
-
+        compiler.opti=0;
         nbNestedWhiles++;
         Label debutWhile = new Label ("while" + nbNestedWhiles);
         Label finWhile = new Label ("whileExit" + nbNestedWhiles);
@@ -64,6 +64,7 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(debutWhile));   //retour au début du while
 
         compiler.addLabel(finWhile);
+        compiler.opti=1;
     }
 
 
