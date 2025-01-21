@@ -46,6 +46,21 @@ public abstract class AbstractPrint extends AbstractInst {
                     }
                 }
     }
+      @Override
+    protected void verifyInst_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass, Type returnType)
+            throws ContextualError {
+                
+                for (AbstractExpr arg : getArguments().getList()){
+                    Type argType = arg.verifyExpr_opti(compiler, localEnv, currentClass);
+                    if (!(argType.isString() || argType.isFloat() || argType.isInt() )){
+                        throw new ContextualError("Type is not String or Int or Float, you have "+argType, getLocation());
+                    }
+                    if(arg instanceof Identifier){
+                        ((Identifier)arg).usage(compiler);
+                    }
+                }
+    }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, String methodName) {
