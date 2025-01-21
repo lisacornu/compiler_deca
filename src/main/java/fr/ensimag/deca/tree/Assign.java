@@ -48,7 +48,7 @@ public class Assign extends AbstractBinaryExpr {
             setRightOperand(rightExpDefinition);
         }
         if(getRightOperand() instanceof Identifier){
-            ((Identifier)getRightOperand()).usage(compiler);
+           // ((Identifier)getRightOperand()).usage(compiler);
             String varNameStr_r = ((Identifier) getRightOperand()).getName().toString();
             if(compiler.variablePropa.get(varNameStr_r)!=null){
                 String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
@@ -151,7 +151,7 @@ public class Assign extends AbstractBinaryExpr {
     }
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-
+        
         // Generation du code de la branch de droite
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 

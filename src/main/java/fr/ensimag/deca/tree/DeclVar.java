@@ -134,7 +134,7 @@ public class DeclVar extends AbstractDeclVar {
         if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
             ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
 
-            // Vérifier le premier élément du tableau
+            // Vérifier le premier élément du tableau ( si la variable est utilisé au moins une fois
             if (dynamicInfo.get(((Identifier)varName).indice) == 0) {
                 compiler.addComment("Variable " + varNameStr + " n'a pas besoin de  l'initialisation, pas de code généré.");
                 return; // Ne pas générer la déclaration de la variable

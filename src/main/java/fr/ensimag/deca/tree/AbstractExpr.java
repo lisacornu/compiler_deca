@@ -193,6 +193,11 @@ public abstract class AbstractExpr extends AbstractInst {
         DVal reg = codeGenExpr(compiler);
         compiler.registerHandler.SetFree(reg);
     }
+    @Override
+    protected void codeGenInst_opti(DecacCompiler compiler, String methodName) {
+        DVal reg = codeGenExpr_opti(compiler);
+        compiler.registerHandler.SetFree(reg);
+    }
 
 
     protected abstract DVal codeGenExpr(DecacCompiler compiler);
