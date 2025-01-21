@@ -48,7 +48,7 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, String methodName) {
-
+        compiler.opti=0;
        // On récupère le résultat de la condition (qui était dans la pile/un registre)
         DVal condAddr = condition.codeGenExpr(compiler);
         GPRegister condReg = RegisterHandler.popIntoRegister(compiler, condAddr, Register.R0);
@@ -70,6 +70,7 @@ public class IfThenElse extends AbstractInst {
         compiler.addLabel(startLabel);// Début du else
         elseBranch.codeGenListInst(compiler, methodName); // Exécution du else
         compiler.addLabel(endLabel); //Fin du if-else
+        compiler.opti=1;
     }
 
 
