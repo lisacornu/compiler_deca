@@ -37,7 +37,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
 
-}
+
 
  @Override
     public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -63,6 +63,5 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             throw new ContextualError("Both are not same type : " + lefType + " and " + righType,getLocation());
         }
     }
-
 
 }

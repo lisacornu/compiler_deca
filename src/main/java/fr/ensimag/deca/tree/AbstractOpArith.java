@@ -53,7 +53,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             throw new ContextualError("Both are not float or int",getLocation());
         }
     }
-}
+
 
 
  @Override
@@ -94,5 +94,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             throw new ContextualError("Both are not float or int",getLocation());
         }
     }
-}
 
+
+}

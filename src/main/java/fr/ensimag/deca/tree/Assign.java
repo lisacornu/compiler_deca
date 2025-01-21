@@ -159,3 +159,4 @@ public class Assign extends AbstractBinaryExpr {
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
+}

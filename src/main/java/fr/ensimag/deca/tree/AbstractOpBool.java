@@ -30,7 +30,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         }
     }
 
-}
+
     @Override
     public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
