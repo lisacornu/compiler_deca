@@ -2,7 +2,6 @@
 package fr.ensimag.deca.tree;
 import java.util.ArrayList;
 
-import com.sun.tools.javac.util.Log;
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
