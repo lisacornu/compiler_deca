@@ -60,6 +60,7 @@ public class DeclVar extends AbstractDeclVar {
             ArrayList<Integer> dynamicInfo = new ArrayList<>();
             dynamicInfo.add(0);
             dynamicInfo.set(0, 0);
+            ((Identifier)varName).indice=0;
             compiler.variableUsageCountdyna.putIfAbsent(varNameStr, dynamicInfo);
             compiler.variablePropa.putIfAbsent(varNameStr,null);
         }catch(DoubleDefException e){
