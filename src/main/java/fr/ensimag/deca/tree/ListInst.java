@@ -1,5 +1,5 @@
 package fr.ensimag.deca.tree;
-
+import java.util.HashMap;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -31,6 +31,12 @@ public class ListInst extends TreeList<AbstractInst> {
             throws ContextualError {
         for (AbstractInst inst : getList()) {
             inst.verifyInst(compiler, localEnv, currentClass, returnType);
+        }
+    }
+     public void verifyListInst_opti(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
+            throws ContextualError {
+        for (AbstractInst inst : getList()) {
+            inst.verifyInst_opti(compiler, localEnv, currentClass, returnType);
         }
     }
 
