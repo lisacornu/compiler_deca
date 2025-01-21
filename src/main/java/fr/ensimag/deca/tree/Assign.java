@@ -1,6 +1,8 @@
 
 package fr.ensimag.deca.tree;
 import java.util.ArrayList;
+
+import com.sun.tools.javac.util.Log;
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
@@ -14,6 +16,8 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 
 /**
@@ -137,7 +141,7 @@ public class Assign extends AbstractBinaryExpr {
                 //On récupère la valeur de l'expression de droite
                 getLeftOperand().printExprValue(compiler);
 //                System.out.println("Évaluation de la valeur : " + getRightOperand().evalValue());
-                System.out.println("Évaluation de la valeur : ");
+                compiler.addComment("on passe ici");
             }
 
 
