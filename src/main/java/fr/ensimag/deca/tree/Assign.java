@@ -136,7 +136,8 @@ public class Assign extends AbstractBinaryExpr {
             if(leftOperandType.isFloat() || leftOperandType.isInt()){
                 //On récupère la valeur de l'expression de droite
                 getLeftOperand().printExprValue(compiler);
-                System.out.println("Évaluation de la valeur : " + getRightOperand().evalValue());
+//                System.out.println("Évaluation de la valeur : " + getRightOperand().evalValue());
+                System.out.println("Évaluation de la valeur : ");
             }
 
 
