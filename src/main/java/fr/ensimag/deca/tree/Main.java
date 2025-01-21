@@ -34,7 +34,7 @@ public class Main extends AbstractMain {
         this.declVariables.verifyListDeclVariable(compiler, localEnv, null); // on verifie en premier les variable 
         LOG.debug("verify Variable : end");
         LOG.debug("verify Inst : start");
-        this.insts.verifyListInst(compiler, localEnv, null, null); //on vérifie les inst
+        this.insts.verifyListInst_opti(compiler, localEnv, null, null); //on vérifie les inst
         LOG.debug("verify Inst : end");
         LOG.debug("verify Main: end");
     }
