@@ -299,5 +299,22 @@ public class Identifier extends AbstractIdentifier {
         int i = compiler.variableLast.getOrDefault(varNameStr,0);
         dynamicInfo.set(i, 1);
     }
-
+    @Override
+    public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        if (localEnv.get(getName()) != null){                
+            Definition expr = localEnv.get(getName());
+            if (expr.isExpression()){
+                setDefinition(expr);
+                setType(expr.getType());
+                usage(compiler);
+                return getType();
+            }else{
+                throw new ContextualError("This is not an expression.", getLocation());
+            }
+        }else{
+            throw new ContextualError("There is no definition for this name : "+getName(), getLocation());
+        }
+        
+    }
 }

@@ -75,6 +75,13 @@ public class While extends AbstractInst {
         condition.verifyExpr(compiler, localEnv, currentClass);
         body.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
+    @Override
+    protected void verifyInst_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass, Type returnType)
+            throws ContextualError {
+        condition.verifyExpr_opti(compiler, localEnv, currentClass);
+        body.verifyListInst(compiler, localEnv, currentClass, returnType);
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

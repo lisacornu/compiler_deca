@@ -104,6 +104,28 @@ public abstract class AbstractExpr extends AbstractInst {
             throw new ContextualError("They are not compatible (not same type or float->int) " + type + " is not " + expectedType, getLocation());
         }
     }
+        public AbstractExpr verifyRValue_opti(DecacCompiler compiler,
+            EnvironmentExp localEnv, ClassDefinition currentClass, 
+            Type expectedType)
+            throws ContextualError {
+        Type type = verifyExpr_opti(compiler, localEnv, currentClass);
+        if(type.sameType(expectedType)){
+            setType(type);
+            return this;
+        }else if ((type.isInt() && expectedType.isFloat()) ){ 
+            return this;
+        }else if (type.isClass()){
+            ClassType classType = type.asClassType(null, getLocation());
+            ClassType expectedClassType= expectedType.asClassType(null, getLocation());
+            if (classType.isSubClassOf(expectedClassType)){
+                return this;
+            }else{
+                throw new ContextualError("The classType "+ classType +" is not a subclassType of " + expectedClassType, getLocation());
+            }
+        }else{
+            throw new ContextualError("They are not compatible (not same type or float->int) " + type + " is not " + expectedType, getLocation());
+        }
+    }
     
     
     @Override

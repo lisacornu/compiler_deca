@@ -34,10 +34,11 @@ public class Assign extends AbstractBinaryExpr {
     public Assign(AbstractLValue leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
+    @Override
      public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);   
-        AbstractExpr rightExpDefinition = getRightOperand().verifyRValue(compiler, localEnv, currentClass, lefType);
+        AbstractExpr rightExpDefinition = getRightOperand().verifyRValue_opti(compiler, localEnv, currentClass, lefType);
         this.setType(lefType);
         if (lefType.isFloat() && rightExpDefinition.getType().isInt()){
             ConvFloat conversionFloat = new ConvFloat(rightExpDefinition);
@@ -82,10 +83,6 @@ public class Assign extends AbstractBinaryExpr {
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             compiler.variablePropa.put(varNameStr,null);
         }
-        
-        // Incrémenter l'usage de la variable dans la table de hachage
-       // String varNameStr = getName().toString();
-       // compiler.variableUsageCount.put(varNameStr, compiler.variableUsageCount.get(varNameStr) + 1);  // Incrémenter l'usage
         return lefType;
         
     }
@@ -128,7 +125,7 @@ public class Assign extends AbstractBinaryExpr {
         // Generation du codes des branches
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult;
-        if(getRightOperand() instanceof Identifier){
+        if(getRightOperand() instanceof Identifier && compiler.opti==1){
                 
               if(((Identifier)getLeftOperand()).literal!=null){
                 compiler.addComment("jspquoidire");

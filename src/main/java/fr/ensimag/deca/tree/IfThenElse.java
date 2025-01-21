@@ -45,7 +45,14 @@ public class IfThenElse extends AbstractInst {
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
-
+    @Override
+    protected void verifyInst_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass, Type returnType)
+            throws ContextualError {
+        condition.verifyExpr_opti(compiler, localEnv, currentClass);
+        thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+        elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+    }
     @Override
     protected void codeGenInst(DecacCompiler compiler, String methodName) {
         compiler.opti=0;

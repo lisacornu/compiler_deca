@@ -61,8 +61,8 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         // TODO : vérifier si int et float, return type int ou float selon si opération sur des floats ou int
         // Type opArith = new ExpDefinition(compiler.createSymbol(getOperatorName())); 
-        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type lefType = getLeftOperand().verifyExpr_opti(compiler, localEnv, currentClass);
+        Type righType = getRightOperand().verifyExpr_opti(compiler, localEnv, currentClass);
         if(getRightOperand() instanceof Identifier){
             ((Identifier)getRightOperand()).usage(compiler);
         }
