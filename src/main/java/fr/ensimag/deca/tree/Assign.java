@@ -26,6 +26,7 @@ import java.util.HashMap;
  * @date 01/01/2025
  */
 public class Assign extends AbstractBinaryExpr {
+    private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
     @Override
     public AbstractLValue getLeftOperand() {
@@ -139,8 +140,7 @@ public class Assign extends AbstractBinaryExpr {
             if(leftOperandType.isFloat() || leftOperandType.isInt()){
                 //On récupère la valeur de l'expression de droite
                 getLeftOperand().printExprValue(compiler);
-//                System.out.println("Évaluation de la valeur : " + getRightOperand().evalValue());
-                compiler.addComment("on passe ici");
+                LOG.debug("On passe ici");
             }
 
 
