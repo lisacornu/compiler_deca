@@ -51,15 +51,7 @@ public class Assign extends AbstractBinaryExpr {
         }else{
             setRightOperand(rightExpDefinition);
         }
-        if(getRightOperand() instanceof Identifier){
-           // ((Identifier)getRightOperand()).usage(compiler);
-            String varNameStr_r = ((Identifier) getRightOperand()).getName().toString();
-            if(compiler.variablePropa.get(varNameStr_r)!=null){
-                String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
-                ((Identifier)getLeftOperand()).literal=new IntLiteral(compiler.variablePropa.get(varNameStr_r));
-                compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));
-            }
-        }
+       
         if (getLeftOperand() instanceof Identifier) {
             // Récupérer le nom de la variable
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
@@ -78,7 +70,17 @@ public class Assign extends AbstractBinaryExpr {
             compiler.variableLast.put(varNameStr, newIndice);
             compiler.variableUsageCount.put(varNameStr, 0);
         }
-        if(getRightOperand() instanceof IntLiteral){
+         // si a droite c de la variable est un identificateur
+        if(getRightOperand() instanceof Identifier){
+            //prendre le nom de la variable a droite
+            String varNameStr_r = ((Identifier) getRightOperand()).getName().toString();
+            if(compiler.variablePropa.get(varNameStr_r)!=null){//si jamais l attribut de droite a une valeur entiere connus
+                String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+                ((Identifier)getLeftOperand()).literal=new IntLiteral(compiler.variablePropa.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
+                compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
+            }
+        }
+        else if(getRightOperand() instanceof IntLiteral){
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             ((Identifier)getLeftOperand()).literal=new IntLiteral(((IntLiteral)(getRightOperand())).getValue());
             compiler.variablePropa.put(varNameStr,((IntLiteral)(getRightOperand())).getValue());
@@ -126,9 +128,9 @@ public class Assign extends AbstractBinaryExpr {
                 return null; // Ne pas générer la déclaration de la variable
             }
         }
-
+/*
         // Generation des codes des branches
-        DVal leftOperandResult = getLeftOperand().codeGenExpr_opti(compiler);
+        DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult;
 
 
@@ -158,14 +160,29 @@ public class Assign extends AbstractBinaryExpr {
         }
         else{
             rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+        }*/
+         // Generation du codes des branches
+        DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
+        DVal rightOperandResult;
+        if(getRightOperand() instanceof Identifier){
+              if(((Identifier)getLeftOperand()).literal!=null){
+                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
+              }
+              else{
+                rightOperandResult = getRightOperand().codeGenExpr(compiler);
+              }
         }
+        else{
+            rightOperandResult = getRightOperand().codeGenExpr(compiler);
+        }
+
 
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
         DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);
 
         // Generation du code de l'expression (résultat enregistré dans op1)
-        codeGenBinaryExpr(compiler, op1, op2);
+        codeGenBinaryExpr1(compiler, op1, op2);
         compiler.registerHandler.SetFree(op2);
 
         //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
@@ -174,7 +191,6 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
         
-        compiler.addComment("commentaire de test");
         // Generation du code de la branch de droite
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 
@@ -206,6 +222,10 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
         compiler.addInstruction(new STORE(op2,(DAddr)op1));
+    }
+    protected void codeGenBinaryExpr1(DecacCompiler compiler, DVal op1, GPRegister op2) {
+        DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
+        compiler.addInstruction(new STORE(op2,varAddress));
     }
 
 }

@@ -43,9 +43,22 @@ public class Initialization extends AbstractInitialization {
         }
         expression.setType(t);
     }
-
+    @Override
+    protected void verifyInitialization_opti(DecacCompiler compiler, Type t,
+            EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        getExpression().verifyRValue_opti(compiler, localEnv, currentClass, t);
+        if (getExpression().getType().isInt() && t.isFloat()){
+            setExpression(new ConvFloat(getExpression()));
+        }
+        expression.setType(t);
+    }
     public DVal codeGenInit(DecacCompiler compiler){
         return expression.codeGenExpr(compiler);
+    }
+
+    public DVal codeGenInit_opti(DecacCompiler compiler){
+        return expression.codeGenExpr_opti(compiler);
     }
 
     @Override

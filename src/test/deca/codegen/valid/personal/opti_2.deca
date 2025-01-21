@@ -9,9 +9,8 @@
 
 {   
     int x;
+    int y ;
     x=3;
-    x=4;
-    x=5;
-    x=79;
-    println(x);
+    y=x;
+    println(y);
 }

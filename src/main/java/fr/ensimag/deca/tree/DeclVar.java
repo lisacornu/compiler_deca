@@ -66,7 +66,7 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("The type as already been define for the variable " + varName.getName(), getLocation());
         }
         
-        initialization.verifyInitialization(compiler, typeType, localEnv, currentClass);
+        initialization.verifyInitialization_opti(compiler, typeType, localEnv, currentClass);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class DeclVar extends AbstractDeclVar {
                 return; // Ne pas générer la déclaration de la variable
             }
         }
-        DVal addrInit = initExpression.codeGenInit(compiler);
+        DVal addrInit = initExpression.codeGenInit_opti(compiler);
         GPRegister regInit = RegisterHandler.popIntoRegister(compiler, addrInit, Register.R0);
 
         compiler.addInstruction(new STORE(regInit, GB_Stack));
