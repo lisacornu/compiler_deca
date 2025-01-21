@@ -1,6 +1,7 @@
 
 package fr.ensimag.deca.tree;
 import java.util.ArrayList;
+
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
@@ -14,6 +15,8 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 
 /**
@@ -23,6 +26,7 @@ import java.util.HashMap;
  * @date 01/01/2025
  */
 public class Assign extends AbstractBinaryExpr {
+    private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
     @Override
     public AbstractLValue getLeftOperand() {
@@ -122,22 +126,40 @@ public class Assign extends AbstractBinaryExpr {
                 return null; // Ne pas générer la déclaration de la variable
             }
         }
-        // Generation du codes des branches
+
+        // Generation des codes des branches
         DVal leftOperandResult = getLeftOperand().codeGenExpr_opti(compiler);
         DVal rightOperandResult;
-        if(getRightOperand() instanceof Identifier && compiler.opti==1){
-                
-              if(((Identifier)getLeftOperand()).literal!=null){
-                compiler.addComment("jspquoidire");
-                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr_opti(compiler);
-              }
-              else{
+
+
+      LOG.debug("On passe ici");
+      //On fait le constant folding si la variable est un int ou un float
+      //sinon on ne peut rien faire
+      Type leftOperandType = getLeftOperand().getType();
+      if(leftOperandType.isFloat() || leftOperandType.isInt()){
+          //On récupère la valeur de l'expression de droite
+          getLeftOperand().printExprValue(compiler);
+      }
+
+
+        if(compiler.opti == 1){
+            if(getRightOperand() instanceof Identifier){
+                if(((Identifier)getLeftOperand()).literal != null){
+                    compiler.addComment("jspquoidire");
+                    rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr_opti(compiler);
+                }
+                else{
+                    rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+                }
+            }
+            else{
                 rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
-              }
+            }
         }
         else{
             rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
         }
+
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
         DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);
@@ -152,6 +174,7 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
         
+        compiler.addComment("commentaire de test");
         // Generation du code de la branch de droite
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 

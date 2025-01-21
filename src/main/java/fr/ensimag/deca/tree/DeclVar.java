@@ -51,7 +51,6 @@ public class DeclVar extends AbstractDeclVar {
         }
         type.setType(typeType);
         try{
-
             varName.setDefinition(new VariableDefinition(typeType, getLocation()));;
             localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
              // Ajouter le suivi de l'utilisation de la variable dans la table de hachage
