@@ -299,6 +299,8 @@ public class Identifier extends AbstractIdentifier {
         int i = compiler.variableLast.getOrDefault(varNameStr,0);
         dynamicInfo.set(i, 1);
     }
+
+    
     @Override
     public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {

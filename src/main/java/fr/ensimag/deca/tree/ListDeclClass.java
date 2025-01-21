@@ -31,6 +31,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClass: start");
+        if(getList().size()>0){
+            compiler.class_existe=1;
+        }
         for (AbstractDeclClass c : getList()){
             c.verifyClass(compiler);
         }

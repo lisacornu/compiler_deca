@@ -110,7 +110,7 @@ public class Assign extends AbstractBinaryExpr {
     }
 
   @Override
-    protected DVal codeGenExpr(DecacCompiler compiler) {
+    protected DVal codeGenExpr_opti(DecacCompiler compiler) {
            // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = ((Identifier)getLeftOperand()).getName().getName();
         if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
@@ -123,20 +123,20 @@ public class Assign extends AbstractBinaryExpr {
             }
         }
         // Generation du codes des branches
-        DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
+        DVal leftOperandResult = getLeftOperand().codeGenExpr_opti(compiler);
         DVal rightOperandResult;
         if(getRightOperand() instanceof Identifier && compiler.opti==1){
                 
               if(((Identifier)getLeftOperand()).literal!=null){
                 compiler.addComment("jspquoidire");
-                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
+                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr_opti(compiler);
               }
               else{
-                rightOperandResult = getRightOperand().codeGenExpr(compiler);
+                rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
               }
         }
         else{
-            rightOperandResult = getRightOperand().codeGenExpr(compiler);
+            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
         }
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
@@ -149,11 +149,40 @@ public class Assign extends AbstractBinaryExpr {
         //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
         return op1;
     }
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+
+        // Generation du code de la branch de droite
+        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
+
+        //On recupere l'adresse de la Lvalue
+        DAddr varAddress;
+        if (getLeftOperand() instanceof Selection) {
+            varAddress = ((Selection) getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+        } else {
+            Identifier leftOperandIdent =  (Identifier)getLeftOperand();
+            if (leftOperandIdent.getDefinition().isField()) {
+                varAddress = ((Identifier)getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+            } else {
+                varAddress = ((Identifier)getLeftOperand()).getExpDefinition().getOperand();
+            }
+        }
+
+
+        // On recupere rightOperandResult dans un registre
+        GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
+
+        // Generation du code de l'expression (résultat enregistré dans op1)
+        codeGenBinaryExpr(compiler, varAddress, op2);
+
+        //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
+        return op2;
+    }
 
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
-        compiler.addInstruction(new STORE(op2,varAddress));
+        compiler.addInstruction(new STORE(op2,(DAddr)op1));
     }
+
 }

@@ -41,7 +41,7 @@ public class DeclVar extends AbstractDeclVar {
         this.initialization = initialization;
     }
       @Override
-    protected void verifyDeclVar(DecacCompiler compiler,
+    protected void verifyDeclVar_opti(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type typeType = type.verifyType(compiler);
@@ -69,7 +69,7 @@ public class DeclVar extends AbstractDeclVar {
         
         initialization.verifyInitialization(compiler, typeType, localEnv, currentClass);
     }
-/*
+
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -91,7 +91,7 @@ public class DeclVar extends AbstractDeclVar {
         }
         
         initialization.verifyInitialization(compiler, typeType, localEnv, currentClass);
-    }*/
+    }
 
     
     @Override
@@ -120,7 +120,7 @@ public class DeclVar extends AbstractDeclVar {
     }
 
        @Override
-    protected void codeGenDeclVar(DecacCompiler compiler) {
+    protected void codeGenDeclVar_opti(DecacCompiler compiler) {
            // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = varName.getName().getName();
         //Ajout de l'operand à GB
@@ -147,7 +147,24 @@ public class DeclVar extends AbstractDeclVar {
         compiler.registerHandler.SetFree(regInit);
     }
 
-    
+       @Override
+    protected void codeGenDeclVar(DecacCompiler compiler) {
+           // Vérifier l'utilisation de la variable dans la table de hachage
+        String varNameStr = varName.getName().getName();
+        //Ajout de l'operand à GB
+        RegisterOffset GB_Stack = new RegisterOffset(compiler.headOfGBStack, Register.GB);
+        varName.getExpDefinition().setOperand(GB_Stack);
+        compiler.headOfGBStack++;
+        compiler.stackUsageWatcher.nbVariables++;
+
+        if (initialization instanceof NoInitialization) return;
+        Initialization initExpression = (Initialization) initialization;
+        DVal addrInit = initExpression.codeGenInit(compiler);
+        GPRegister regInit = RegisterHandler.popIntoRegister(compiler, addrInit, Register.R0);
+
+        compiler.addInstruction(new STORE(regInit, GB_Stack));
+        compiler.registerHandler.SetFree(regInit);
+    }
     
 
     @Override

@@ -196,7 +196,9 @@ public abstract class AbstractExpr extends AbstractInst {
 
 
     protected abstract DVal codeGenExpr(DecacCompiler compiler);
-
+    protected DVal codeGenExpr_opti(DecacCompiler compiler){
+        return codeGenExpr(compiler);
+    }
 
 
     @Override
