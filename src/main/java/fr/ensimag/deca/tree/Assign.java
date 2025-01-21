@@ -132,21 +132,18 @@ public class Assign extends AbstractBinaryExpr {
         DVal rightOperandResult;
 
 
+      LOG.debug("On passe ici");
+      //On fait le constant folding si la variable est un int ou un float
+      //sinon on ne peut rien faire
+      Type leftOperandType = getLeftOperand().getType();
+      if(leftOperandType.isFloat() || leftOperandType.isInt()){
+          //On récupère la valeur de l'expression de droite
+          getLeftOperand().printExprValue(compiler);
+          LOG.debug("On passe ici");
+      }
+
+
         if(compiler.opti == 1){
-
-            //On fait le constant folding si la variable est un int ou un float
-            //sinon on ne peut rien faire
-            Type leftOperandType = getLeftOperand().getType();
-            if(leftOperandType.isFloat() || leftOperandType.isInt()){
-                //On récupère la valeur de l'expression de droite
-                getLeftOperand().printExprValue(compiler);
-                LOG.debug("On passe ici");
-            }
-
-
-
-
-
             if(getRightOperand() instanceof Identifier){
                 if(((Identifier)getLeftOperand()).literal != null){
                     compiler.addComment("jspquoidire");
