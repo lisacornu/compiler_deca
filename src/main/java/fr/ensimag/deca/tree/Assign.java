@@ -173,8 +173,6 @@ public class Assign extends AbstractBinaryExpr {
     }
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        
-        compiler.addComment("commentaire de test");
         // Generation du code de la branch de droite
         DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
 
