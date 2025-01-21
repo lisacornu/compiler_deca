@@ -26,6 +26,8 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Decac compiler instance.
@@ -43,6 +45,12 @@ import org.apache.log4j.Logger;
  * @date 01/01/2025
  */
 public class DecacCompiler implements Callable<Boolean> {
+     // Table de hachage pour compter les usages des variables
+    public HashMap<String, Integer> variableUsageCount=new HashMap<>();
+    public HashMap<String, ArrayList<Integer>> variableUsageCountdyna = new HashMap<>();
+    public HashMap<String, Integer> variableLast=new HashMap<>(); 
+    public HashMap<String, Integer> variablePropa=new HashMap<>(); 
+    public int opti=1;
 
     public int headOfGBStack = 1;
     public int headOfLBStack = 0;
