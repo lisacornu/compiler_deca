@@ -83,6 +83,16 @@ public class Assign extends AbstractBinaryExpr {
             ((Identifier)getLeftOperand()).literal=new IntLiteral(((IntLiteral)(getRightOperand())).getValue());
             compiler.variablePropa.put(varNameStr,((IntLiteral)(getRightOperand())).getValue());
         }
+        //cas ou l'opérande de droite est un calcul
+        else if(getRightOperand() instanceof AbstractOpArith){
+            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+
+            //résultat du calcul
+            int result = (int)((AbstractOpArith) getRightOperand()).evalExprValue();
+            ((Identifier)getLeftOperand()).literal = new IntLiteral(result);
+            compiler.variablePropa.put(varNameStr, result);
+        }
+
         else{
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             compiler.variablePropa.put(varNameStr,null);
@@ -162,9 +172,6 @@ public class Assign extends AbstractBinaryExpr {
         }*/
          // Generation du codes des branches
 
-        //TODO : retirer le commentaire
-        compiler.addComment("TEST :");
-        compiler.addComment(getRightOperand().getClass().getName());
 
         Type leftOperandType = getLeftOperand().getType();
         boolean isLeftOperandANumber = leftOperandType.isFloat() || leftOperandType.isInt();
@@ -181,7 +188,6 @@ public class Assign extends AbstractBinaryExpr {
         
         //On fait le constant folding si la variable de gauche est un int ou un float
         //et si l'opération de droite est un calcul sinon on ne peut rien faire.
-
         else if((getRightOperand() instanceof Plus) && isLeftOperandANumber){
             //On récupère la valeur de l'expression de droite
             float result = ((AbstractOpArith) getRightOperand()).evalExprValue();

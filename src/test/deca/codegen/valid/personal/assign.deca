@@ -17,5 +17,6 @@
     println(x);
     x = 5;
     y = 9;
-    println(a);
+    x = a;
+    println(x);
 }

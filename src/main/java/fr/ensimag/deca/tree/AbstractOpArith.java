@@ -96,6 +96,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     }
 
     protected abstract float evalExprValue();
+//    protected float evalExprValue(){
+//        //si un opérande est une variable
+//        if(getLeftOperand() instanceof Identifier && ((Identifier) getLeftOperand()).literal != null){
+//
+//        }
+//        if(getRightOperand() instanceof  Identifier && ((Identifier) getRightOperand()).literal != null){
+//
+//        }
+//    }
 
 
 }

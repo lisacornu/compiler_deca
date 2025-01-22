@@ -29,8 +29,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public class Identifier extends AbstractIdentifier {
-    public int indice=0;
-    public IntLiteral literal=null;
+    public int indice = 0;
+    public IntLiteral literal = null;
 
     @Override
     protected void checkDecoration() {
