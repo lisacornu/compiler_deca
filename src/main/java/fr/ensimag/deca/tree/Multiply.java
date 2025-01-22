@@ -17,12 +17,12 @@ public class Multiply extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(DecacCompiler compiler){
+    protected double evalExprValue(DecacCompiler compiler){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
         AbstractExpr operands[] = {leftOperand, rightOperand};
 
-        float result = 1;
+        double result = 1;
 
         //somme des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){

@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.syntax.NumberOverflow;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
@@ -28,16 +29,17 @@ public class Plus extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(DecacCompiler compiler){
+    protected double evalExprValue(DecacCompiler compiler){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
         AbstractExpr operands[] = {leftOperand, rightOperand};
 
-        float result = 0;
+        double result = 0;
 
         //somme des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){
             if(operand instanceof FloatLiteral){
+                //Addition qui détecte les overflow
                 result += ((FloatLiteral) operand).getValue();
             }
             else if(operand instanceof IntLiteral){
@@ -51,6 +53,10 @@ public class Plus extends AbstractOpArith {
             else{
                 result += ((AbstractOpArith) operand).evalExprValue(compiler);
             }
+        }
+
+        if(isOverflood(result)){
+            throw new ArithmeticException("Number overflow");
         }
 
         return result;

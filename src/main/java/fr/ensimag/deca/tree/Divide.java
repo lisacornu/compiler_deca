@@ -39,12 +39,12 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(DecacCompiler compiler) {
+    protected double evalExprValue(DecacCompiler compiler) {
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
 
-        float leftValue = 0;
-        float rightValue = 0;
+        double leftValue = 0;
+        double rightValue = 0;
 
         //évalue l'opérande de gauche
         if (leftOperand instanceof FloatLiteral) {

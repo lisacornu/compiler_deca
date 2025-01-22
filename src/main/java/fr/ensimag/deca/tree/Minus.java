@@ -27,13 +27,13 @@ public class Minus extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(DecacCompiler compiler){
+    protected double evalExprValue(DecacCompiler compiler){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
         AbstractExpr operands[] = {leftOperand, rightOperand};
 
-        float result = 0;
-        float minusIfSecondOp = 1;
+        double result = 0;
+        double minusIfSecondOp = 1;
 
         //différence des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){
