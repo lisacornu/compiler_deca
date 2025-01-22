@@ -9,7 +9,8 @@
 //    cree le 10/01/2025
 
 {
-    int a = 4 + 6;
+    int a;
+    a = 4 + 6;
     int x;
     int y;
     x = 2;
