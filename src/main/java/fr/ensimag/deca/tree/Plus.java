@@ -31,10 +31,23 @@ public class Plus extends AbstractOpArith {
     protected float evalExprValue(){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
+        AbstractExpr operands[] = {leftOperand, rightOperand};
 
-        float resultLeft = ((AbstractOpArith)leftOperand).evalExprValue();
-        float resultRight = ((AbstractOpArith)rightOperand).evalExprValue();
+        float result = 0;
 
-        return resultLeft + resultRight;
+        //somme des valeurs des 2 opérandes
+        for(AbstractExpr operand : operands){
+            if(operand instanceof FloatLiteral){
+                result += ((FloatLiteral) operand).getValue();
+            }
+            else if(operand instanceof IntLiteral){
+                result += ((IntLiteral) operand).getValue();
+            }
+            else{
+                result += ((AbstractOpArith) operand).evalExprValue();
+            }
+        }
+
+        return result;
     }
 }

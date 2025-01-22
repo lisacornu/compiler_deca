@@ -223,5 +223,4 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected abstract float evalExprValue();
 }

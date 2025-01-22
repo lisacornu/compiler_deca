@@ -123,7 +123,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
 
 
-
     /*
      Génère l'expression binaire entre op1 et op2
      */
