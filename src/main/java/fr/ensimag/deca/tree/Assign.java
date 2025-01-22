@@ -174,7 +174,7 @@ public class Assign extends AbstractBinaryExpr {
         
         //On fait le constant folding si la variable de gauche est un int ou un float
         //et si l'opération de droite est un calcul sinon on ne peut rien faire.
-        else if((leftOperandType.isFloat() || leftOperandType.isInt())){
+        else if((getRightOperand() instanceof AbstractOpArith) && (leftOperandType.isFloat() || leftOperandType.isInt())){
             //On récupère la valeur de l'expression de droite
             float result = ((AbstractOpArith) getRightOperand()).evalExprValue();
             compiler.addComment("ICI ! Résultat : " + result);
