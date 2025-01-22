@@ -83,8 +83,12 @@ public class Divide extends AbstractOpArith {
             throw new ArithmeticException("Division by zero");
         }
 
-        // fait la division
-        return (int)leftValue / (int)rightValue;
+        if(leftOperand.getType().isFloat()){
+            return (double) leftValue / (double) rightValue;
+        }
+        else{
+            return (int) leftValue / (int) rightValue;
+        }
     }
 }
 
