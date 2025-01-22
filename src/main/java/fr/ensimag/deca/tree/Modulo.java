@@ -37,6 +37,11 @@ public class Modulo extends AbstractOpArith {
         else if (leftOperand instanceof IntLiteral) {
             leftValue = ((IntLiteral) leftOperand).getValue();
         }
+        else if(leftOperand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) leftOperand).getName().getName();
+            leftValue = compiler.variablePropa.get(identName);
+        }
         else {
             leftValue = ((AbstractOpArith) leftOperand).evalExprValue(compiler);
         }
@@ -47,6 +52,11 @@ public class Modulo extends AbstractOpArith {
         }
         else if (rightOperand instanceof IntLiteral) {
             rightValue = ((IntLiteral) rightOperand).getValue();
+        }
+        else if(rightOperand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) rightOperand).getName().getName();
+            rightValue = compiler.variablePropa.get(identName);
         }
         else {
             rightValue = ((AbstractOpArith) rightOperand).evalExprValue(compiler);

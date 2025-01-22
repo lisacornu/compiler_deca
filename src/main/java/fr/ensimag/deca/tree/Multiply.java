@@ -32,6 +32,11 @@ public class Multiply extends AbstractOpArith {
             else if(operand instanceof IntLiteral){
                 result *= ((IntLiteral) operand).getValue();
             }
+            else if(operand instanceof Identifier){
+                //récupère le nom de l'identificateur
+                String identName = ((Identifier) operand).getName().getName();
+                result += compiler.variablePropa.get(identName);
+            }
             else{
                 result *= ((AbstractOpArith) operand).evalExprValue(compiler);
             }

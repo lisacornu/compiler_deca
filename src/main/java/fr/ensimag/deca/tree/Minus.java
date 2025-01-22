@@ -43,6 +43,11 @@ public class Minus extends AbstractOpArith {
             else if(operand instanceof IntLiteral){
                 result = result + minusIfSecondOp * ((IntLiteral) operand).getValue();
             }
+            else if(operand instanceof Identifier){
+                //récupère le nom de l'identificateur
+                String identName = ((Identifier) operand).getName().getName();
+                result = result + minusIfSecondOp * compiler.variablePropa.get(identName);
+            }
             else{
                 result = result + minusIfSecondOp * ((AbstractOpArith) operand).evalExprValue(compiler);
             }
