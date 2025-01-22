@@ -160,6 +160,10 @@ public class Assign extends AbstractBinaryExpr {
             rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
         }*/
          // Generation du codes des branches
+
+        compiler.addComment(getOperatorName().getClass().getName());
+
+
         Type leftOperandType = getLeftOperand().getType();
         boolean isLeftOperandANumber = leftOperandType.isFloat() || leftOperandType.isInt();
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
