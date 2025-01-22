@@ -222,4 +222,6 @@ public abstract class AbstractExpr extends AbstractInst {
             s.println();
         }
     }
+
+    protected abstract float evalExprValue();
 }

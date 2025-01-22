@@ -81,4 +81,9 @@ public class FloatLiteral extends AbstractExpr {
         return RegisterHandler.pushFromDVal(compiler, new ImmediateFloat(value), GPRegister.R0);
     }
 
+    @Override
+    protected float evalExprValue(){
+        return getValue();
+    }
+
 }

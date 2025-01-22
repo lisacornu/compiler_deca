@@ -94,17 +94,4 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             throw new ContextualError("Both are not float or int",getLocation());
         }
     }
-
-    protected abstract float evalExprValue();
-//    protected float evalExprValue(){
-//        //si un opérande est une variable
-//        if(getLeftOperand() instanceof Identifier && ((Identifier) getLeftOperand()).literal != null){
-//
-//        }
-//        if(getRightOperand() instanceof  Identifier && ((Identifier) getRightOperand()).literal != null){
-//
-//        }
-//    }
-
-
 }

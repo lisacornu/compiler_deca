@@ -29,6 +29,12 @@ public class Plus extends AbstractOpArith {
 
     @Override
     protected float evalExprValue(){
-        return ((IntLiteral)getLeftOperand()).getValue() + ((IntLiteral)getRightOperand()).getValue();
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+
+        float resultLeft = ((AbstractOpArith)leftOperand).evalExprValue();
+        float resultRight = ((AbstractOpArith)rightOperand).evalExprValue();
+
+        return resultLeft + resultRight;
     }
 }
