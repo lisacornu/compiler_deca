@@ -23,7 +23,7 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue() {
+    protected float evalExprValue(DecacCompiler compiler) {
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
 
@@ -38,7 +38,7 @@ public class Modulo extends AbstractOpArith {
             leftValue = ((IntLiteral) leftOperand).getValue();
         }
         else {
-            leftValue = ((AbstractOpArith) leftOperand).evalExprValue();
+            leftValue = ((AbstractOpArith) leftOperand).evalExprValue(compiler);
         }
 
         // évalue l'opérande de droite
@@ -49,7 +49,7 @@ public class Modulo extends AbstractOpArith {
             rightValue = ((IntLiteral) rightOperand).getValue();
         }
         else {
-            rightValue = ((AbstractOpArith) rightOperand).evalExprValue();
+            rightValue = ((AbstractOpArith) rightOperand).evalExprValue(compiler);
         }
 
         // fait le modulo

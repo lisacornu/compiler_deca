@@ -39,7 +39,7 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue() {
+    protected float evalExprValue(DecacCompiler compiler) {
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
 
@@ -54,7 +54,7 @@ public class Divide extends AbstractOpArith {
             leftValue = ((IntLiteral) leftOperand).getValue();
         }
         else {
-            leftValue = ((AbstractOpArith) leftOperand).evalExprValue();
+            leftValue = ((AbstractOpArith) leftOperand).evalExprValue(compiler);
         }
 
         //évalue l'opérande de droite
@@ -65,7 +65,7 @@ public class Divide extends AbstractOpArith {
             rightValue = ((IntLiteral) rightOperand).getValue();
         }
         else {
-            rightValue = ((AbstractOpArith) rightOperand).evalExprValue();
+            rightValue = ((AbstractOpArith) rightOperand).evalExprValue(compiler);
         }
 
         // Division par 0

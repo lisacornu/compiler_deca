@@ -27,7 +27,7 @@ public class Minus extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(){
+    protected float evalExprValue(DecacCompiler compiler){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
         AbstractExpr operands[] = {leftOperand, rightOperand};
@@ -44,7 +44,7 @@ public class Minus extends AbstractOpArith {
                 result = result + minusIfSecondOp * ((IntLiteral) operand).getValue();
             }
             else{
-                result = result + minusIfSecondOp * ((AbstractOpArith) operand).evalExprValue();
+                result = result + minusIfSecondOp * ((AbstractOpArith) operand).evalExprValue(compiler);
             }
 
             minusIfSecondOp = -1;

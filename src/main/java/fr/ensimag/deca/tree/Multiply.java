@@ -17,7 +17,7 @@ public class Multiply extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(){
+    protected float evalExprValue(DecacCompiler compiler){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
         AbstractExpr operands[] = {leftOperand, rightOperand};
@@ -33,7 +33,7 @@ public class Multiply extends AbstractOpArith {
                 result *= ((IntLiteral) operand).getValue();
             }
             else{
-                result *= ((AbstractOpArith) operand).evalExprValue();
+                result *= ((AbstractOpArith) operand).evalExprValue(compiler);
             }
         }
 

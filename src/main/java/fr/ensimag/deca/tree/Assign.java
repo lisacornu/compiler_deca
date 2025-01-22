@@ -88,7 +88,7 @@ public class Assign extends AbstractBinaryExpr {
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
 
             //résultat du calcul
-            int result = (int)((AbstractOpArith) getRightOperand()).evalExprValue();
+            int result = (int)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
             ((Identifier)getLeftOperand()).literal = new IntLiteral(result);
             compiler.variablePropa.put(varNameStr, result);
         }
@@ -190,7 +190,7 @@ public class Assign extends AbstractBinaryExpr {
         //et si l'opération de droite est un calcul sinon on ne peut rien faire.
         else if((getRightOperand() instanceof AbstractOpArith) && isLeftOperandANumber){
             //On récupère la valeur de l'expression de droite
-            float result = ((AbstractOpArith) getRightOperand()).evalExprValue();
+            float result = ((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
             compiler.addComment("ICI ! Résultat : " + result);
 
             if(((Identifier)getLeftOperand()).literal!=null){

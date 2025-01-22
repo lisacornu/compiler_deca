@@ -95,5 +95,5 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         }
     }
 
-    protected abstract float evalExprValue();
+    protected abstract float evalExprValue(DecacCompiler compiler);
 }
