@@ -190,8 +190,8 @@ public class Assign extends AbstractBinaryExpr {
         //et si l'opération de droite est un calcul sinon on ne peut rien faire.
         else if((getRightOperand() instanceof AbstractOpArith) && isLeftOperandANumber){
             //On récupère la valeur de l'expression de droite
-            float result = ((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
-            compiler.addComment("ICI ! Résultat : " + result);
+//            float result = ((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
+//            compiler.addComment("ICI ! Résultat : " + result);
 
             if(((Identifier)getLeftOperand()).literal!=null){
                 rightOperandResult =((Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
