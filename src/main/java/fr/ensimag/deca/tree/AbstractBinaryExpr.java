@@ -121,8 +121,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         compiler.addInstruction(new BEQ(new Label("division_zero")));
     }
 
-    protected abstract float evalExprValue();
-
 
 
 

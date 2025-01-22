@@ -15,7 +15,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
-import org.apache.log4j.Logger;
+
 
 import java.util.HashMap;
 
@@ -26,8 +26,6 @@ import java.util.HashMap;
  * @date 01/01/2025
  */
 public class Assign extends AbstractBinaryExpr {
-    private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-
     @Override
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set
@@ -38,7 +36,7 @@ public class Assign extends AbstractBinaryExpr {
     public Assign(AbstractLValue leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
-    @Override
+     @Override
      public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);   
@@ -115,7 +113,7 @@ public class Assign extends AbstractBinaryExpr {
         return "=";
     }
 
-  @Override
+    @Override
     protected DVal codeGenExpr_opti(DecacCompiler compiler) {
            // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = ((Identifier)getLeftOperand()).getName().getName();
@@ -134,13 +132,13 @@ public class Assign extends AbstractBinaryExpr {
         DVal rightOperandResult;
 
 
-      LOG.debug("On passe ici");
+
       //On fait le constant folding si la variable est un int ou un float
       //sinon on ne peut rien faire
       Type leftOperandType = getLeftOperand().getType();
       if(leftOperandType.isFloat() || leftOperandType.isInt()){
           //On récupère la valeur de l'expression de droite
-          getLeftOperand().printExprValue(compiler);
+          getLeftOperand().computeExprValue();
       }
 
 
@@ -174,12 +172,14 @@ public class Assign extends AbstractBinaryExpr {
               }
         }
         
-        //On fait le constant folding si la variable est un int ou un float
-        //sinon on ne peut rien faire
-        else if(leftOperandType.isFloat() || leftOperandType.isInt()){
+        //On fait le constant folding si la variable de gauche est un int ou un float
+        //et si l'opération de droite est un calcul sinon on ne peut rien faire.
+        else if((getRightOperand() instanceof AbstractOpArith) && (leftOperandType.isFloat() || leftOperandType.isInt())){
             //On récupère la valeur de l'expression de droite
-            getRightOperand().evalExprValue();
-        
+            float result = ((AbstractOpArith) getRightOperand()).evalExprValue();
+            compiler.addComment("ICI ! Résultat : " + result);
+
+            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
         }
         else{
             rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);

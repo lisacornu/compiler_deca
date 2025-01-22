@@ -16,6 +16,10 @@ public class Multiply extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected float evalExprValue(){
+        return 0;
+    }
 
     @Override
     protected String getOperatorName() {

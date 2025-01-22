@@ -23,6 +23,11 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
+    protected float evalExprValue(){
+        return 0;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);

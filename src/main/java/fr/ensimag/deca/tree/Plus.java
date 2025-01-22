@@ -26,4 +26,9 @@ public class Plus extends AbstractOpArith {
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
         compiler.addInstruction(new ADD(op1, op2)); // R2 <- R0 opp R2
     }
+
+    @Override
+    protected float evalExprValue(){
+        return ((IntLiteral)getLeftOperand()).getValue() + ((IntLiteral)getRightOperand()).getValue();
+    }
 }
