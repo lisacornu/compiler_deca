@@ -23,8 +23,37 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(){
-        return 0;
+    protected float evalExprValue() {
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+
+        float leftValue = 0;
+        float rightValue = 0;
+
+        // évalue l'opérande de gauche
+        if (leftOperand instanceof FloatLiteral) {
+            leftValue = ((FloatLiteral) leftOperand).getValue();
+        }
+        else if (leftOperand instanceof IntLiteral) {
+            leftValue = ((IntLiteral) leftOperand).getValue();
+        }
+        else {
+            leftValue = ((AbstractOpArith) leftOperand).evalExprValue();
+        }
+
+        // évalue l'opérande de droite
+        if (rightOperand instanceof FloatLiteral) {
+            rightValue = ((FloatLiteral) rightOperand).getValue();
+        }
+        else if (rightOperand instanceof IntLiteral) {
+            rightValue = ((IntLiteral) rightOperand).getValue();
+        }
+        else {
+            rightValue = ((AbstractOpArith) rightOperand).evalExprValue();
+        }
+
+        // fait le modulo
+        return (int)leftValue % (int)rightValue;
     }
 
     @Override

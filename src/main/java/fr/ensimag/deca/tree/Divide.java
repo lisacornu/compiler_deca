@@ -46,7 +46,7 @@ public class Divide extends AbstractOpArith {
         float leftValue = 0;
         float rightValue = 0;
 
-        // Evaluate the left operand
+        //évalue l'opérande de gauche
         if (leftOperand instanceof FloatLiteral) {
             leftValue = ((FloatLiteral) leftOperand).getValue();
         }
@@ -57,6 +57,7 @@ public class Divide extends AbstractOpArith {
             leftValue = ((AbstractOpArith) leftOperand).evalExprValue();
         }
 
+        //évalue l'opérande de droite
         if (rightOperand instanceof FloatLiteral) {
             rightValue = ((FloatLiteral) rightOperand).getValue();
         }
