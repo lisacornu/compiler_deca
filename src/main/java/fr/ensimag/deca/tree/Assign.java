@@ -172,9 +172,9 @@ public class Assign extends AbstractBinaryExpr {
         }*/
          // Generation du codes des branches
 
-
         Type leftOperandType = getLeftOperand().getType();
         boolean isLeftOperandANumber = leftOperandType.isFloat() || leftOperandType.isInt();
+
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult;
         if(getRightOperand() instanceof Identifier){
@@ -193,7 +193,12 @@ public class Assign extends AbstractBinaryExpr {
             float result = ((AbstractOpArith) getRightOperand()).evalExprValue();
             compiler.addComment("ICI ! Résultat : " + result);
 
-            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+            if(((Identifier)getLeftOperand()).literal!=null){
+                rightOperandResult =((Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
+            }
+            else{
+                rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+            }
         }
         else{
             rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
