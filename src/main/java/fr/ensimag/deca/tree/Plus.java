@@ -45,8 +45,8 @@ public class Plus extends AbstractOpArith {
             }
             else if(operand instanceof Identifier){
                 //récupère le nom de l'identificateur
-                String identfierName = ((Identifier) operand).getName().getName();
-                result += compiler.variablePropa.get(identfierName);
+                String identName = ((Identifier) operand).getName().getName();
+                result += compiler.variablePropa.get(identName);
             }
             else{
                 result += ((AbstractOpArith) operand).evalExprValue(compiler);
