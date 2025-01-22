@@ -17,11 +17,6 @@ public class Minus extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(){
-        return 0;
-    }
-
-    @Override
     protected String getOperatorName() {
         return "-";
     }
@@ -29,5 +24,29 @@ public class Minus extends AbstractOpArith {
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
         compiler.addInstruction(new SUB(op1, op2));
+    }
+
+    @Override
+    protected float evalExprValue(){
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+        AbstractExpr operands[] = {leftOperand, rightOperand};
+
+        float result = 0;
+
+        //somme des valeurs des 2 opérandes
+        for(AbstractExpr operand : operands){
+            if(operand instanceof FloatLiteral){
+                result -= ((FloatLiteral) operand).getValue();
+            }
+            else if(operand instanceof IntLiteral){
+                result -= ((IntLiteral) operand).getValue();
+            }
+            else{
+                result -= ((AbstractOpArith) operand).evalExprValue();
+            }
+        }
+
+        return result;
     }
 }
