@@ -77,6 +77,11 @@ public class Assign extends AbstractBinaryExpr {
                 ((Identifier)getLeftOperand()).literal = new IntLiteral(compiler.variablePropa.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
                 compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
             }
+            if (compiler.variablePropa_float.get(varNameStr_r)!=null){//si jamais l attribut de droite a une valeur entiere connus
+                String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+                ((Identifier)getLeftOperand()).float_ = new FloatLiteral(compiler.variablePropa_float.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
+                compiler.variablePropa_float.put(varNameStr,compiler.variablePropa_float.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
+            }
         }
         else if(getRightOperand() instanceof IntLiteral){
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
@@ -84,7 +89,7 @@ public class Assign extends AbstractBinaryExpr {
             compiler.variablePropa.put(varNameStr,((IntLiteral)(getRightOperand())).getValue());
         }
         //cas ou l'opérande de droite est un calcul
-        else if(getRightOperand() instanceof AbstractOpArith){
+        else if(getRightOperand() instanceof AbstractOpArith && this.getType().isInt()){
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
 
             //résultat du calcul
@@ -92,10 +97,23 @@ public class Assign extends AbstractBinaryExpr {
             ((Identifier)getLeftOperand()).literal = new IntLiteral(result);
             compiler.variablePropa.put(varNameStr, result);
         }
+        else if(getRightOperand() instanceof FloatLiteral){
+            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+            ((Identifier)getLeftOperand()).float_=new FloatLiteral(((FloatLiteral)(getRightOperand())).getValue());
+            compiler.variablePropa_float.put(varNameStr,((FloatLiteral)(getRightOperand())).getValue());
+        }
+        else if(getRightOperand() instanceof AbstractOpArith && this.getType().isFloat()){
+            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
 
+            //résultat du calcul
+            float result = (float)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
+            ((Identifier)getLeftOperand()).float_ = new FloatLiteral(result);
+            compiler.variablePropa_float.put(varNameStr, result);
+        }
         else{
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             compiler.variablePropa.put(varNameStr,null);
+            compiler.variablePropa_float.put(varNameStr,null);
         }
         return lefType;
         
@@ -180,6 +198,9 @@ public class Assign extends AbstractBinaryExpr {
               if(((Identifier)getLeftOperand()).literal!=null){
                 rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
               }
+              else if(((Identifier)getLeftOperand()).float_!=null){
+                rightOperandResult =(( Identifier)getLeftOperand()).float_.codeGenExpr(compiler);
+              }
               else{
                 rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
               }
@@ -194,6 +215,9 @@ public class Assign extends AbstractBinaryExpr {
 
             if(((Identifier)getLeftOperand()).literal!=null){
                 rightOperandResult =((Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
+            }
+            else if(((Identifier)getLeftOperand()).float_!=null){
+                rightOperandResult =((Identifier)getLeftOperand()).float_.codeGenExpr(compiler);
             }
             else{
                 rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);

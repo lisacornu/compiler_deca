@@ -50,6 +50,8 @@ public class DecacCompiler implements Callable<Boolean> {
     public HashMap<String, ArrayList<Integer>> variableUsageCountdyna = new HashMap<>();
     public HashMap<String, Integer> variableLast=new HashMap<>(); 
     public HashMap<String, Integer> variablePropa=new HashMap<>(); 
+    public HashMap<String, Float> variablePropa_float=new HashMap<>(); 
+
     public int opti = 1;
     public int class_existe = 0;
 

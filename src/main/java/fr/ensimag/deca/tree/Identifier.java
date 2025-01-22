@@ -31,7 +31,7 @@ import org.apache.commons.lang.Validate;
 public class Identifier extends AbstractIdentifier {
     public int indice = 0;
     public IntLiteral literal = null;
-
+    public FloatLiteral float_=null;
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
