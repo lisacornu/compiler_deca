@@ -161,7 +161,7 @@ public class Assign extends AbstractBinaryExpr {
         }*/
          // Generation du codes des branches
 
-        compiler.addComment(getOperatorName().getClass().getName());
+        compiler.addComment(getRightOperand().getClass().getName());
 
 
         Type leftOperandType = getLeftOperand().getType();
