@@ -1,4 +1,6 @@
 {
     int x = 2147483647; // j'ai beaucoup mangé
-    x = x+1;            // oh non
+    print(x);
+    //x = x+1;            // oh non
+    print(x);
 }
