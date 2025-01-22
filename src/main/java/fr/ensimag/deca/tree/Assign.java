@@ -115,9 +115,6 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected DVal codeGenExpr_opti(DecacCompiler compiler) {
-        //TODO : retirer le commentaire
-        compiler.addComment("TEST :");
-        compiler.addComment(getRightOperand().getClass().getName());
 
            // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = ((Identifier)getLeftOperand()).getName().getName();
@@ -165,6 +162,9 @@ public class Assign extends AbstractBinaryExpr {
         }*/
          // Generation du codes des branches
 
+        //TODO : retirer le commentaire
+        compiler.addComment("TEST :");
+        compiler.addComment(getRightOperand().getClass().getName());
 
         Type leftOperandType = getLeftOperand().getType();
         boolean isLeftOperandANumber = leftOperandType.isFloat() || leftOperandType.isInt();

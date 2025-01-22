@@ -12,10 +12,10 @@
     int a;
     int x;
     int y;
-    a = 4 + 6;
+    a = 2 + 3;
     x = 2;
     println(x);
     x = 5;
     y = 9;
-    println(x);
+    println(a);
 }
