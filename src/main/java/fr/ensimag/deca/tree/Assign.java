@@ -53,11 +53,11 @@ public class Assign extends AbstractBinaryExpr {
         if (getLeftOperand() instanceof Identifier) {
             // Récupérer le nom de la variable
             String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
-            int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
+           // int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
             if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
                 ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
                 dynamicInfo.add(0);
-                dynamicInfo.set(dynamicInfo.size() - 1, usageCount > 0 ? 1 : 0);
+                dynamicInfo.set(dynamicInfo.size() - 1, 0);
            //     compiler.variableUsageCountdyna.put(varNameStr, dynamicInfo);
             }
 
@@ -130,7 +130,6 @@ public class Assign extends AbstractBinaryExpr {
         String varNameStr = ((Identifier)getLeftOperand()).getName().getName();
         if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
             ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
-
             // Vérifier le premier élément du tableau
             if (dynamicInfo.get(((Identifier)getLeftOperand()).indice) == 0  && compiler.opti==1) {
                 compiler.addComment("Variable " + varNameStr + ((Identifier)getLeftOperand()).indice +" n'a pas besoin d'etre assigné");
