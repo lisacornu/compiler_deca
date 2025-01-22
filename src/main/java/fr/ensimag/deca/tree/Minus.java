@@ -33,18 +33,21 @@ public class Minus extends AbstractOpArith {
         AbstractExpr operands[] = {leftOperand, rightOperand};
 
         float result = 0;
+        float minusIfSecondOp = 1;
 
         //somme des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){
             if(operand instanceof FloatLiteral){
-                result -= ((FloatLiteral) operand).getValue();
+                result = result + minusIfSecondOp * ((FloatLiteral) operand).getValue();
             }
             else if(operand instanceof IntLiteral){
-                result -= ((IntLiteral) operand).getValue();
+                result = result + minusIfSecondOp * ((IntLiteral) operand).getValue();
             }
             else{
-                result -= ((AbstractOpArith) operand).evalExprValue();
+                result = result + minusIfSecondOp * ((AbstractOpArith) operand).evalExprValue();
             }
+
+            minusIfSecondOp = -1;
         }
 
         return result;
