@@ -22,12 +22,6 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
-    protected float evalExprValue(){
-        return 0;
-    }
-
-
-    @Override
     protected String getOperatorName() {
         return "/";
     }
@@ -42,6 +36,44 @@ public class Divide extends AbstractOpArith {
         } else {
             compiler.addInstruction(new QUO(op1, op2)); // avec des entiers
         }
+    }
+
+    @Override
+    protected float evalExprValue() {
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+
+        float leftValue = 0;
+        float rightValue = 0;
+
+        // Evaluate the left operand
+        if (leftOperand instanceof FloatLiteral) {
+            leftValue = ((FloatLiteral) leftOperand).getValue();
+        }
+        else if (leftOperand instanceof IntLiteral) {
+            leftValue = ((IntLiteral) leftOperand).getValue();
+        }
+        else {
+            leftValue = ((AbstractOpArith) leftOperand).evalExprValue();
+        }
+
+        if (rightOperand instanceof FloatLiteral) {
+            rightValue = ((FloatLiteral) rightOperand).getValue();
+        }
+        else if (rightOperand instanceof IntLiteral) {
+            rightValue = ((IntLiteral) rightOperand).getValue();
+        }
+        else {
+            rightValue = ((AbstractOpArith) rightOperand).evalExprValue();
+        }
+
+        // Division par 0
+        if (rightValue == 0) {
+            throw new ArithmeticException("Division by zero");
+        }
+
+        // fait la division
+        return (int)leftValue / (int)rightValue;
     }
 }
 

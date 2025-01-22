@@ -35,7 +35,7 @@ public class Minus extends AbstractOpArith {
         float result = 0;
         float minusIfSecondOp = 1;
 
-        //somme des valeurs des 2 opérandes
+        //différence des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){
             if(operand instanceof FloatLiteral){
                 result = result + minusIfSecondOp * ((FloatLiteral) operand).getValue();
