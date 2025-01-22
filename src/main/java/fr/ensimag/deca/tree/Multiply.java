@@ -18,7 +18,26 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected float evalExprValue(){
-        return 0;
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+        AbstractExpr operands[] = {leftOperand, rightOperand};
+
+        float result = 1;
+
+        //somme des valeurs des 2 opérandes
+        for(AbstractExpr operand : operands){
+            if(operand instanceof FloatLiteral){
+                result *= ((FloatLiteral) operand).getValue();
+            }
+            else if(operand instanceof IntLiteral){
+                result *= ((IntLiteral) operand).getValue();
+            }
+            else{
+                result *= ((AbstractOpArith) operand).evalExprValue();
+            }
+        }
+
+        return result;
     }
 
     @Override
