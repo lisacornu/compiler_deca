@@ -76,7 +76,7 @@ public class Assign extends AbstractBinaryExpr {
             String varNameStr_r = ((Identifier) getRightOperand()).getName().toString();
             if(compiler.variablePropa.get(varNameStr_r)!=null){//si jamais l attribut de droite a une valeur entiere connus
                 String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
-                ((Identifier)getLeftOperand()).literal=new IntLiteral(compiler.variablePropa.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
+                ((Identifier)getLeftOperand()).literal = new IntLiteral(compiler.variablePropa.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
                 compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
             }
         }
@@ -162,6 +162,7 @@ public class Assign extends AbstractBinaryExpr {
             rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
         }*/
          // Generation du codes des branches
+        Type leftOperandType = getLeftOperand().getType();
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult;
         if(getRightOperand() instanceof Identifier){
@@ -169,11 +170,19 @@ public class Assign extends AbstractBinaryExpr {
                 rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
               }
               else{
-                rightOperandResult = getRightOperand().codeGenExpr(compiler);
+                rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
               }
         }
+        
+        //On fait le constant folding si la variable est un int ou un float
+        //sinon on ne peut rien faire
+        else if(leftOperandType.isFloat() || leftOperandType.isInt()){
+            //On récupère la valeur de l'expression de droite
+            getRightOperand().evalExprValue();
+        
+        }
         else{
-            rightOperandResult = getRightOperand().codeGenExpr(compiler);
+            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
         }
 
 

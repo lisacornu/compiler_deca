@@ -2,10 +2,10 @@
 //    test des optim sur les variables
 //
 // Resultats:
-//   79
+//   3
 //   
 // Historique:
-//    cree le 11/01/2025
+//    cree le 22/01/2025
 
 {   
     int x;
