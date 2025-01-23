@@ -1,0 +1,14 @@
+// Description:
+//    Test simple de constant folding + vérification des résultats qui dépendent du type
+//
+// Resultats:
+// 12.0
+//
+//
+// Historique:
+//    cree le 01/01/2025
+
+{
+    float x = 3.0 * 4.0;
+    println(x);
+}

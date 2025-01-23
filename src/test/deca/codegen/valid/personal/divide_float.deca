@@ -3,6 +3,7 @@
 //
 // Resultats:
 //    2.0
+//    0.75
 //
 // Historique:
 //    cree le 07/01/2025
@@ -10,5 +11,7 @@
 {
     float a = 4.0;
     float b = 2.0;
+    float c = 3.0 / 4.0;
     println(a / b);
+    println(c);
 }
