@@ -10,5 +10,5 @@
 
 {
     float x = ((3.0 * 7) + 9) / 3.0;
-    println(x)
+    println(x);
 }
