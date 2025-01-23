@@ -20,6 +20,7 @@ PERSONAL_TEST_DIR="src/test/deca/codegen/valid/personal/stdin"
 GAME_OF_LIFE_DIR="src/test/deca/codegen/valid/personal/game_of_life"
 GENERAL_TEST_DIR="src/test/deca/codegen/valid"
 INVALID_TEST_DIR="src/test/deca/codegen/invalid"
+PERF_TEST_DIR="src/test/deca/codegen/perf"
 EXPECTED_DIR="src/test/deca/codegen/valid/expected"
 
 if [ ! -d "$PERSONAL_TEST_DIR" ]; then
@@ -34,6 +35,10 @@ if [ ! -d "$INVALID_TEST_DIR" ]; then
     echo -e "${RED}Error: Invalid test directory not found: $INVALID_TEST_DIR${NC}"
     exit 1
 fi
+if [ ! -d "$PERF_TEST_DIR" ]; then
+    echo -e "${RED}Error: Performance test directory not found: $PERF_TEST_DIR${NC}"
+    exit 1
+fi
 
 total_files=0
 successful_compilations=0
@@ -43,6 +48,7 @@ failed_executions=0
 total_executions=0
 successful_invalid=0
 failed_invalid=0
+perf_files=0
 
 # Gère les fichiers .deca qui nécessitent uniquement une compilation
 process_compile_only_file() {
@@ -167,12 +173,21 @@ for deca_file in $(find "$GENERAL_TEST_DIR" -type f -name "*.deca" ! -path "$PER
     else
         process_general_file "$deca_file"
     fi
+
+done
+
+for deca_file in $(find "$PERF_TEST_DIR" -type f -name "*.deca"); do
+    ((total_files++))
+    ((perf_files++))
+    process_general_file "$deca_file"
 done
 
 for deca_file in $(find "$INVALID_TEST_DIR" -type f -name "*.deca"); do
     ((total_files++))
     process_invalid_file "$deca_file"
 done
+
+
 
 total_compilation_success=$((successful_compilations + successful_invalid))
 total_compilation_fail=$((failed_compilations + failed_invalid))
@@ -181,6 +196,7 @@ echo -e "\n${BOLD}Testing Summary:${NC}"
 echo "Total files compiled: $total_files"
 echo -e "${GREEN}Successful compilations: $total_compilation_success${NC}"
 echo -e "${RED}Failed compilations: $total_compilation_fail${NC}"
+echo "Performance files processed: $perf_files"
 echo -e "\n${BOLD}Execution Summary:${NC}"
 echo "Total executions attempted: $total_executions"
 echo -e "${GREEN}Successful executions: $successful_executions${NC}"
