@@ -40,6 +40,9 @@ public class Assign extends AbstractBinaryExpr {
      public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(lefType.isClass() || getLeftOperand() instanceof Selection){
+            return this.verifyExpr(compiler,localEnv,currentClass);
+        }
         String varNameStr = ((Identifier) getLeftOperand()).getName().toString();  
         AbstractExpr rightExpDefinition = getRightOperand().verifyRValue_opti(compiler, localEnv, currentClass, lefType);
         this.setType(lefType);
@@ -51,7 +54,7 @@ public class Assign extends AbstractBinaryExpr {
             setRightOperand(rightExpDefinition);
         }
        
-        if (getLeftOperand() instanceof Identifier) {
+        if (getLeftOperand() instanceof Identifier && !(lefType.isClass())) {
             // Récupérer le nom de la variable
             
            // int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
@@ -143,7 +146,9 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected DVal codeGenExpr_opti(DecacCompiler compiler) {
-
+        if(getLeftOperand() instanceof Selection || getLeftOperand().getType().isClass()){
+            return this.codeGenExpr(compiler);
+        }
            // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = ((Identifier)getLeftOperand()).getName().getName();
         if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
@@ -154,43 +159,6 @@ public class Assign extends AbstractBinaryExpr {
                 return null; // Ne pas générer la déclaration de la variable
             }
         }
-/*
-        // Generation des codes des branches
-        DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
-        DVal rightOperandResult;
-
-
-
-      //On fait le constant folding si la variable est un int ou un float
-      //sinon on ne peut rien faire
-      Type leftOperandType = getLeftOperand().getType();
-      if(leftOperandType.isFloat() || leftOperandType.isInt()){
-          //On récupère la valeur de l'expression de droite
-          getLeftOperand().computeExprValue();
-      }
-
-
-        if(compiler.opti == 1){
-            if(getRightOperand() instanceof Identifier){
-                if(((Identifier)getLeftOperand()).literal != null){
-                    compiler.addComment("jspquoidire");
-                    rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr_opti(compiler);
-                }
-                else{
-                    rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
-                }
-            }
-            else{
-                rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
-            }
-        }
-        else{
-            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
-        }*/
-         // Generation du codes des branches
-
-        Type leftOperandType = getLeftOperand().getType();
-        boolean isLeftOperandANumber = leftOperandType.isFloat() || leftOperandType.isInt();
 
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult;
@@ -208,7 +176,7 @@ public class Assign extends AbstractBinaryExpr {
         
         //On fait le constant folding si la variable de gauche est un int ou un float
         //et si l'opération de droite est un calcul sinon on ne peut rien faire.
-        else if((getRightOperand() instanceof AbstractOpArith) && isLeftOperandANumber){
+        else if((getRightOperand() instanceof AbstractOpArith) ){
             //On récupère la valeur de l'expression de droite
 //            float result = ((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
 //            compiler.addComment("ICI ! Résultat : " + result);
@@ -224,7 +192,7 @@ public class Assign extends AbstractBinaryExpr {
             }
         }
         else{
-            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+            rightOperandResult = getRightOperand().codeGenExpr(compiler);
         }
 
 
@@ -233,7 +201,7 @@ public class Assign extends AbstractBinaryExpr {
         DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);
 
         // Generation du code de l'expression (résultat enregistré dans op1)
-        codeGenBinaryExpr1(compiler, op1, op2);
+        codeGenBinaryExpr(compiler, op1, op2);
         compiler.registerHandler.SetFree(op2);
 
         //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
