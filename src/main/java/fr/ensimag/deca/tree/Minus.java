@@ -67,6 +67,10 @@ public class Minus extends AbstractOpArith {
             minusIfSecondOp = -1;
         }
 
+        if(isOverflood(result)){
+            throw new ArithmeticException("Number overflow");
+        }
+
         return result;
     }
 }

@@ -104,10 +104,20 @@ public class Divide extends AbstractOpArith {
         }
 
         if(leftOperand.getType().isFloat()){
-            return (double) leftValue / (double) rightValue;
+            double result = (double) leftValue / (double) rightValue;
+
+            if(isOverflood(result)){
+                throw new ArithmeticException("Number overflow");
+            }
+            return result;
         }
         else{
-            return (int) leftValue / (int) rightValue;
+            int result = (int) leftValue / (int) rightValue;
+            if(isOverflood(result)){
+                throw new ArithmeticException("Number overflow");
+            }
+
+            return result;
         }
     }
 }

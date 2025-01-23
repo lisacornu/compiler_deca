@@ -66,6 +66,10 @@ public class Plus extends AbstractOpArith {
             }
         }
 
+        if(isOverflood(result)){
+            throw new ArithmeticException("Number overflow");
+        }
+
         return result;
     }
 }
