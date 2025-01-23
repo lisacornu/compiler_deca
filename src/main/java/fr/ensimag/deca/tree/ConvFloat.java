@@ -22,6 +22,10 @@ public class ConvFloat extends AbstractUnaryExpr {
         super(operand);
     }
 
+    protected double evalExprValue(DecacCompiler compiler){
+        return ((IntLiteral) getOperand()).getValue();
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
