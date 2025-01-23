@@ -53,6 +53,9 @@ public class Divide extends AbstractOpArith {
         else if (leftOperand instanceof IntLiteral) {
             leftValue = ((IntLiteral) leftOperand).getValue();
         }
+        else if(leftOperand instanceof ConvFloat){
+            leftValue = ((ConvFloat) leftOperand).evalExprValue(compiler);
+        }
         else if(leftOperand instanceof Identifier){
             //récupère le nom de l'identificateur
             String identName = ((Identifier) leftOperand).getName().getName();
@@ -73,6 +76,9 @@ public class Divide extends AbstractOpArith {
         }
         else if (rightOperand instanceof IntLiteral) {
             rightValue = ((IntLiteral) rightOperand).getValue();
+        }
+        else if(rightOperand instanceof ConvFloat){
+            rightValue = ((ConvFloat) rightOperand).evalExprValue(compiler);
         }
         else if(rightOperand instanceof Identifier){
             //récupère le nom de l'identificateur

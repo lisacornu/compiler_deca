@@ -30,7 +30,10 @@ public class Multiply extends AbstractOpArith {
             if(operand instanceof FloatLiteral){
                 result *= ((FloatLiteral) operand).getValue();
             }
-            else if(operand instanceof IntLiteral || operand instanceof ConvFloat){
+            else if(operand instanceof ConvFloat){
+                result *= ((ConvFloat) operand).evalExprValue(compiler);
+            }
+            else if(operand instanceof IntLiteral){
                 result *= ((IntLiteral) operand).getValue();
             }
             else if(operand instanceof Identifier){
