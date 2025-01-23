@@ -9,6 +9,10 @@ package fr.ensimag.ima.pseudocode;
 public class ImmediateInteger extends DVal {
     private int value;
 
+    public int getValue() {
+        return value;
+    }
+
     public ImmediateInteger(int value) {
         super();
         this.value = value;
