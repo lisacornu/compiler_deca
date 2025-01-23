@@ -34,7 +34,13 @@ public class ConvFloat extends AbstractUnaryExpr {
         return floatType; 
     }
 
-
+     @Override
+    public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) {
+        Type floatType = new FloatType(compiler.createSymbol("float"));
+        setType(floatType);
+        return floatType; 
+    }
     @Override
     protected String getOperatorName() {
         return "/* conv float */";

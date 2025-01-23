@@ -34,6 +34,17 @@ public class Not extends AbstractUnaryExpr {
             throw new ContextualError("Operand is not boolean",getLocation());
         }
     }
+     @Override
+    public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        Type operand = getOperand().verifyExpr_opti(compiler, localEnv, currentClass);
+        if (operand.isBoolean()){
+            this.setType(operand);
+            return operand;
+        }else{
+            throw new ContextualError("Operand is not boolean",getLocation());
+        }
+    }
 
     // permet de discerner les labels entre les différents usages de NOT au cours du programme
     static int not_cpt = 0;
