@@ -13,7 +13,7 @@
     int x = 5;
     int y = 3 + 2;
     int z1 = ((2 * 8) % 7) / 3;
-    float z2 = ((2. * 8) % 7) / 3;
+    float z2 = ((2.0 * 8) % 7) / 3;
 
     println(x + y);
     println(z1);
