@@ -38,19 +38,19 @@ public class Minus extends AbstractOpArith {
         //différence des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){
             if(operand instanceof FloatLiteral){
-                result = result + minusIfSecondOp * ((FloatLiteral) operand).getValue();
+                result += minusIfSecondOp * ((FloatLiteral) operand).getValue();
             }
             else if(operand instanceof IntLiteral){
-                result = result + minusIfSecondOp * ((IntLiteral) operand).getValue();
+                result += minusIfSecondOp * ((IntLiteral) operand).getValue();
             }
             else if(operand instanceof Identifier){
                 //récupère le nom de l'identificateur
                 String identName = ((Identifier) operand).getName().getName();
                 if(compiler.variablePropa.get(identName)!=null){
-                    result = result + minusIfSecondOp * compiler.variablePropa.get(identName);
+                    result += minusIfSecondOp * compiler.variablePropa.get(identName);
                 }
                 else{
-                    result = result + minusIfSecondOp * compiler.variablePropa_float.get(identName);
+                    result += minusIfSecondOp * compiler.variablePropa_float.get(identName);
                 }
                 
             }

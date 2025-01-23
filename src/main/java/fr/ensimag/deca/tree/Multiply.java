@@ -35,7 +35,7 @@ public class Multiply extends AbstractOpArith {
             else if(operand instanceof Identifier){
                 //récupère le nom de l'identificateur
                 String identName = ((Identifier) operand).getName().getName();
-                if(compiler.variablePropa.get(identName)!=null){
+                if(compiler.variablePropa.get(identName) != null){
                     result *= compiler.variablePropa.get(identName);
                 }
                 else{
@@ -58,7 +58,6 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        //if (this.getLeftOperand().getType().isInt() && this.getRightOperand().getType().isInt())
         compiler.addInstruction(new MUL(op1, op2));
     }
 }
