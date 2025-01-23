@@ -33,9 +33,10 @@ public class ConvFloat extends AbstractUnaryExpr {
             String identName = ((Identifier) operand).getName().getName();
             return compiler.variablePropa.get(identName);
         }
-
-        //si il y a un problème
-        return -1;
+        //sinon c'est une opération
+        else{
+            return ((AbstractOpArith) operand).evalExprValue(compiler);
+        }
     }
 
     @Override
