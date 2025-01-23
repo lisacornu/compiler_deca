@@ -45,6 +45,9 @@ public class Plus extends AbstractOpArith {
             else if(operand instanceof IntLiteral){
                 result += ((IntLiteral) operand).getValue();
             }
+            else if(operand instanceof ConvFloat){
+                result += ((ConvFloat) operand).evalExprValue(compiler);
+            }
             else if(operand instanceof Identifier){
                 //récupère le nom de l'identificateur
                 String identName = ((Identifier) operand).getName().getName();
