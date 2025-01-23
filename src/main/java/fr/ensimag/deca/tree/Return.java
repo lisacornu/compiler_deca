@@ -39,13 +39,14 @@ public class Return extends AbstractInst {
         this.classDefinition = currentClass;
         
         Type type = rvalue.verifyExpr(compiler, localEnv, currentClass);
+        //System.out.println(type);
         if (returnType.isVoid()){
             throw new UnsupportedOperationException("This return type is void");
         }
         rvalue.verifyRValue(compiler, localEnv, currentClass, type);
-        if (returnType.isFloat() && rvalue.getType().isInt()){
+        if (returnType.isFloat() && type.isInt()){
             rvalue = new ConvFloat(rvalue);
-        }if(!returnType.sameType(type)){
+        }else if(!returnType.sameType(type)){
             throw new ContextualError("Both types are different.", getLocation());
         }
         rvalue.setType(returnType);
