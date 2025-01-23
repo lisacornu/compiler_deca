@@ -88,10 +88,13 @@ public class Assign extends AbstractBinaryExpr {
         //cas ou l'opérande de droite est un calcul
         else if(getRightOperand() instanceof AbstractOpArith && this.getType().isInt()){
             //résultat du calcul
-            int result = (int)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
-            ((Identifier)getLeftOperand()).literal = new IntLiteral(result);
-            compiler.addComment("Résultat calculé : " + result);
-            compiler.variablePropa.put(varNameStr, result);
+            double verif=((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
+            if(verif!=Double.MAX_VALUE){
+                int result = (int)verif;
+                ((Identifier)getLeftOperand()).literal = new IntLiteral(result);
+                compiler.addComment("Résultat calculé : " + result);
+                compiler.variablePropa.put(varNameStr, result);
+            }
 
         }
         else if(getRightOperand() instanceof FloatLiteral){
@@ -100,9 +103,13 @@ public class Assign extends AbstractBinaryExpr {
         }
         else if(getRightOperand() instanceof AbstractOpArith && this.getType().isFloat()){
             //résultat du calcul
-            float result = (float)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
-            ((Identifier)getLeftOperand()).float_ = new FloatLiteral(result);
-            compiler.variablePropa_float.put(varNameStr, result);
+            double verif=((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
+            if(verif!=Double.MAX_VALUE){
+                float result = (float)verif;
+                ((Identifier)getLeftOperand()).float_ = new FloatLiteral(result);
+                compiler.variablePropa_float.put(varNameStr, result);
+            }
+            
         }
         else{
             compiler.variablePropa.put(varNameStr,null);

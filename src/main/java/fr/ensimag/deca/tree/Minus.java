@@ -49,8 +49,11 @@ public class Minus extends AbstractOpArith {
                 if(compiler.variablePropa.get(identName)!=null){
                     result += minusIfSecondOp * compiler.variablePropa.get(identName);
                 }
-                else{
+                else if (compiler.variablePropa_float.get(identName)!=null){
                     result += minusIfSecondOp * compiler.variablePropa_float.get(identName);
+                }
+                else{
+                    return Double.MAX_VALUE; //cas utile quand il y a if else ou while 
                 }
                 
             }

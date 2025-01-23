@@ -80,8 +80,11 @@ public class Divide extends AbstractOpArith {
             if(compiler.variablePropa.get(identName)!=null){
                 rightValue = compiler.variablePropa.get(identName);
             }
-            else{
+            else if (compiler.variablePropa_float.get(identName)!=null){
                 rightValue = compiler.variablePropa_float.get(identName);
+            }
+            else{
+                return Double.MAX_VALUE;
             }
             
         }
