@@ -42,10 +42,12 @@ public class Multiply extends AbstractOpArith {
                 if(compiler.variablePropa.get(identName) != null){
                     result *= compiler.variablePropa.get(identName);
                 }
-                else{
-                    result *= compiler.variablePropa_float.get(identName);
+                else if (compiler.variablePropa_float.get(identName)!=null){
+                   result *= compiler.variablePropa_float.get(identName);
                 }
-                
+                else{
+                    return Double.MAX_VALUE; //cas utile quand il y a if else ou while 
+                }
             }
             else{
                 result *= ((AbstractOpArith) operand).evalExprValue(compiler);

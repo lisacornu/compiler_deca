@@ -54,10 +54,12 @@ public class Plus extends AbstractOpArith {
                 if(compiler.variablePropa.get(identName)!=null){
                     result += compiler.variablePropa.get(identName);
                 }
-                else{
+                else if (compiler.variablePropa_float.get(identName)!=null){
                     result += compiler.variablePropa_float.get(identName);
                 }
-                
+                else{
+                    return Double.MAX_VALUE;
+                }
             }
             else{
                 result += ((AbstractOpArith) operand).evalExprValue(compiler);

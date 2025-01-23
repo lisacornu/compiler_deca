@@ -27,7 +27,7 @@ public class Main extends AbstractMain {
 
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-        if(compiler.class_existe==1){
+        /*if(compiler.class_existe==1){
              LOG.debug("verify Main: start");
         
             EnvironmentExp localEnv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
@@ -40,7 +40,7 @@ public class Main extends AbstractMain {
             LOG.debug("verify Main: end");
 
         }
-        else{
+        else{*/
              LOG.debug("verify Main: start");
         
             EnvironmentExp localEnv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
@@ -51,26 +51,26 @@ public class Main extends AbstractMain {
             this.insts.verifyListInst_opti(compiler, localEnv, null, null); //on vérifie les inst
             LOG.debug("verify Inst : end");
             LOG.debug("verify Main: end");
-        }
+        //}
        
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        if(compiler.class_existe==1){
+      /*  if(compiler.class_existe==1){
             compiler.opti=0;
             compiler.addComment("---------- Déclaration des variables");
             declVariables.codeGenListDeclVar(compiler);
             compiler.addComment("---------- Instructions");
             insts.codeGenListInst(compiler, null);
         }
-        else{
+        else{*/
             compiler.opti=1;
             compiler.addComment("---------- Déclaration des variables");
             declVariables.codeGenListDeclVar_opti(compiler);
             compiler.addComment("---------- Instructions");
             insts.codeGenListInst_opti(compiler, null);
-        }
+       // }
         
     }
     

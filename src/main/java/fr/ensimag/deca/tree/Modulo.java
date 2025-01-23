@@ -62,7 +62,12 @@ public class Modulo extends AbstractOpArith {
         else if(rightOperand instanceof Identifier){
             //récupère le nom de l'identificateur
             String identName = ((Identifier) rightOperand).getName().getName();
-            rightValue = compiler.variablePropa.get(identName);
+            if( compiler.variablePropa.get(identName)!=null){
+                rightValue = compiler.variablePropa.get(identName);
+            }
+            else {
+                return Double.MAX_VALUE;
+            }
         }
         else {
             rightValue = ((AbstractOpArith) rightOperand).evalExprValue(compiler);

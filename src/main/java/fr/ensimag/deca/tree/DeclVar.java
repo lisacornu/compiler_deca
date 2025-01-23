@@ -45,7 +45,10 @@ public class DeclVar extends AbstractDeclVar {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type typeType = type.verifyType(compiler);
-
+        if (typeType.isClass() ){
+            this.verifyDeclVar(compiler,localEnv,currentClass);
+            return;
+        }
         if (typeType.isVoid()){
             throw new ContextualError("type is void", getLocation());
         }
@@ -142,7 +145,17 @@ public class DeclVar extends AbstractDeclVar {
                 return; // Ne pas générer la déclaration de la variable
             }
         }
-        DVal addrInit = initExpression.codeGenInit_opti(compiler);
+        DVal addrInit;
+        if(((Identifier)varName).literal!=null){
+            addrInit=((Identifier)varName).literal.codeGenExpr(compiler);
+        }
+        else if ((((Identifier)varName).float_!=null)){
+            addrInit=((Identifier)varName).float_.codeGenExpr(compiler);
+        }
+        else{
+            addrInit = initExpression.codeGenInit_opti(compiler);
+        }
+       
         GPRegister regInit = RegisterHandler.popIntoRegister(compiler, addrInit, Register.R0);
 
         compiler.addInstruction(new STORE(regInit, GB_Stack));
