@@ -1,0 +1,18 @@
+// Description:
+//   Test simple qui test l elimination de code 
+// Resultats:
+// 12
+//
+//
+// Historique:
+//    cree le 23/01/2025
+
+{
+    float y = 3.0 * 4.0;
+    int x;
+    x=3;
+    x=5;
+    x=7;
+    x=12;
+    println(x);
+}
