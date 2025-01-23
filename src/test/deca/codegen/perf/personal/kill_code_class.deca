@@ -1,0 +1,20 @@
+// Description:
+//  Test un peu mechant pour l elimination de code // 
+// Resultats:
+// 4
+//
+//
+// Historique:
+//    cree le 23/01/2025
+
+class A {
+    int x;
+}
+
+{
+    A a= new A();
+    int x=3;
+    x=4;
+    a.x=4;
+    println(a.x);
+}
