@@ -55,6 +55,7 @@ public class DeclVar extends AbstractDeclVar {
             localEnv.declare(varName.getName(),(ExpDefinition) varName.getExpDefinition());
              // Ajouter le suivi de l'utilisation de la variable dans la table de hachage
             String varNameStr = varName.getName().getName(); // Récupérer le nom de la variable
+            compiler.varaible_current=(Identifier)varName;
             compiler.variableUsageCount.putIfAbsent(varNameStr, 0); // Initialiser si nécessaire
             compiler.variableLast.putIfAbsent(varNameStr,0);
             ArrayList<Integer> dynamicInfo = new ArrayList<>();

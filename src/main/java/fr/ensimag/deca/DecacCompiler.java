@@ -12,7 +12,7 @@ import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.deca.tree.Program;
 import fr.ensimag.ima.pseudocode.*;
-
+import fr.ensimag.deca.tree.Identifier;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -51,6 +51,7 @@ public class DecacCompiler implements Callable<Boolean> {
     public HashMap<String, Integer> variableLast=new HashMap<>(); 
     public HashMap<String, Integer> variablePropa=new HashMap<>(); 
     public HashMap<String, Float> variablePropa_float=new HashMap<>(); 
+    public Identifier varaible_current=null;
 
     public int opti = 1;
     public int class_existe = 0;

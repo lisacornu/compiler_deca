@@ -39,7 +39,8 @@ public class Assign extends AbstractBinaryExpr {
      @Override
      public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);   
+        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        String varNameStr = ((Identifier) getLeftOperand()).getName().toString();  
         AbstractExpr rightExpDefinition = getRightOperand().verifyRValue_opti(compiler, localEnv, currentClass, lefType);
         this.setType(lefType);
         if (lefType.isFloat() && rightExpDefinition.getType().isInt()){
@@ -52,7 +53,7 @@ public class Assign extends AbstractBinaryExpr {
        
         if (getLeftOperand() instanceof Identifier) {
             // Récupérer le nom de la variable
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+            
            // int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
             if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
                 ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
@@ -70,48 +71,38 @@ public class Assign extends AbstractBinaryExpr {
         }
          // si a droite c de la variable est un identificateur
         if(getRightOperand() instanceof Identifier){
-            //prendre le nom de la variable a droite
-            String varNameStr_r = ((Identifier) getRightOperand()).getName().toString();
+            String varNameStr_r = ((Identifier)getRightOperand()).getName().getName();
             if(compiler.variablePropa.get(varNameStr_r)!=null){//si jamais l attribut de droite a une valeur entiere connus
-                String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
                 ((Identifier)getLeftOperand()).literal = new IntLiteral(compiler.variablePropa.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
                 compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
             }
             if (compiler.variablePropa_float.get(varNameStr_r)!=null){//si jamais l attribut de droite a une valeur entiere connus
-                String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
                 ((Identifier)getLeftOperand()).float_ = new FloatLiteral(compiler.variablePropa_float.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
                 compiler.variablePropa_float.put(varNameStr,compiler.variablePropa_float.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
             }
         }
         else if(getRightOperand() instanceof IntLiteral){
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             ((Identifier)getLeftOperand()).literal=new IntLiteral(((IntLiteral)(getRightOperand())).getValue());
             compiler.variablePropa.put(varNameStr,((IntLiteral)(getRightOperand())).getValue());
         }
         //cas ou l'opérande de droite est un calcul
         else if(getRightOperand() instanceof AbstractOpArith && this.getType().isInt()){
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
-
             //résultat du calcul
             int result = (int)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
             ((Identifier)getLeftOperand()).literal = new IntLiteral(result);
             compiler.variablePropa.put(varNameStr, result);
         }
         else if(getRightOperand() instanceof FloatLiteral){
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             ((Identifier)getLeftOperand()).float_=new FloatLiteral(((FloatLiteral)(getRightOperand())).getValue());
             compiler.variablePropa_float.put(varNameStr,((FloatLiteral)(getRightOperand())).getValue());
         }
         else if(getRightOperand() instanceof AbstractOpArith && this.getType().isFloat()){
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
-
             //résultat du calcul
             float result = (float)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
             ((Identifier)getLeftOperand()).float_ = new FloatLiteral(result);
             compiler.variablePropa_float.put(varNameStr, result);
         }
         else{
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             compiler.variablePropa.put(varNameStr,null);
             compiler.variablePropa_float.put(varNameStr,null);
         }
