@@ -20,6 +20,40 @@ public class Multiply extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected double evalExprValue(DecacCompiler compiler){
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+        AbstractExpr operands[] = {leftOperand, rightOperand};
+
+        double result = 1;
+
+        //somme des valeurs des 2 opérandes
+        for(AbstractExpr operand : operands){
+            if(operand instanceof FloatLiteral){
+                result *= ((FloatLiteral) operand).getValue();
+            }
+            else if(operand instanceof IntLiteral){
+                result *= ((IntLiteral) operand).getValue();
+            }
+            else if(operand instanceof Identifier){
+                //récupère le nom de l'identificateur
+                String identName = ((Identifier) operand).getName().getName();
+                if(compiler.variablePropa.get(identName) != null){
+                    result *= compiler.variablePropa.get(identName);
+                }
+                else{
+                    result *= compiler.variablePropa_float.get(identName);
+                }
+                
+            }
+            else{
+                result *= ((AbstractOpArith) operand).evalExprValue(compiler);
+            }
+        }
+
+        return result;
+    }
 
     @Override
     protected String getOperatorName() {
@@ -40,7 +74,6 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
-        //if (this.getLeftOperand().getType().isInt() && this.getRightOperand().getType().isInt())
         compiler.addInstruction(new MUL(op1, op2));
     }
 }

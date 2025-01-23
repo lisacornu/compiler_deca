@@ -1,0 +1,14 @@
+// Description:
+//    test des optim sur les variablesjamais utilisé etre utilisé
+//
+// Resultats:
+//   8
+//   
+// Historique:
+//    cree le 11/01/2025
+
+{   
+    int x =79;
+    int y=8;
+    println(y);
+}

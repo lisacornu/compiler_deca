@@ -40,7 +40,9 @@ public abstract class AbstractInst extends Tree {
      * @param compiler
      */
     protected abstract void codeGenInst(DecacCompiler compiler, String methodName);
-
+    protected void codeGenInst_opti(DecacCompiler compiler, String methodName){
+        codeGenInst(compiler,methodName);
+    }
 
     protected void verifyInst_opti(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
             throws ContextualError {

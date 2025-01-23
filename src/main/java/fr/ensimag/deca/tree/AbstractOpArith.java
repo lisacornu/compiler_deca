@@ -95,5 +95,22 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         }
     }
 
+    /**
+     *calcul la valeur retournée par une opération
+     */
+    protected abstract double evalExprValue(DecacCompiler compiler);
 
+    /**
+     * Calcul si le nombre à un débordement
+     */
+    protected boolean isOverflood(double value){
+        if(this.getType().isInt()){
+            return value > Integer.MAX_VALUE || value < Integer.MIN_VALUE;
+        }
+        else if(this.getType().isFloat()){
+            return value > Float.MAX_VALUE || value < Float.MIN_VALUE;
+        }
+
+        throw new UnsupportedOperationException("Method must be called only for numbers");
+    }
 }

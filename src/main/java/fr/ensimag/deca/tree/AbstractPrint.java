@@ -56,9 +56,9 @@ public abstract class AbstractPrint extends AbstractInst {
                     if (!(argType.isString() || argType.isFloat() || argType.isInt() )){
                         throw new ContextualError("Type is not String or Int or Float, you have "+argType, getLocation());
                     }
-                    if(arg instanceof Identifier){
+                 /*   if(arg instanceof Identifier){
                         ((Identifier)arg).usage(compiler);
-                    }
+                    }*/
                 }
     }
 

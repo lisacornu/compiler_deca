@@ -16,7 +16,6 @@ public class Minus extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
-
     @Override
     protected String getOperatorName() {
         return "-";
@@ -25,5 +24,43 @@ public class Minus extends AbstractOpArith {
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
         compiler.addInstruction(new SUB(op1, op2));
+    }
+
+    @Override
+    protected double evalExprValue(DecacCompiler compiler){
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+        AbstractExpr operands[] = {leftOperand, rightOperand};
+
+        double result = 0;
+        double minusIfSecondOp = 1;
+
+        //différence des valeurs des 2 opérandes
+        for(AbstractExpr operand : operands){
+            if(operand instanceof FloatLiteral){
+                result += minusIfSecondOp * ((FloatLiteral) operand).getValue();
+            }
+            else if(operand instanceof IntLiteral){
+                result += minusIfSecondOp * ((IntLiteral) operand).getValue();
+            }
+            else if(operand instanceof Identifier){
+                //récupère le nom de l'identificateur
+                String identName = ((Identifier) operand).getName().getName();
+                if(compiler.variablePropa.get(identName)!=null){
+                    result += minusIfSecondOp * compiler.variablePropa.get(identName);
+                }
+                else{
+                    result += minusIfSecondOp * compiler.variablePropa_float.get(identName);
+                }
+                
+            }
+            else{
+                result = result + minusIfSecondOp * ((AbstractOpArith) operand).evalExprValue(compiler);
+            }
+
+            minusIfSecondOp = -1;
+        }
+
+        return result;
     }
 }

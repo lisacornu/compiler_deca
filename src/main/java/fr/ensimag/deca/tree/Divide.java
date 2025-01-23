@@ -21,7 +21,6 @@ public class Divide extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
-
     @Override
     protected String getOperatorName() {
         return "/";
@@ -36,6 +35,70 @@ public class Divide extends AbstractOpArith {
             compiler.addInstruction(new DIV(op1, op2)); //avec des flottants
         } else {
             compiler.addInstruction(new QUO(op1, op2)); // avec des entiers
+        }
+    }
+
+    @Override
+    protected double evalExprValue(DecacCompiler compiler) {
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+
+        double leftValue = 0;
+        double rightValue = 0;
+
+        //évalue l'opérande de gauche
+        if (leftOperand instanceof FloatLiteral) {
+            leftValue = ((FloatLiteral) leftOperand).getValue();
+        }
+        else if (leftOperand instanceof IntLiteral) {
+            leftValue = ((IntLiteral) leftOperand).getValue();
+        }
+        else if(leftOperand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) leftOperand).getName().getName();
+            if(compiler.variablePropa.get(identName)!=null){
+                leftValue = compiler.variablePropa.get(identName);
+            }
+            else{
+                leftValue = compiler.variablePropa_float.get(identName);
+            }
+        }
+        else {
+            leftValue = ((AbstractOpArith) leftOperand).evalExprValue(compiler);
+        }
+
+        //évalue l'opérande de droite
+        if (rightOperand instanceof FloatLiteral) {
+            rightValue = ((FloatLiteral) rightOperand).getValue();
+        }
+        else if (rightOperand instanceof IntLiteral) {
+            rightValue = ((IntLiteral) rightOperand).getValue();
+        }
+        else if(rightOperand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) rightOperand).getName().getName();
+            if(compiler.variablePropa.get(identName)!=null){
+                rightValue = compiler.variablePropa.get(identName);
+            }
+            else{
+                rightValue = compiler.variablePropa_float.get(identName);
+            }
+            
+        }
+        else {
+            rightValue = ((AbstractOpArith) rightOperand).evalExprValue(compiler);
+        }
+
+        // Division par 0
+        if (rightValue == 0) {
+            throw new ArithmeticException("Division by zero");
+        }
+
+        if(leftOperand.getType().isFloat()){
+            return (double) leftValue / (double) rightValue;
+        }
+        else{
+            return (int) leftValue / (int) rightValue;
         }
     }
 }

@@ -104,6 +104,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         // On push dans la pile si besoin (et on déplace op2 si c'est un registre temporaire dans un nv registre/dans la pile)
         return RegisterHandler.pushFromRegister(compiler, op2);
     }
+    @Override
+    protected DVal codeGenExpr_opti(DecacCompiler compiler) {
+        return codeGenExpr(compiler);
+    }
 
     public void branchIfZero(DecacCompiler compiler, DVal op) {
 
@@ -116,9 +120,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
         compiler.addInstruction(new BEQ(new Label("division_zero")));
     }
-
-
-
 
 
 

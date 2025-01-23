@@ -1,6 +1,7 @@
 
 package fr.ensimag.deca.tree;
 import java.util.ArrayList;
+
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
@@ -14,6 +15,8 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
+
+
 import java.util.HashMap;
 
 /**
@@ -23,7 +26,6 @@ import java.util.HashMap;
  * @date 01/01/2025
  */
 public class Assign extends AbstractBinaryExpr {
-
     @Override
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set
@@ -34,10 +36,11 @@ public class Assign extends AbstractBinaryExpr {
     public Assign(AbstractLValue leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
-    @Override
+     @Override
      public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);   
+        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        String varNameStr = ((Identifier) getLeftOperand()).getName().toString();  
         AbstractExpr rightExpDefinition = getRightOperand().verifyRValue_opti(compiler, localEnv, currentClass, lefType);
         this.setType(lefType);
         if (lefType.isFloat() && rightExpDefinition.getType().isInt()){
@@ -47,23 +50,15 @@ public class Assign extends AbstractBinaryExpr {
         }else{
             setRightOperand(rightExpDefinition);
         }
-        if(getRightOperand() instanceof Identifier){
-            ((Identifier)getRightOperand()).usage(compiler);
-            String varNameStr_r = ((Identifier) getRightOperand()).getName().toString();
-            if(compiler.variablePropa.get(varNameStr_r)!=null){
-                String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
-                ((Identifier)getLeftOperand()).literal=new IntLiteral(compiler.variablePropa.get(varNameStr_r));
-                compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));
-            }
-        }
+       
         if (getLeftOperand() instanceof Identifier) {
             // Récupérer le nom de la variable
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
-            int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
+            
+           // int usageCount = compiler.variableUsageCount.getOrDefault(varNameStr, 0);
             if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
                 ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
                 dynamicInfo.add(0);
-                dynamicInfo.set(dynamicInfo.size() - 1, usageCount > 0 ? 1 : 0);
+                dynamicInfo.set(dynamicInfo.size() - 1, 0);
            //     compiler.variableUsageCountdyna.put(varNameStr, dynamicInfo);
             }
 
@@ -74,14 +69,42 @@ public class Assign extends AbstractBinaryExpr {
             compiler.variableLast.put(varNameStr, newIndice);
             compiler.variableUsageCount.put(varNameStr, 0);
         }
-        if(getRightOperand() instanceof IntLiteral){
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
+         // si a droite c de la variable est un identificateur
+        if(getRightOperand() instanceof Identifier){
+            String varNameStr_r = ((Identifier)getRightOperand()).getName().getName();
+            if(compiler.variablePropa.get(varNameStr_r)!=null){//si jamais l attribut de droite a une valeur entiere connus
+                ((Identifier)getLeftOperand()).literal = new IntLiteral(compiler.variablePropa.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
+                compiler.variablePropa.put(varNameStr,compiler.variablePropa.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
+            }
+            if (compiler.variablePropa_float.get(varNameStr_r)!=null){//si jamais l attribut de droite a une valeur entiere connus
+                ((Identifier)getLeftOperand()).float_ = new FloatLiteral(compiler.variablePropa_float.get(varNameStr_r));//mettre un attribut intlitt pr la varaible en cours 
+                compiler.variablePropa_float.put(varNameStr,compiler.variablePropa_float.get(varNameStr_r));//la mettre dans la table de hashage pr servire les autres
+            }
+        }
+        else if(getRightOperand() instanceof IntLiteral){
             ((Identifier)getLeftOperand()).literal=new IntLiteral(((IntLiteral)(getRightOperand())).getValue());
             compiler.variablePropa.put(varNameStr,((IntLiteral)(getRightOperand())).getValue());
         }
+        //cas ou l'opérande de droite est un calcul
+        else if(getRightOperand() instanceof AbstractOpArith && this.getType().isInt()){
+            //résultat du calcul
+            int result = (int)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
+            ((Identifier)getLeftOperand()).literal = new IntLiteral(result);
+            compiler.variablePropa.put(varNameStr, result);
+        }
+        else if(getRightOperand() instanceof FloatLiteral){
+            ((Identifier)getLeftOperand()).float_=new FloatLiteral(((FloatLiteral)(getRightOperand())).getValue());
+            compiler.variablePropa_float.put(varNameStr,((FloatLiteral)(getRightOperand())).getValue());
+        }
+        else if(getRightOperand() instanceof AbstractOpArith && this.getType().isFloat()){
+            //résultat du calcul
+            float result = (float)((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
+            ((Identifier)getLeftOperand()).float_ = new FloatLiteral(result);
+            compiler.variablePropa_float.put(varNameStr, result);
+        }
         else{
-            String varNameStr = ((Identifier) getLeftOperand()).getName().toString();
             compiler.variablePropa.put(varNameStr,null);
+            compiler.variablePropa_float.put(varNameStr,null);
         }
         return lefType;
         
@@ -109,51 +132,141 @@ public class Assign extends AbstractBinaryExpr {
         return "=";
     }
 
-  @Override
-    protected DVal codeGenExpr(DecacCompiler compiler) {
+    @Override
+    protected DVal codeGenExpr_opti(DecacCompiler compiler) {
+
            // Vérifier l'utilisation de la variable dans la table de hachage
         String varNameStr = ((Identifier)getLeftOperand()).getName().getName();
         if (compiler.variableUsageCountdyna.containsKey(varNameStr)) {
             ArrayList<Integer> dynamicInfo = compiler.variableUsageCountdyna.get(varNameStr);
-
             // Vérifier le premier élément du tableau
             if (dynamicInfo.get(((Identifier)getLeftOperand()).indice) == 0  && compiler.opti==1) {
                 compiler.addComment("Variable " + varNameStr + ((Identifier)getLeftOperand()).indice +" n'a pas besoin d'etre assigné");
                 return null; // Ne pas générer la déclaration de la variable
             }
         }
-        // Generation du codes des branches
+/*
+        // Generation des codes des branches
         DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
         DVal rightOperandResult;
-        if(getRightOperand() instanceof Identifier && compiler.opti==1){
-                
-              if(((Identifier)getLeftOperand()).literal!=null){
-                compiler.addComment("jspquoidire");
-                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
-              }
-              else{
-                rightOperandResult = getRightOperand().codeGenExpr(compiler);
-              }
+
+
+
+      //On fait le constant folding si la variable est un int ou un float
+      //sinon on ne peut rien faire
+      Type leftOperandType = getLeftOperand().getType();
+      if(leftOperandType.isFloat() || leftOperandType.isInt()){
+          //On récupère la valeur de l'expression de droite
+          getLeftOperand().computeExprValue();
+      }
+
+
+        if(compiler.opti == 1){
+            if(getRightOperand() instanceof Identifier){
+                if(((Identifier)getLeftOperand()).literal != null){
+                    compiler.addComment("jspquoidire");
+                    rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr_opti(compiler);
+                }
+                else{
+                    rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+                }
+            }
+            else{
+                rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+            }
         }
         else{
-            rightOperandResult = getRightOperand().codeGenExpr(compiler);
+            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+        }*/
+         // Generation du codes des branches
+
+        Type leftOperandType = getLeftOperand().getType();
+        boolean isLeftOperandANumber = leftOperandType.isFloat() || leftOperandType.isInt();
+
+        DVal leftOperandResult = getLeftOperand().codeGenExpr(compiler);
+        DVal rightOperandResult;
+        if(getRightOperand() instanceof Identifier){
+              if(((Identifier)getLeftOperand()).literal!=null){
+                rightOperandResult =(( Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
+              }
+              else if(((Identifier)getLeftOperand()).float_!=null){
+                rightOperandResult =(( Identifier)getLeftOperand()).float_.codeGenExpr(compiler);
+              }
+              else{
+                rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+              }
         }
+        
+        //On fait le constant folding si la variable de gauche est un int ou un float
+        //et si l'opération de droite est un calcul sinon on ne peut rien faire.
+        else if((getRightOperand() instanceof AbstractOpArith) && isLeftOperandANumber){
+            //On récupère la valeur de l'expression de droite
+//            float result = ((AbstractOpArith) getRightOperand()).evalExprValue(compiler);
+//            compiler.addComment("ICI ! Résultat : " + result);
+
+            if(((Identifier)getLeftOperand()).literal!=null){
+                rightOperandResult =((Identifier)getLeftOperand()).literal.codeGenExpr(compiler);
+            }
+            else if(((Identifier)getLeftOperand()).float_!=null){
+                rightOperandResult =((Identifier)getLeftOperand()).float_.codeGenExpr(compiler);
+            }
+            else{
+                rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+            }
+        }
+        else{
+            rightOperandResult = getRightOperand().codeGenExpr_opti(compiler);
+        }
+
+
         // Selection des bonnes adresses en fonction de leur emplacement mémoire
         GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
         DVal op1 = RegisterHandler.popIntoDVal(compiler, leftOperandResult, Register.R0);
 
         // Generation du code de l'expression (résultat enregistré dans op1)
-        codeGenBinaryExpr(compiler, op1, op2);
+        codeGenBinaryExpr1(compiler, op1, op2);
         compiler.registerHandler.SetFree(op2);
 
         //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
         return op1;
     }
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+        // Generation du code de la branch de droite
+        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
+
+        //On recupere l'adresse de la Lvalue
+        DAddr varAddress;
+        if (getLeftOperand() instanceof Selection) {
+            varAddress = ((Selection) getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+        } else {
+            Identifier leftOperandIdent =  (Identifier)getLeftOperand();
+            if (leftOperandIdent.getDefinition().isField()) {
+                varAddress = ((Identifier)getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+            } else {
+                varAddress = ((Identifier)getLeftOperand()).getExpDefinition().getOperand();
+            }
+        }
+
+
+        // On recupere rightOperandResult dans un registre
+        GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
+
+        // Generation du code de l'expression (résultat enregistré dans op1)
+        codeGenBinaryExpr(compiler, varAddress, op2);
+
+        //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
+        return op2;
+    }
 
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
+        compiler.addInstruction(new STORE(op2,(DAddr)op1));
+    }
+    protected void codeGenBinaryExpr1(DecacCompiler compiler, DVal op1, GPRegister op2) {
         DAddr varAddress = ((AbstractIdentifier)getLeftOperand()).getExpDefinition().getOperand();
         compiler.addInstruction(new STORE(op2,varAddress));
     }
+
 }

@@ -43,13 +43,22 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
             var.verifyDeclVar(compiler, localEnv, currentClass);
         }
     }
-
+    void verifyListDeclVariable_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        for(AbstractDeclVar var: getList()){
+            var.verifyDeclVar_opti(compiler, localEnv, currentClass);
+        }
+    }
     protected void codeGenListDeclVar(DecacCompiler compiler) {
         for(AbstractDeclVar declVar : getList()) {
             declVar.codeGenDeclVar(compiler);
         }
     }
-
+    protected void codeGenListDeclVar_opti(DecacCompiler compiler) {
+        for(AbstractDeclVar declVar : getList()) {
+            declVar.codeGenDeclVar_opti(compiler);
+        }
+    }
     protected void codeGenListDeclVarMethod(DecacCompiler compiler) {
         for(AbstractDeclVar declVar : getList()) {
             declVar.codeGenDeclVarMethod(compiler);

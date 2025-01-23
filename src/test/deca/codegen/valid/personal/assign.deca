@@ -9,11 +9,14 @@
 //    cree le 10/01/2025
 
 {
-    int x;
-    int y;
+    int a = 3;
+    int x = 2;
+    int y = 10;
+    a = x + y + a - 10;
     x = 2;
     println(x);
     x = 5;
     y = 9;
+    x = a;
     println(x);
 }

@@ -27,25 +27,51 @@ public class Main extends AbstractMain {
 
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify Main: start");
+        if(compiler.class_existe==1){
+             LOG.debug("verify Main: start");
         
-        EnvironmentExp localEnv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
-        LOG.debug("verify Variable : start");
-        this.declVariables.verifyListDeclVariable(compiler, localEnv, null); // on verifie en premier les variable 
-        LOG.debug("verify Variable : end");
-        LOG.debug("verify Inst : start");
-        this.insts.verifyListInst_opti(compiler, localEnv, null, null); //on vérifie les inst
-        LOG.debug("verify Inst : end");
-        LOG.debug("verify Main: end");
+            EnvironmentExp localEnv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
+            LOG.debug("verify Variable : start");
+            this.declVariables.verifyListDeclVariable(compiler, localEnv, null); // on verifie en premier les variable 
+            LOG.debug("verify Variable : end");
+            LOG.debug("verify Inst : start");
+            this.insts.verifyListInst(compiler, localEnv, null, null); //on vérifie les inst
+            LOG.debug("verify Inst : end");
+            LOG.debug("verify Main: end");
+
+        }
+        else{
+             LOG.debug("verify Main: start");
+        
+            EnvironmentExp localEnv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
+            LOG.debug("verify Variable : start");
+            this.declVariables.verifyListDeclVariable_opti(compiler, localEnv, null); // on verifie en premier les variable 
+            LOG.debug("verify Variable : end");
+            LOG.debug("verify Inst : start");
+            this.insts.verifyListInst_opti(compiler, localEnv, null, null); //on vérifie les inst
+            LOG.debug("verify Inst : end");
+            LOG.debug("verify Main: end");
+        }
+       
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        compiler.opti=1;
-        compiler.addComment("---------- Déclaration des variables");
-        declVariables.codeGenListDeclVar(compiler);
-        compiler.addComment("---------- Instructions");
-        insts.codeGenListInst(compiler, null);
+        if(compiler.class_existe==1){
+            compiler.opti=0;
+            compiler.addComment("---------- Déclaration des variables");
+            declVariables.codeGenListDeclVar(compiler);
+            compiler.addComment("---------- Instructions");
+            insts.codeGenListInst(compiler, null);
+        }
+        else{
+            compiler.opti=1;
+            compiler.addComment("---------- Déclaration des variables");
+            declVariables.codeGenListDeclVar_opti(compiler);
+            compiler.addComment("---------- Instructions");
+            insts.codeGenListInst_opti(compiler, null);
+        }
+        
     }
     
     @Override

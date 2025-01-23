@@ -1,0 +1,16 @@
+// Description:
+//    test des optim sur les variables
+//
+// Resultats:
+//   3
+//   
+// Historique:
+//    cree le 22/01/2025
+
+{   
+    int x;
+    int y ;
+    x=3;
+    y=x;
+    println(y);
+}

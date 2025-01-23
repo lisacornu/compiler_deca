@@ -23,6 +23,50 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
+    protected double evalExprValue(DecacCompiler compiler) {
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+
+        double leftValue = 0;
+        double rightValue = 0;
+
+        // évalue l'opérande de gauche
+        if (leftOperand instanceof FloatLiteral) {
+            leftValue = ((FloatLiteral) leftOperand).getValue();
+        }
+        else if (leftOperand instanceof IntLiteral) {
+            leftValue = ((IntLiteral) leftOperand).getValue();
+        }
+        else if(leftOperand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) leftOperand).getName().getName();
+            leftValue = compiler.variablePropa.get(identName);
+        }
+        else {
+            leftValue = ((AbstractOpArith) leftOperand).evalExprValue(compiler);
+        }
+
+        // évalue l'opérande de droite
+        if (rightOperand instanceof FloatLiteral) {
+            rightValue = ((FloatLiteral) rightOperand).getValue();
+        }
+        else if (rightOperand instanceof IntLiteral) {
+            rightValue = ((IntLiteral) rightOperand).getValue();
+        }
+        else if(rightOperand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) rightOperand).getName().getName();
+            rightValue = compiler.variablePropa.get(identName);
+        }
+        else {
+            rightValue = ((AbstractOpArith) rightOperand).evalExprValue(compiler);
+        }
+
+        // fait le modulo
+        return (int)leftValue % (int)rightValue;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);

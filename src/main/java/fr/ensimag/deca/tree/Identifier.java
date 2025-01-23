@@ -29,9 +29,9 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2025
  */
 public class Identifier extends AbstractIdentifier {
-    public int indice=0;
-    public IntLiteral literal=null;
-
+    public int indice = 0;
+    public IntLiteral literal = null;
+    public FloatLiteral float_=null;
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -299,6 +299,8 @@ public class Identifier extends AbstractIdentifier {
         int i = compiler.variableLast.getOrDefault(varNameStr,0);
         dynamicInfo.set(i, 1);
     }
+
+    
     @Override
     public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
