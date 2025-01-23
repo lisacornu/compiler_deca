@@ -10,10 +10,14 @@
 //    cree le 01/01/2025
 
 {
-    int x = 5;
-    int y = 3 + 2;
-    int z1 = ((2 * 8) % 7) / 3;
-    float z2 = ((2.0 * 8) % 7) / 3;
+    int x;
+    int y;
+    int z1;
+    float z2;
+    x = 5;
+    y = 3 + 2;
+    z1 = ((2 * 8) % 7) / 3;
+    z2 = ((2.0 * 8) % 7) / 3;
 
     println(x + y);
     println(z1);

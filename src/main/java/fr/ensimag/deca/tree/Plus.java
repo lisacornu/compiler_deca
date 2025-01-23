@@ -32,7 +32,7 @@ public class Plus extends AbstractOpArith {
     protected double evalExprValue(DecacCompiler compiler){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
-        AbstractExpr operands[] = {leftOperand, rightOperand};
+        AbstractExpr[] operands = {leftOperand, rightOperand};
 
         double result = 0;
 
