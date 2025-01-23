@@ -26,10 +26,11 @@ public class Multiply extends AbstractOpArith {
 
         //somme des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){
+            //cas ou l'opérande est un littéral
             if(operand instanceof FloatLiteral){
                 result *= ((FloatLiteral) operand).getValue();
             }
-            else if(operand instanceof IntLiteral){
+            else if(operand instanceof IntLiteral || operand instanceof ConvFloat){
                 result *= ((IntLiteral) operand).getValue();
             }
             else if(operand instanceof Identifier){

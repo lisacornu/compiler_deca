@@ -1,0 +1,21 @@
+// Description:
+//    Test simple de constant folding + vérification des résultats qui dépendent du type
+//
+// Resultats:
+// 10
+// 0
+//
+//
+// Historique:
+//    cree le 01/01/2025
+
+{
+    int x = 5;
+    int y = 3 + 2;
+    int z1 = ((2 * 8) % 7) / 3;
+    float z2 = ((2.0 * 8) % 7) / 3;
+
+    println(x + y);
+    println(z1);
+    println(z2);
+}
