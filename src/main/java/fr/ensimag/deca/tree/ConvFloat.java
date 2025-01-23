@@ -23,7 +23,19 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     protected double evalExprValue(DecacCompiler compiler){
-        return ((IntLiteral) getOperand()).getValue();
+        AbstractExpr operand = getOperand();
+
+        if(operand instanceof IntLiteral){
+            return ((IntLiteral) operand).getValue();
+        }
+        else if (operand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) operand).getName().getName();
+            return compiler.variablePropa.get(identName);
+        }
+
+        //si il y a un problème
+        return -1;
     }
 
     @Override
