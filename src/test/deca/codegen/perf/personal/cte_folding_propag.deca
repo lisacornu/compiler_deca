@@ -18,5 +18,5 @@
     }
 
     println(i);
-    println(x)
+    println(x);
 }
