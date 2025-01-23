@@ -32,7 +32,17 @@ public class UnaryMinus extends AbstractUnaryExpr {
         } 
         throw new ContextualError("You are trying to make something negative but it's not legal on this type", getLocation());
     }
-
+    @Override
+    public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        
+        Type type = getOperand().verifyExpr_opti(compiler, localEnv, currentClass);
+        if(type.isFloat() || type.isInt()){
+            setType(type);
+            return type;
+        } 
+        throw new ContextualError("You are trying to make something negative but it's not legal on this type", getLocation());
+    }
 
     @Override
     protected String getOperatorName() {
