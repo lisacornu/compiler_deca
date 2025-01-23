@@ -10,5 +10,5 @@
 
 {
     float x = 3.0 * 7;
-    println(x)
+    println(x);
 }
