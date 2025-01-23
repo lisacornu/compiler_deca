@@ -2,13 +2,14 @@
 //    Test simple de constant folding avec conv float
 //
 // Resultats:
-// 1.0000e+1
-//
+// 1.0000e+01
+// 2.4000e+01
 //
 // Historique:
 //    cree le 23/01/2025
 
 {
     float x = ((3.0 * 7) + 9) / 3.0;
+    float y = (3 + 5) * 3.0;
     println(x);
 }

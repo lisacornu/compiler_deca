@@ -1,0 +1,28 @@
+// Description:
+//    Test simple de constant folding + vérification des résultats qui dépendent du type
+//
+// Resultats:
+// 10
+// 18
+//
+// Historique:
+//    cree le 01/01/2025
+
+{
+    int x = 8 * 3;
+    int y;
+    float z = 3.5 + 0.5;
+    float alpha;
+
+    float result = z + x;
+
+    if(x < z){
+        println("Erreur !");
+    }
+    else{
+        alpha = 7 + 3;
+    }
+
+    println(alpha);
+    println(x);
+}

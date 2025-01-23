@@ -20,7 +20,7 @@
         i = i + x;
     }
 
-    println(67);
+    println(a);
     println(i);
     println(x);
 }
