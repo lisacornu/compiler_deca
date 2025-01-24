@@ -12,6 +12,6 @@
 
 
 {
-    int x= 3+4;
+    int x= 3 * 6 + 9 % 10;
     println(x);
 }
