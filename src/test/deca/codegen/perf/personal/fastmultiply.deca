@@ -1,0 +1,11 @@
+{
+    int y = 1;
+    print(0*y);
+    print(2*y);
+    print(3*y);
+    print(20*y);
+    print(64*y);
+    print(66*y);
+    print(113*y);
+    print(128*y);
+}

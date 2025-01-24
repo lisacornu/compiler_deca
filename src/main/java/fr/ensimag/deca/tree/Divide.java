@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.InstructionsOptimiser;
 import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -25,6 +26,15 @@ public class Divide extends AbstractOpArith {
     protected String getOperatorName() {
         return "/";
     }
+
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+        AbstractExpr fastOperand = InstructionsOptimiser.FastDivide(getLeftOperand(), getRightOperand());
+        if (fastOperand instanceof Divide)
+            return super.codeGenExpr(compiler);
+        return fastOperand.codeGenExpr(compiler);
+    }
+
 
     @Override
     protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {

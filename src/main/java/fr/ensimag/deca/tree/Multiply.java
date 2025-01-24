@@ -2,13 +2,9 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.Optimiser;
-import fr.ensimag.deca.codegen.RegisterHandler;
+import fr.ensimag.deca.codegen.InstructionsOptimiser;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
 
 /**
@@ -74,7 +70,7 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected DVal codeGenExpr(DecacCompiler compiler) {
-        AbstractExpr fastOperand = Optimiser.FastMultiply(getLeftOperand(), getRightOperand());
+        AbstractExpr fastOperand = InstructionsOptimiser.FastMultiply(getLeftOperand(), getRightOperand());
         if (fastOperand instanceof Multiply)
             return super.codeGenExpr(compiler);
         return fastOperand.codeGenExpr(compiler);

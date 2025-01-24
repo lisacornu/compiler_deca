@@ -1,0 +1,9 @@
+{
+    int y = 1073741824;
+    print(y/1);
+    print(y/2);
+    print(y/3);
+    print(y/4);
+    print(y/256);
+    print(y/4096);
+}

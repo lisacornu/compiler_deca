@@ -1,12 +1,29 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.*;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 
-public class Optimiser {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class InstructionsOptimiser {
+
+    private static final int[] twoPowers = {
+        1, 2, 4, 8, 16, 32, 64, 128, 256, 512,
+        1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072,
+        262144, 524288, 1048576, 2097152, 4194304, 8388608,
+        16777216, 33554432, 67108864, 134217728, 268435456,
+        536870912, 1073741824
+    };
+
+    //Si n est une puissance de 2, renvoi i tel que n = 2^i
+    //Sinon renvoi -1;
+    private static int isTwoPower(int n) {
+        for (int i = 0; i < twoPowers.length; i++) {
+            if (n == twoPowers[i]) return i;
+            if (n < twoPowers[i]) return -1;
+        }
+        return -1;
+    }
 
     //Convertit un tableau en un entier de nombre binaire
     private static int[] toBinaryArray(int num) {
@@ -101,25 +118,33 @@ public class Optimiser {
     }
 
     //Construit l'arbre correspond à un bitshift gauche de i
-    private static AbstractExpr ShiftLefti(AbstractExpr operand, int i) {
+    private static AbstractExpr ShiftLeftTreei(AbstractExpr operand, int i) {
         AbstractExpr operandShift = operand;
         for (int j = 0; j < i; j++)
             operandShift = new ShiftLeft(operandShift);
         return operandShift;
     }
 
-    //Construit l'arbre d'une multiplication de Booth
-    private static AbstractExpr buildBitshiftTree(AbstractExpr expr, int[] booth, int i, int lastActiveBit) {
+    //Construit l'arbre correspond à un bitshift droit de i
+    private static AbstractExpr ShiftRightTreei(AbstractExpr operand, int i) {
+        AbstractExpr operandShift = operand;
+        for (int j = 0; j < i; j++)
+            operandShift = new ShiftRight(operandShift);
+        return operandShift;
+    }
 
-        if (i == lastActiveBit) return ShiftLefti(expr, 31-i);
+    //Construit l'arbre d'une multiplication de Booth
+    private static AbstractExpr buildBoothTree(AbstractExpr expr, int[] booth, int i, int lastActiveBit) {
+
+        if (i == lastActiveBit) return ShiftLeftTreei(expr, 31-i);
 
         int nextBitInd = getNextActiveBit(booth, i);
-        AbstractExpr nextExpr = buildBitshiftTree(expr, booth, nextBitInd, lastActiveBit);
+        AbstractExpr nextExpr = buildBoothTree(expr, booth, nextBitInd, lastActiveBit);
 
         if (booth[nextBitInd] == 1)
-            return new Plus(ShiftLefti(expr,31-i),nextExpr);
+            return new Plus(ShiftLeftTreei(expr,31-i),nextExpr);
 
-        return new Minus(ShiftLefti(expr,31-i),nextExpr);
+        return new Minus(ShiftLeftTreei(expr,31-i),nextExpr);
     }
 
 
@@ -146,15 +171,23 @@ public class Optimiser {
             return new Multiply(expr1, expr2); //Multiplication classique
 
         //Construction de l'arbre de la multiplication de Booth
-        return buildBitshiftTree(expr, booth, FirstActiveBit(booth), LastActiveBit(booth));
+        return buildBoothTree(expr, booth, FirstActiveBit(booth), LastActiveBit(booth));
     }
 
 
-    public static AbstractExpr FastDiv(AbstractExpr expr, IntLiteral integer) {
-        return null;
+    public static AbstractExpr FastDivide(AbstractExpr expr1, AbstractExpr expr2) {
+
+        //On test si on a une division une expression ou un int
+        IntLiteral integer;
+        if (expr2 instanceof IntLiteral) integer = (IntLiteral)expr2;
+        else return new Divide(expr1, expr2);
+
+        int twoPowerInd = isTwoPower(integer.getValue());
+
+        //Si twoPowerInd >= 20 faire des SHR sera plus couteux
+        if (integer.getValue() <= 0 || twoPowerInd == -1 || twoPowerInd >= 20)
+            return new Divide(expr1, expr2);
+
+        return ShiftRightTreei(expr1, twoPowerInd);
     }
-
-
-
-
 }
