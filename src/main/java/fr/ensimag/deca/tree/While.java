@@ -81,6 +81,11 @@ public class While extends AbstractInst {
             throws ContextualError {
         condition.verifyExpr_opti(compiler, localEnv, currentClass);
         body.verifyListInst(compiler, localEnv, currentClass, returnType);
+        //un peu brute de faire ceci pr annuler l opti
+        for (String key : compiler.variablePropa.keySet()) {
+                compiler.variablePropa.put(key, null);
+                compiler.variablePropa_float.put(key,null);
+        }
     }
 
     @Override

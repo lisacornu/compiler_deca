@@ -64,6 +64,43 @@ public class MethodCall extends AbstractExpr{
         }
         
     }
+        @Override
+    public Type verifyExpr_opti(DecacCompiler compiler,
+            EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError{
+        ClassDefinition classDef;
+        if(expr==null && currentClass!=null){
+            classDef = currentClass;
+        }else if(expr==null && currentClass==null){
+            throw new ContextualError("You cant call the method on nothing while you are not in the class", getLocation());
+        } else{
+            Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
+            classDef = (ClassDefinition) compiler.environmentType.defOfType(type2.getName());
+        }
+        
+        if(classDef.getMembers().get(methodIdent.getName())!=null){
+            MethodDefinition methodDef = (MethodDefinition)classDef.getMembers().get(methodIdent.getName());
+            Type returnType = methodDef.getType();
+            Signature signMeth = methodDef.getSignature();
+            int i = 0;
+            if(rvalueStar.getList().size()!=signMeth.size()){
+                throw new ContextualError("They are not the same number of param", getLocation());
+            }
+            for (AbstractExpr rval : rvalueStar.getList()){
+                Type typeParam = rval.verifyExpr_opti(compiler, localEnv, currentClass);
+                if(!typeParam.sameType(signMeth.paramNumber(i))){
+                    throw new ContextualError("ParamType is different than type you passed as argument", getLocation());
+                }
+                i++;
+            }
+            methodIdent.setDefinition(methodDef);
+            setType(returnType);
+            return returnType;
+        } else{
+            throw new ContextualError("The method was not defined before " + methodIdent.getName(), getLocation());
+        }
+        
+    }
     
     @Override
     public void printExprValue(DecacCompiler compiler){

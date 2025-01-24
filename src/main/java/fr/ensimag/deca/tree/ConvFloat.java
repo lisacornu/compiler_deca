@@ -22,6 +22,23 @@ public class ConvFloat extends AbstractUnaryExpr {
         super(operand);
     }
 
+    protected double evalExprValue(DecacCompiler compiler){
+        AbstractExpr operand = getOperand();
+
+        if(operand instanceof IntLiteral){
+            return ((IntLiteral) operand).getValue();
+        }
+        else if (operand instanceof Identifier){
+            //récupère le nom de l'identificateur
+            String identName = ((Identifier) operand).getName().getName();
+            return compiler.variablePropa.get(identName);
+        }
+        //sinon c'est une opération
+        else{
+            return ((AbstractOpArith) operand).evalExprValue(compiler);
+        }
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
@@ -30,7 +47,13 @@ public class ConvFloat extends AbstractUnaryExpr {
         return floatType; 
     }
 
-
+     @Override
+    public Type verifyExpr_opti(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) {
+        Type floatType = new FloatType(compiler.createSymbol("float"));
+        setType(floatType);
+        return floatType; 
+    }
     @Override
     protected String getOperatorName() {
         return "/* conv float */";

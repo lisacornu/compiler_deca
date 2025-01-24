@@ -1,0 +1,17 @@
+// Description:
+//    Test simple de constant folding lors de la declaration 
+//
+// Resultats:
+// 7
+// 
+//
+//
+// Historique:
+//    cree le 23/01/2025
+
+
+
+{
+    int x = (3 * 6 + 9) % 10;
+    println(x);
+}

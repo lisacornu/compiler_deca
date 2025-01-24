@@ -1,0 +1,22 @@
+// Description:
+//    Test simple de constant folding avec conv float puis constant propagation
+//
+// Resultats:
+// 5.0000e+1
+// 1.0000e+1
+//
+//
+// Historique:
+//    cree le 23/01/2025
+
+{
+    float x = ((3.0 * 7) + 9) / 3.0;
+
+    float i = 0;
+    while(i < 50.0){
+        i = i + x;
+    }
+
+    println(i);
+    println(x);
+}

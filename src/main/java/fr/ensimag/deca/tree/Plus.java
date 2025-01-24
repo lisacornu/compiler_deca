@@ -32,7 +32,7 @@ public class Plus extends AbstractOpArith {
     protected double evalExprValue(DecacCompiler compiler){
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
-        AbstractExpr operands[] = {leftOperand, rightOperand};
+        AbstractExpr[] operands = {leftOperand, rightOperand};
 
         double result = 0;
 
@@ -45,16 +45,21 @@ public class Plus extends AbstractOpArith {
             else if(operand instanceof IntLiteral){
                 result += ((IntLiteral) operand).getValue();
             }
+            else if(operand instanceof ConvFloat){
+                result += ((ConvFloat) operand).evalExprValue(compiler);
+            }
             else if(operand instanceof Identifier){
                 //récupère le nom de l'identificateur
                 String identName = ((Identifier) operand).getName().getName();
                 if(compiler.variablePropa.get(identName)!=null){
                     result += compiler.variablePropa.get(identName);
                 }
-                else{
+                else if (compiler.variablePropa_float.get(identName)!=null){
                     result += compiler.variablePropa_float.get(identName);
                 }
-                
+                else{
+                    return Double.MAX_VALUE;
+                }
             }
             else{
                 result += ((AbstractOpArith) operand).evalExprValue(compiler);

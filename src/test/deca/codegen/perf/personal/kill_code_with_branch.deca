@@ -1,0 +1,26 @@
+// Description:
+//   Test simple qui test l elimination de code avec l intervention de if et while 
+// Resultats:
+// 8
+//12
+//
+// Historique:
+//    cree le 23/01/2025
+
+{
+    float y = 3.0 * 4.0;
+    int x;
+    x=3;
+    x=5;
+    if(true){
+        x=8;
+    }
+//ici l optim de x avant if ne doit pas etre faite 
+
+    println(x);
+    while(false){
+        x=x+1;
+    }
+    x=12;
+    println(x);
+}

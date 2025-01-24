@@ -52,6 +52,11 @@ public class IfThenElse extends AbstractInst {
         condition.verifyExpr_opti(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+        //un peu brute de faire ceci pr annuler l opti
+        for (String key : compiler.variablePropa.keySet()) {
+                compiler.variablePropa.put(key, null);
+                compiler.variablePropa_float.put(key,null);
+        }
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler, String methodName) {

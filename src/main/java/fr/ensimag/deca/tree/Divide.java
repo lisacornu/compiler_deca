@@ -53,6 +53,9 @@ public class Divide extends AbstractOpArith {
         else if (leftOperand instanceof IntLiteral) {
             leftValue = ((IntLiteral) leftOperand).getValue();
         }
+        else if(leftOperand instanceof ConvFloat){
+            leftValue = ((ConvFloat) leftOperand).evalExprValue(compiler);
+        }
         else if(leftOperand instanceof Identifier){
             //récupère le nom de l'identificateur
             String identName = ((Identifier) leftOperand).getName().getName();
@@ -74,14 +77,20 @@ public class Divide extends AbstractOpArith {
         else if (rightOperand instanceof IntLiteral) {
             rightValue = ((IntLiteral) rightOperand).getValue();
         }
+        else if(rightOperand instanceof ConvFloat){
+            rightValue = ((ConvFloat) rightOperand).evalExprValue(compiler);
+        }
         else if(rightOperand instanceof Identifier){
             //récupère le nom de l'identificateur
             String identName = ((Identifier) rightOperand).getName().getName();
             if(compiler.variablePropa.get(identName)!=null){
                 rightValue = compiler.variablePropa.get(identName);
             }
-            else{
+            else if (compiler.variablePropa_float.get(identName)!=null){
                 rightValue = compiler.variablePropa_float.get(identName);
+            }
+            else{
+                return Double.MAX_VALUE;
             }
             
         }
@@ -95,10 +104,20 @@ public class Divide extends AbstractOpArith {
         }
 
         if(leftOperand.getType().isFloat()){
-            return (double) leftValue / (double) rightValue;
+            double result = (double) leftValue / (double) rightValue;
+
+            if(isOverflood(result)){
+                throw new ArithmeticException("Number overflow");
+            }
+            return result;
         }
         else{
-            return (int) leftValue / (int) rightValue;
+            int result = (int) leftValue / (int) rightValue;
+            if(isOverflood(result)){
+                throw new ArithmeticException("Number overflow");
+            }
+
+            return result;
         }
     }
 }

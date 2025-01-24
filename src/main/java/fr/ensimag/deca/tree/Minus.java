@@ -43,14 +43,20 @@ public class Minus extends AbstractOpArith {
             else if(operand instanceof IntLiteral){
                 result += minusIfSecondOp * ((IntLiteral) operand).getValue();
             }
+            else if(operand instanceof ConvFloat){
+                result += minusIfSecondOp * ((ConvFloat) operand).evalExprValue(compiler);
+            }
             else if(operand instanceof Identifier){
                 //récupère le nom de l'identificateur
                 String identName = ((Identifier) operand).getName().getName();
                 if(compiler.variablePropa.get(identName)!=null){
                     result += minusIfSecondOp * compiler.variablePropa.get(identName);
                 }
-                else{
+                else if (compiler.variablePropa_float.get(identName)!=null){
                     result += minusIfSecondOp * compiler.variablePropa_float.get(identName);
+                }
+                else{
+                    return Double.MAX_VALUE; //cas utile quand il y a if else ou while 
                 }
                 
             }
@@ -59,6 +65,10 @@ public class Minus extends AbstractOpArith {
             }
 
             minusIfSecondOp = -1;
+        }
+
+        if(isOverflood(result)){
+            throw new ArithmeticException("Number overflow");
         }
 
         return result;

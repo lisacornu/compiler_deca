@@ -30,8 +30,12 @@ public class Multiply extends AbstractOpArith {
 
         //somme des valeurs des 2 opérandes
         for(AbstractExpr operand : operands){
+            //cas ou l'opérande est un littéral
             if(operand instanceof FloatLiteral){
                 result *= ((FloatLiteral) operand).getValue();
+            }
+            else if(operand instanceof ConvFloat){
+                result *= ((ConvFloat) operand).evalExprValue(compiler);
             }
             else if(operand instanceof IntLiteral){
                 result *= ((IntLiteral) operand).getValue();
@@ -42,14 +46,20 @@ public class Multiply extends AbstractOpArith {
                 if(compiler.variablePropa.get(identName) != null){
                     result *= compiler.variablePropa.get(identName);
                 }
-                else{
-                    result *= compiler.variablePropa_float.get(identName);
+                else if (compiler.variablePropa_float.get(identName)!=null){
+                   result *= compiler.variablePropa_float.get(identName);
                 }
-                
+                else{
+                    return Double.MAX_VALUE; //cas utile quand il y a if else ou while 
+                }
             }
             else{
                 result *= ((AbstractOpArith) operand).evalExprValue(compiler);
             }
+        }
+
+        if(isOverflood(result)){
+            throw new ArithmeticException("Number overflow");
         }
 
         return result;
