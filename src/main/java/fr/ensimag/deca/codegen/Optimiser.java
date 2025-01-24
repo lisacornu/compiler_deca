@@ -142,7 +142,7 @@ public class Optimiser {
         if (value == 0) return new IntLiteral(0); //Multiplication par 0
 
         int[] booth = boothRecoding(value); //Representation de Booth
-        if (value < 0 || countClockCycles(booth) >= 20) //Si la multiplication de booth est plus lente (ou que value négative)
+        if (value < 0 || countClockCycles(booth) >= 20) //Si la multiplication de booth est plus lente
             return new Multiply(expr1, expr2); //Multiplication classique
 
         //Construction de l'arbre de la multiplication de Booth
@@ -151,15 +151,7 @@ public class Optimiser {
 
 
     public static AbstractExpr FastDiv(AbstractExpr expr, IntLiteral integer) {
-
-        int value = integer.getValue();
-
-        int[] booth = boothRecoding(value); //Representation de Booth
-        if (value < 0 || countClockCycles(booth) >= 20) //Si la multiplication de booth est plus lente (ou que value négative)
-            return new Multiply(expr, integer); //Multiplication classique
-
-        //Construction de l'arbre de la multiplication de Booth
-        return buildBitshiftTree(expr, booth, FirstActiveBit(booth), LastActiveBit(booth));
+        return null;
     }
 
 
