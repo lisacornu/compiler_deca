@@ -1,0 +1,4 @@
+// test compilation parallèle
+{
+    println("file2");
+}

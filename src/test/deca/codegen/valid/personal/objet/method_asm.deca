@@ -1,0 +1,19 @@
+// Description:
+//    Programme de test de la génération d'une méthode assembleur
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
+class A {
+    void asmMethod() asm("
+    LOAD #1, R1
+     WINT
+     ");
+}
+
+{
+    A a = new A();
+    a.asmMethod();
+}

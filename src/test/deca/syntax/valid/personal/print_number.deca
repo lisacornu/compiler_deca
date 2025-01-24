@@ -1,0 +1,17 @@
+// Description:
+//    Programme utilisant println et print.
+//
+// Resultats:
+//    6
+//    97
+//    -6-89
+//
+// Historique:
+//    cree le 01/01/2025
+
+{
+        println(6);
+        println(97);
+        print(-6);
+        print(-89);
+}

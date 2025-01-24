@@ -5,6 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.IMAProgram;
+
+import java.util.ArrayList;
 
 /**
  * Variable declaration
@@ -29,4 +33,8 @@ public abstract class AbstractDeclVar extends Tree {
     protected abstract void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
+
+    protected abstract void codeGenDeclVar(DecacCompiler compiler);
+
+    protected abstract void codeGenDeclVarMethod(DecacCompiler compiler);
 }

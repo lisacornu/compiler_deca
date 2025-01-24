@@ -1,0 +1,12 @@
+// Description:
+//    affecter un entier 
+//
+// Resultats:
+//    Erreur 
+//
+// Historique:
+//    cree le 07/01/2025
+{
+    int x = 3 ;
+    3 = x;  
+}

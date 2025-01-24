@@ -1,0 +1,31 @@
+// Description:
+//    Programme de test du return d'une méthode d'une classe parent
+//
+// Resultats:
+//      2
+//
+// Historique:
+//    cree le 19/01/2025
+
+class A {
+    int x = 2;
+
+    int getX() {
+        return x;
+    }
+}
+
+class B extends A{
+    int y;
+
+    int getY() {
+        return y;
+    }
+}
+
+
+{
+    A a = new B();
+    int b = a.getX();
+    println(b);
+}

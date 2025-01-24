@@ -1,0 +1,21 @@
+// Description:
+//   Test basique de this
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
+class A {
+    int x;
+
+    void ecrire () {
+        print(this.x);
+    }
+
+}
+
+{
+    A a = new A();
+    a.ecrire();
+}

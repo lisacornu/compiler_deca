@@ -1,0 +1,25 @@
+// Description:
+//    test minimaliste pour testé si le parseur déclare bien les class
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+   
+}
+
+class B{
+
+}
+
+class C {
+
+}
+
+{
+    
+}

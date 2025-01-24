@@ -1,0 +1,34 @@
+
+class Point2D {
+   int x ; // Abscisse
+   int y ; // Ordonnee
+   // Carre de la distance de ce point a l'origine
+   int distance2() {
+      return x * x + y * y ; 
+   }
+}
+
+class Point3D extends Point2D {
+   int z ; 
+   // On redefinit la methode distance2, pour tenir compte de z
+   int distance2() {
+      return x * x + y * y + z * z ; 
+   }
+}
+      
+{
+   Point2D p1, p2 ; 
+   Point3D p3 ; 
+
+   p1 = new Point2D() ; 
+   p1.y = 1 ; 
+   println("p1.distance2() = ", p1.distance2()) ; // -> 1
+
+   p3 = new Point3D() ; 
+   p3.z = 2 ; 
+   println("p3.distance2() = ", p3.distance2()) ; // -> 4
+
+   p2 = p3 ; 
+   println("p2.distance2() = ", p2.distance2()) ; // -> 4 (Liaison  dynamique)
+}
+

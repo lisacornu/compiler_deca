@@ -1,0 +1,29 @@
+// Description:
+//    test des structures if / else avec des littéraux booléen en condition
+//
+// Resultats:
+//
+// Historique:
+//    cree le 08/01/2025
+
+{
+    if(false){
+        println(1);
+    }
+    else{
+        println(0);
+    }
+     if(true){
+        println(1);
+    }
+    else{
+        println(0);
+    }
+    if(true){
+        println(1);
+    }
+    else{
+        println(0);
+    }
+    
+}

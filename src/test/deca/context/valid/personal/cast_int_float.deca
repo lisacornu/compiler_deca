@@ -1,0 +1,13 @@
+// Description:
+//    conversion de int en float et inversement
+//
+// Resultats:
+//erreur
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   float a = 3;
+   }

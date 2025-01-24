@@ -1,12 +1,13 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
 import java.util.HashMap;
 import java.util.Map;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
 
-// A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
  * Environment containing types. Initially contains predefined identifiers, more
  * classes can be added with declareClass().
@@ -35,12 +36,31 @@ public class EnvironmentType {
         BOOLEAN = new BooleanType(booleanSymb);
         envTypes.put(booleanSymb, new TypeDefinition(BOOLEAN, Location.BUILTIN));
 
-        Symbol stringSymb = compiler.createSymbol("string");
+        Symbol stringSymb = compiler.createSymbol("String");
         STRING = new StringType(stringSymb);
+
         // not added to envTypes, it's not visible for the user.
+        Symbol objectSymb = compiler.createSymbol("Object");
+        OBJECT = new ClassType(objectSymb);
+        envTypes.put(objectSymb, new ClassDefinition(OBJECT, Location.BUILTIN,null));
         
+    
     }
 
+    /**
+     * Add of a class in the environnement
+     * @param compiler
+     * @param nameOfClass
+     * @throws DoubleDefException
+     */
+    public void addOfTypeClass(DecacCompiler compiler, String nameOfClass, ClassDefinition nameClassDef) throws DoubleDefException{
+        Symbol newSymb = compiler.createSymbol(nameOfClass);
+        if (defOfType(newSymb)==null){
+            envTypes.put(newSymb, nameClassDef);
+        } else{
+            throw new DoubleDefException();
+        }
+    }
     private final Map<Symbol, TypeDefinition> envTypes;
 
     public TypeDefinition defOfType(Symbol s) {
@@ -52,4 +72,6 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
+    public final ClassType   OBJECT;
+
 }

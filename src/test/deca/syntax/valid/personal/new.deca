@@ -1,0 +1,17 @@
+// Description:
+//    test minimaliste utilisant new j'essaye d'avoir un test contextuellemnt valide mais ce n est pas necessaire 
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+class A {
+
+}
+{
+    A a =new A();
+}

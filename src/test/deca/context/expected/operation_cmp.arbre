@@ -1,0 +1,99 @@
+`> [11, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [11, 0] Main
+      +> ListDeclVar [List with 9 elements]
+      |  []> [12, 8] DeclVar
+      |  ||  +> [12, 4] Identifier (int)
+      |  ||  |  definition: type (builtin), type=int
+      |  ||  +> [12, 8] Identifier (a)
+      |  ||  |  definition: variable defined at [12, 8], type=int
+      |  ||  `> [12, 10] Initialization
+      |  ||     `> [12, 12] Int (5)
+      |  ||        type: int
+      |  []> [13, 8] DeclVar
+      |  ||  +> [13, 4] Identifier (int)
+      |  ||  |  definition: type (builtin), type=int
+      |  ||  +> [13, 8] Identifier (b)
+      |  ||  |  definition: variable defined at [13, 8], type=int
+      |  ||  `> [13, 10] Initialization
+      |  ||     `> [13, 12] Int (10)
+      |  ||        type: int
+      |  []> [14, 8] DeclVar
+      |  ||  +> [14, 4] Identifier (int)
+      |  ||  |  definition: type (builtin), type=int
+      |  ||  +> [14, 8] Identifier (c)
+      |  ||  |  definition: variable defined at [14, 8], type=int
+      |  ||  `> [14, 10] Initialization
+      |  ||     `> [14, 12] Int (5)
+      |  ||        type: int
+      |  []> [17, 12] DeclVar
+      |  ||  +> [17, 4] Identifier (boolean)
+      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  +> [17, 12] Identifier (cmp1)
+      |  ||  |  definition: variable defined at [17, 12], type=boolean
+      |  ||  `> [17, 17] Initialization
+      |  ||     `> [17, 19] Equals
+      |  ||        type: boolean
+      |  ||        +> [17, 20] Identifier (a)
+      |  ||        |  definition: variable defined at [12, 8], type=int
+      |  ||        `> [17, 25] Identifier (c)
+      |  ||           definition: variable defined at [14, 8], type=int
+      |  []> [18, 12] DeclVar
+      |  ||  +> [18, 4] Identifier (boolean)
+      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  +> [18, 12] Identifier (cmp2)
+      |  ||  |  definition: variable defined at [18, 12], type=boolean
+      |  ||  `> [18, 17] Initialization
+      |  ||     `> [18, 19] NotEquals
+      |  ||        type: boolean
+      |  ||        +> [18, 20] Identifier (a)
+      |  ||        |  definition: variable defined at [12, 8], type=int
+      |  ||        `> [18, 25] Identifier (b)
+      |  ||           definition: variable defined at [13, 8], type=int
+      |  []> [19, 12] DeclVar
+      |  ||  +> [19, 4] Identifier (boolean)
+      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  +> [19, 12] Identifier (cmp3)
+      |  ||  |  definition: variable defined at [19, 12], type=boolean
+      |  ||  `> [19, 17] Initialization
+      |  ||     `> [19, 19] Greater
+      |  ||        type: boolean
+      |  ||        +> [19, 20] Identifier (b)
+      |  ||        |  definition: variable defined at [13, 8], type=int
+      |  ||        `> [19, 24] Identifier (a)
+      |  ||           definition: variable defined at [12, 8], type=int
+      |  []> [22, 12] DeclVar
+      |  ||  +> [22, 4] Identifier (boolean)
+      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  +> [22, 12] Identifier (result1)
+      |  ||  |  definition: variable defined at [22, 12], type=boolean
+      |  ||  `> [22, 20] Initialization
+      |  ||     `> [22, 22] And
+      |  ||        type: boolean
+      |  ||        +> [22, 22] Identifier (cmp1)
+      |  ||        |  definition: variable defined at [17, 12], type=boolean
+      |  ||        `> [22, 30] Identifier (cmp2)
+      |  ||           definition: variable defined at [18, 12], type=boolean
+      |  []> [23, 12] DeclVar
+      |  ||  +> [23, 4] Identifier (boolean)
+      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  +> [23, 12] Identifier (result2)
+      |  ||  |  definition: variable defined at [23, 12], type=boolean
+      |  ||  `> [23, 20] Initialization
+      |  ||     `> [23, 22] Or
+      |  ||        type: boolean
+      |  ||        +> [23, 22] Identifier (cmp1)
+      |  ||        |  definition: variable defined at [17, 12], type=boolean
+      |  ||        `> [23, 30] Identifier (cmp3)
+      |  ||           definition: variable defined at [19, 12], type=boolean
+      |  []> [24, 12] DeclVar
+      |      +> [24, 4] Identifier (boolean)
+      |      |  definition: type (builtin), type=boolean
+      |      +> [24, 12] Identifier (result3)
+      |      |  definition: variable defined at [24, 12], type=boolean
+      |      `> [24, 20] Initialization
+      |         `> [24, 22] Not
+      |            type: boolean
+      |            `> [24, 23] Identifier (cmp2)
+      |               definition: variable defined at [18, 12], type=boolean
+      `> ListInst [List with 0 elements]

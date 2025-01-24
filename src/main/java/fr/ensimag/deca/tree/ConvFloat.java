@@ -1,9 +1,15 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.FloatType;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -19,7 +25,9 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type floatType = new FloatType(compiler.createSymbol("float"));
+        setType(floatType);
+        return floatType; 
     }
 
 
@@ -28,4 +36,10 @@ public class ConvFloat extends AbstractUnaryExpr {
         return "/* conv float */";
     }
 
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+        GPRegister result = RegisterHandler.popIntoRegister(compiler, this.getOperand().codeGenExpr(compiler),GPRegister.R0);
+        compiler.addInstruction(new FLOAT(result, result));
+        return RegisterHandler.pushFromRegister(compiler, result);
+    }
 }

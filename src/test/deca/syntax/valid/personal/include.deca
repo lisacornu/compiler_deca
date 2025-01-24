@@ -1,0 +1,11 @@
+// Description:
+//    Programme minimaliste inclus un fichier dans le meme reperotire.(l'arbre attendu est la meme que ce fichier)
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 13/01/2025
+
+#include "commentaire.deca"

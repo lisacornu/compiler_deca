@@ -1,0 +1,13 @@
+// Description:
+//    Declaration d'un type void
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+{
+    void b;
+}

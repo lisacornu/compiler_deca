@@ -1,11 +1,18 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -29,13 +36,59 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        AbstractExpr rightExpDefinition = getRightOperand().verifyRValue(compiler, localEnv, currentClass, leftType);
+        this.setType(leftType);
+        if (leftType.isFloat() && rightExpDefinition.getType().isInt()){
+            ConvFloat conversionFloat = new ConvFloat(rightExpDefinition);
+            conversionFloat.verifyExpr(compiler, localEnv, currentClass);
+            setRightOperand(conversionFloat);
+        }else{
+            setRightOperand(rightExpDefinition);
+        }
+        return leftType;
     }
 
 
     @Override
     protected String getOperatorName() {
         return "=";
+    }
+
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+
+        // Generation du code de la branch de droite
+        DVal rightOperandResult = getRightOperand().codeGenExpr(compiler);
+
+        //On recupere l'adresse de la Lvalue
+        DAddr varAddress;
+        if (getLeftOperand() instanceof Selection) {
+            varAddress = ((Selection) getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+        } else {
+            Identifier leftOperandIdent =  (Identifier)getLeftOperand();
+            if (leftOperandIdent.getDefinition().isField()) {
+                varAddress = ((Identifier)getLeftOperand()).codeGenExprAddr(compiler, Register.R0);
+            } else {
+                varAddress = ((Identifier)getLeftOperand()).getExpDefinition().getOperand();
+            }
+        }
+
+
+        // On recupere rightOperandResult dans un registre
+        GPRegister op2 =  RegisterHandler.popIntoRegister(compiler, rightOperandResult, Register.R1);
+
+        // Generation du code de l'expression (résultat enregistré dans op1)
+        codeGenBinaryExpr(compiler, varAddress, op2);
+
+        //Renvoi du résultat (op1 est ne peut pas être un registre temporaire)
+        return op2;
+    }
+
+
+    @Override
+    protected void codeGenBinaryExpr(DecacCompiler compiler, DVal op1, GPRegister op2) {
+        compiler.addInstruction(new STORE(op2,(DAddr)op1));
     }
 
 }

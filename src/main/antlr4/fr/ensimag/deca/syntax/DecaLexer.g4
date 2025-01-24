@@ -58,7 +58,7 @@ PLUS : '+';
 MINUS : '-';
 TIMES : '*';
 SLASH : '/';
-PERCENT : '%;';
+PERCENT : '%';
 EXCLAM : '!';
 DOT : '.';
 
@@ -67,7 +67,6 @@ READFLOAT : 'readFloat';
 NEW : 'new';
 
 fragment SIGN : ('+' | '-')?;
-
 fragment NUM : DIGIT+;
 fragment DEC : NUM '.' NUM;
 fragment EXP : ('E' | 'e') SIGN NUM;
@@ -77,28 +76,33 @@ fragment NUMHEX : DIGITHEX+;
 fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
 FLOAT : FLOATDEC | FLOATHEX;
 
-fragment EOL : '\n';
-fragment STRING_CAR : ~('\\'|'"') ;
-STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
-MULTI_LINE_STRING : '"' (STRING_CAR | EOL |'\\"' | '\\\\')* '"';
-
-
+fragment POSITIVE_DIGIT : '1' .. '9';
+INT : '0' | POSITIVE_DIGIT DIGIT*;
 TRUE : 'true';
 FALSE : 'false';
 THIS : 'this';
 NULL : 'null';
-
-fragment LETTER : 'a' .. 'z' | 'A' .. 'Z';
-fragment DIGIT : '0' .. '9';
-
-IDENT : (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
-
 CLASS : 'class';
 EXTENDS : 'extends';
 
 PROTECTED : 'protected';
 
 ASM : 'asm';
+EOL : '\n';
+fragment STRING_CAR : ~('"' | '\\' | '\n');
+STRING : '"' (STRING_CAR | '\\"' | '\\\\')* '"';
+MULTI_LINE_STRING : '"' (STRING_CAR | EOL |'\\"' | '\\\\')* '"';
+
+
+fragment LETTER : 'a' .. 'z' | 'A' .. 'Z';
+fragment DIGIT : '0' .. '9';
+
+IDENT : (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+
+
 
 COMMENT : '//' (~('\n'))* '\n' {skip();};
 MULTI_LINE_COMMENT : '/*' .*? '*/' {skip();};
+
+fragment FILENAME : ( LETTER | DIGIT | '.' | '-' | '_' )+;
+INCLUDE : ('#include'  (' ')* '"' FILENAME '"') { doInclude(getText()); };

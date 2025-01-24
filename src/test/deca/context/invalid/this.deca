@@ -1,0 +1,17 @@
+// Description:
+//    utilisation de this dans le main
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class A{
+    void p() {}
+}
+{
+    this.a=4;
+
+}

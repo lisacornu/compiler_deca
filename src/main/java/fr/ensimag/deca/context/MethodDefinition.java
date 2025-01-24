@@ -52,7 +52,7 @@ public class MethodDefinition extends ExpDefinition {
     public MethodDefinition(Type type, Location location, Signature signature, int index) {
         super(type, location);
         this.signature = signature;
-        this.index = index;
+        this.index = index+1; // pour prendre en compte la méthode object.equals
     }
 
     public Signature getSignature() {

@@ -1,0 +1,21 @@
+class Factorielle {
+
+    int factorielle(int n) {
+        if (n == 0) {
+            return 1;
+        } else {
+            return n * this.factorielle(n - 1);
+        }
+    }
+}
+
+ // Méthode principale
+{
+    // Lecture de l'entier n
+    int n = 7;
+    int resultat;
+    Factorielle f = new Factorielle();
+
+    resultat = f.factorielle(n);
+    print(resultat);
+}

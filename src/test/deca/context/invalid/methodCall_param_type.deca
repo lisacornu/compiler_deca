@@ -1,0 +1,17 @@
+// Description:
+//    Mauvais typage du parametre dans MethodCall
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2025
+
+
+class A{
+    void p(int a){}
+}
+{
+    A a;
+    a.p(1.5);
+
+}

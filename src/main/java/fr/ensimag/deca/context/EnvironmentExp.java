@@ -1,5 +1,5 @@
 package fr.ensimag.deca.context;
-
+import java.util.*;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 /**
@@ -20,16 +20,16 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
  * @date 01/01/2025
  */
 public class EnvironmentExp {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
 
     EnvironmentExp parentEnvironment;
-    
+    Map<Symbol, Definition> envMap;
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
+        this.envMap = new HashMap<Symbol,Definition>();
     }
-
+    public Map<Symbol, Definition> getMap(){
+        return envMap;
+    }
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }
@@ -39,7 +39,18 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (!(key instanceof Symbol)){
+            throw new UnsupportedOperationException("This is not a Symbol");
+        }
+        if (envMap.containsKey(key)){
+            return (ExpDefinition) envMap.get(key);
+        } 
+        // If not found, search in the parent environment (recursively)
+        if (this.parentEnvironment != null) {
+            return parentEnvironment.get(key);
+        }
+        return null;
+        
     }
 
     /**
@@ -58,7 +69,14 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (!(def instanceof Definition)){
+            throw new UnsupportedOperationException("This is not a definition");
+        }
+        if (envMap.containsKey(name)){
+            throw new DoubleDefException();
+        } else {
+            envMap.put(name,(Definition) def);
+        }
     }
 
 }

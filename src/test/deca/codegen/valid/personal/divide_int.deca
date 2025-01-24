@@ -1,0 +1,14 @@
+// Description:
+//    écriture du résultat d'une opération
+//
+// Resultats:
+//    2
+//
+// Historique:
+//    cree le 07/01/2025
+
+{
+    int a = 4;
+    int b = 2;
+    println(a / b);
+}

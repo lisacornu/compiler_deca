@@ -1,0 +1,14 @@
+// Description:
+//    Declaration de variable
+//
+// Resultats:
+//    
+// 
+// Historique:
+//    cree le 06/01/2025
+
+{
+    int a; //meme si sa suffit il faut tout verifié 
+    float b;
+    boolean l;
+}

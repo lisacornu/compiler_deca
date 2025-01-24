@@ -1,0 +1,21 @@
+// Description:
+//   compte a rebours
+//
+// Resultats:
+//    5
+//    4
+//    3
+//    2
+//    1
+//
+// Historique:
+//    cree le 07/01/2025
+
+{
+    int i = 5;
+
+    while(i != 0){
+        println(i);
+        i = i - 1;
+    }
+}

@@ -1,0 +1,16 @@
+// Description:
+//   utilisation des oprations de comparaison 
+//
+// Resultats:
+//    
+// 
+// Historique:
+//    cree le 07/01/2025
+
+{
+   boolean b = 3<4;
+   b=3.4<4;
+   b=3>3.4;
+   
+   
+}

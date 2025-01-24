@@ -1,5 +1,7 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
+import fr.ensimag.deca.codegen.StackUsageWatcher;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -8,15 +10,19 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.deca.tree.Program;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Stack;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -36,7 +42,14 @@ import org.apache.log4j.Logger;
  * @author gl31
  * @date 01/01/2025
  */
-public class DecacCompiler {
+public class DecacCompiler implements Callable<Boolean> {
+
+    public int headOfGBStack = 1;
+    public int headOfLBStack = 0;
+
+    public RegisterHandler registerHandler;
+    public StackUsageWatcher stackUsageWatcher;
+
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     
     /**
@@ -46,8 +59,15 @@ public class DecacCompiler {
 
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
-        this.compilerOptions = compilerOptions;
+        
+        if (compilerOptions==null){
+            this.compilerOptions = new CompilerOptions();
+        }else{
+            this.compilerOptions = compilerOptions;
+        }
         this.source = source;
+        this.registerHandler = new RegisterHandler(this.compilerOptions.getNbRegister());
+        this.stackUsageWatcher = new StackUsageWatcher();
     }
 
     /**
@@ -122,13 +142,25 @@ public class DecacCompiler {
  
 
     /** The global environment for types (and the symbolTable) */
-    public final EnvironmentType environmentType = new EnvironmentType(this);
     public final SymbolTable symbolTable = new SymbolTable();
+    public final EnvironmentType environmentType = new EnvironmentType(this);
+
 
     public Symbol createSymbol(String name) {
-        return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
-        // return symbolTable.create(name);
+        // remplacer par la ligne en commentaire ci-dessous
+        return symbolTable.create(name);
     }
+
+
+    /**
+     * Sert à la compilation parallèle
+     * Appelée automatiquement lorsqu'on soumet l'objet DecacCompiler au ExecutorService (via executor.submit())
+     */
+    @Override
+    public Boolean call() {
+        return compile();
+    }
+
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -138,8 +170,10 @@ public class DecacCompiler {
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
         String destFile = null;
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
+
+        // calculer le nom du fichier .ass à partir du nom du fichier .deca.
+        destFile = sourceFile.replace(".deca", ".ass");
+
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
@@ -168,6 +202,7 @@ public class DecacCompiler {
         }
     }
 
+
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,
      * verification and code generation).
@@ -190,12 +225,34 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
+        //Arrête decac et affiche la compilation de l'arbre
+        if (compilerOptions.getParse()) {
+            System.out.println(prog.decompile());
+            return false;
+        }
 
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
 
+        //Arrête decac après l'étape" de verification
+        if (compilerOptions.getVerify()) {
+            return false;
+        }
+
+
         addComment("start main program");
-        prog.codeGenProgram(this);
+        int methodTableSize = prog.codeGenVTable(this);
+        try {
+            prog.codeGenProgram(this);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());;
+        }
+
+        // ajouté par lisa !! gestion du débordement de la pile
+        program.addFirst(new ADDSP(stackUsageWatcher.nbVariables + methodTableSize));
+        program.addFirst(new BOV(new Label("pile_pleine")));
+        program.addFirst(new TSTO(1024));
+
         addComment("end main program");
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);

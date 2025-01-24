@@ -1,0 +1,13 @@
+// Description:
+//    Definition d'un identifier avec un nom d'identifier
+//
+// Resultats:
+//    Passed
+//
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   int float ;
+}

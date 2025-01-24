@@ -1,0 +1,11 @@
+// Description:
+//    tests de programme incorrect syntaxiquement mais pas lexicalement (commentaire)
+//
+// Resultats:
+//    ligne 10 : Erreur, mais pas ici */ ne doit pas etre inclue dans le commentaire
+//
+// Historique:
+//    cree le 17/12/2024
+{
+    int /* ;
+}

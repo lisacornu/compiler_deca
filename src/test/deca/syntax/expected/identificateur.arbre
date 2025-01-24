@@ -1,0 +1,25 @@
+`> [9, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [9, 0] Main
+      +> ListDeclVar [List with 5 elements]
+      |  []> [10, 8] DeclVar
+      |  ||  +> [10, 4] Identifier (int)
+      |  ||  +> [10, 8] Identifier ($jsp)
+      |  ||  `> NoInitialization
+      |  []> [11, 8] DeclVar
+      |  ||  +> [11, 4] Identifier (int)
+      |  ||  +> [11, 8] Identifier ($)
+      |  ||  `> NoInitialization
+      |  []> [12, 8] DeclVar
+      |  ||  +> [12, 4] Identifier (int)
+      |  ||  +> [12, 8] Identifier (l$)
+      |  ||  `> NoInitialization
+      |  []> [13, 8] DeclVar
+      |  ||  +> [13, 4] Identifier (int)
+      |  ||  +> [13, 8] Identifier (_$)
+      |  ||  `> NoInitialization
+      |  []> [14, 8] DeclVar
+      |      +> [14, 4] Identifier (int)
+      |      +> [14, 8] Identifier ($79)
+      |      `> NoInitialization
+      `> ListInst [List with 0 elements]

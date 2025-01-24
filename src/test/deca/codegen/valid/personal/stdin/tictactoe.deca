@@ -1,0 +1,79 @@
+// Description:
+//    Tic tac toe en deca
+//
+// Resultats:
+//    Compliqué à dire
+//
+// Historique:
+//    cree le 11/01/2025
+
+{
+int c1 = 0; int c2 = 0; int c3 = 0;
+int c4 = 0; int c5 = 0; int c6 = 0;
+int c7 = 0; int c8 = 0; int c9 = 0;
+
+int joueur = 1;
+boolean victoire = false;
+int tours = 0;
+int choix;
+
+while(!victoire && tours < 9) {
+
+    println("Tour n",tours," | C'est au joueur ",joueur," de jouer : ");
+
+    //Affichage du tableau
+    println("+---+---+---+");
+    println("| ",c1," | ",c2," | ",c3," |");
+    println("+---+---+---+");
+    println("| ",c4," | ",c5," | ",c6," |");
+    println("+---+---+---+");
+    println("| ",c7," | ",c8," | ",c9," |");
+    println("+---+---+---+");
+
+    //Choix du joueur
+    println("Choix du joueur ",joueur," (1 à 9) : ");
+    choix = readInt();
+
+         if (choix == 1 && c1 == 0) {c1 = joueur;}
+    else if (choix == 2 && c2 == 0) {c2 = joueur;}
+    else if (choix == 3 && c3 == 0) {c3 = joueur;}
+    else if (choix == 4 && c4 == 0) {c4 = joueur;}
+    else if (choix == 5 && c5 == 0) {c5 = joueur;}
+    else if (choix == 6 && c6 == 0) {c6 = joueur;}
+    else if (choix == 7 && c7 == 0) {c7 = joueur;}
+    else if (choix == 8 && c8 == 0) {c8 = joueur;}
+    else if (choix == 9 && c9 == 0) {c9 = joueur;}
+    else {println("Choix invalide : tu passes ton tour.");}
+
+    //Verification (lignes/colonnes/diagonales)
+    if ((c1 == joueur && c2 == joueur && c3 == joueur)
+     || (c4 == joueur && c5 == joueur && c6 == joueur)
+     || (c7 == joueur && c8 == joueur && c9 == joueur)
+     || (c1 == joueur && c4 == joueur && c7 == joueur)
+     || (c2 == joueur && c5 == joueur && c8 == joueur)
+     || (c3 == joueur && c6 == joueur && c9 == joueur)
+     || (c1 == joueur && c5 == joueur && c9 == joueur)
+     || (c3 == joueur && c5 == joueur && c7 == joueur)) {
+        victoire = true;
+        println("Joueur ", joueur, " à gagner !");
+     }
+
+    //Passer au joueur suivant
+    joueur = 3 - joueur;
+    tours = tours+1;
+}
+
+if (!victoire) {
+    println("Match nul !");
+}
+
+//Affichage du tableau
+println("+---+---+---+");
+println("| ",c1," | ",c2," | ",c3," |" );
+println("+---+---+---+");
+println("| ",c4," | ",c5," | ",c6," |" );
+println("+---+---+---+");
+println("| ",c7," | ",c8," | ",c9," |" );
+println("+---+---+---+");
+
+}

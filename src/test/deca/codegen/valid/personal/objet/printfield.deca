@@ -1,0 +1,11 @@
+class D {
+    int x = 6;
+    void print3x() {
+        println(x,x,x);
+    }
+}
+
+{
+    D d = new D();
+    d.print3x();
+}

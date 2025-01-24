@@ -1,0 +1,13 @@
+// Description:
+//    programme utilisant et sur entier 
+//
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 12 : Both are not boolean : int and int
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   boolean x = 1 && 1;
+}

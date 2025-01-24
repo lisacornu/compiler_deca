@@ -9,6 +9,7 @@ import fr.ensimag.deca.tree.Location;
  * @date 01/01/2025
  */
 public abstract class Definition {
+
     @Override
     public String toString() {
         String res;
@@ -21,6 +22,7 @@ public abstract class Definition {
         res += ", type=" + type;
         return res;
     }
+
 
     public abstract String getNature();
 

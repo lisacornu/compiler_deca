@@ -1,0 +1,15 @@
+// Description:
+//    Programme qui read un float et essaie de l'assigner à un boolean.
+//
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 13 : They are not compatible (not same type or float->int) string is not boolean
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   boolean x;
+   x=readFloat();
+
+}

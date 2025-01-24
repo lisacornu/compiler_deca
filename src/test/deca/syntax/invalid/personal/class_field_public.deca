@@ -1,0 +1,12 @@
+// Description:
+//   declarer un attribus avec public explicitement
+//
+// Resultats:
+//   erreur
+// 
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+  public int x ;
+}

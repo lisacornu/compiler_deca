@@ -1,0 +1,16 @@
+// Description:
+//    assignation d'une variable et changement de sa valeur dans une branche if
+//
+// Resultats:
+//  0
+//
+// Historique:
+//    cree le 08/01/2025
+
+{
+    int i=1;
+    if (true){
+        i=i-1;
+    }
+    println(i);
+}

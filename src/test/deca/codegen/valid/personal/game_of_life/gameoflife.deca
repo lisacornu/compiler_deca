@@ -1,0 +1,195 @@
+class Line {
+
+    int states; //valeurs des cases de la lignes (en binaire);
+    int nextStates; //Line temporaire de la prochaine states;
+    
+    Line top; //Line voisine du haut
+    Line bot; //Line voisine du bas
+
+    //Calcul une puissance de 2
+    int TwoPower(int i) {
+        int result = 1;
+        while(i > 0) {
+            result = result*2;
+            i = i - 1;
+        }
+        return result;
+    }
+
+    //Récupérer l'état d'indice i d'une ligne
+    int GetState(Line l, int i) {
+        if (l == null || i < 0 || i >= 31) {return 0;}
+        return (l.states/TwoPower(i)) % 2;
+    }
+
+    //Récupérer l'état d'indice i d'une ligne
+        int GetNextState(Line l, int i) {
+            if (l == null || i < 0 || i >= 31) {return 0;}
+            return (l.nextStates/TwoPower(i)) % 2;
+        }
+    
+    //Defini l'état d'indice i d'une ligne
+    void SetNextState(Line l, int i, int state) {
+        int bitValue = TwoPower(i);
+            if (state == 1) {
+                if ((l.nextStates / bitValue) % 2 == 0) {
+                    l.nextStates = l.nextStates + bitValue;
+                }
+            } else if (state == 0) {
+                if ((l.nextStates / bitValue) % 2 == 1) {
+                    l.nextStates = l.nextStates - bitValue;
+                }
+            }
+    }
+
+    //Renvoi le nombre de voisins vivant d'une cellule
+    int GetNbNeighLivingCells(int i) {
+
+        int nb = GetState(top, i-1)  + GetState(top, i) + GetState(top, i+1) +
+                 GetState(this, i-1) +                    GetState(this, i+1) +
+                 GetState(bot, i-1)  + GetState(bot, i) + GetState(bot, i+1);
+        return nb;
+    }
+
+    int CalcNextState(int i) {
+        int nb = GetNbNeighLivingCells(i);
+        if (nb == 3) { return 1;}
+        else if (nb == 2) {return GetState(this, i);}
+        else {return 0;}
+    }
+
+    void CalcNextLine() {
+        int i = 0;
+        int state;
+        while(i < 31) {
+            state = CalcNextState(i);
+            SetNextState(this,i,state);
+            i = i + 1;
+        }
+
+    }
+    
+    void printState(int i) {
+        int state = GetState(this,i);
+        if (state == 1) {
+            print("██");
+        } else {
+            print("  ");
+        }
+    }
+    
+    void printLine() {
+        int i = 0;
+        while(i < 31) {
+            printState(i);
+            i = i + 1;
+        }
+        println();
+
+    }
+    
+}
+
+class Table {
+    Line l1 = new Line();
+    Line l2 = new Line();
+    Line l3 = new Line();
+    Line l4 = new Line();
+    Line l5 = new Line();
+    Line l6 = new Line();
+    Line l7 = new Line();
+    Line l8 = new Line();
+    Line l9 = new Line();
+    Line l10 = new Line();
+    Line l11 = new Line();
+    Line l12 = new Line();
+    Line l13 = new Line();
+    Line l14 = new Line();
+    Line l15 = new Line();
+    Line l16 = new Line();
+
+    void init() {
+        l1.states = 1653555841;  l1.bot = l2;
+        l2.states = 1081169180;  l2.bot = l3;   l2.top = l1;
+        l3.states = 1645950966;  l3.bot = l4;   l3.top = l2;
+        l4.states = 1284675235;  l4.bot = l5;   l4.top = l3;
+        l5.states = 1731841869;  l5.bot = l6;   l5.top = l4;
+        l6.states = 1790724386;  l6.bot = l7;   l6.top = l5;
+        l7.states = 2098778693;  l7.bot = l8;   l7.top = l6;
+        l8.states = 1888722729;  l8.bot = l9;   l8.top = l7;
+        l9.states = 1972281841;  l9.bot = l10;  l9.top = l8;
+        l10.states = 2121243504; l10.bot = l11; l10.top = l9;
+        l11.states = 1801083831; l11.bot = l12; l11.top = l10;
+        l12.states = 283889270; l12.bot = l13; l12.top = l11;
+        l13.states = 1464464563; l13.bot = l14; l13.top = l12;
+        l14.states = 2020914035; l14.bot = l15; l14.top = l13;
+        l15.states = 111154035;  l15.bot = l16; l15.top = l14;
+        l16.states = 1342971972;                l16.top = l15;
+    }
+    
+    void CalcNextTab() {
+        l1.CalcNextLine();
+        l2.CalcNextLine();
+        l3.CalcNextLine();
+        l4.CalcNextLine();
+        l5.CalcNextLine();
+        l6.CalcNextLine();
+        l7.CalcNextLine();
+        l8.CalcNextLine();
+        l9.CalcNextLine();
+        l10.CalcNextLine();
+        l11.CalcNextLine();
+        l12.CalcNextLine();
+        l13.CalcNextLine();
+        l14.CalcNextLine();
+        l15.CalcNextLine();
+        l16.CalcNextLine();
+        l1.states = l1.nextStates;
+        l2.states = l2.nextStates;
+        l3.states = l3.nextStates;
+        l4.states = l4.nextStates;
+        l5.states = l5.nextStates;
+        l6.states = l6.nextStates;
+        l7.states = l7.nextStates;
+        l8.states = l8.nextStates;
+        l9.states = l9.nextStates;
+        l10.states = l10.nextStates;
+        l11.states = l11.nextStates;
+        l12.states = l12.nextStates;
+        l13.states = l13.nextStates;
+        l14.states = l14.nextStates;
+        l15.states = l15.nextStates;
+        l16.states = l16.nextStates;
+    }
+    
+    void printTab() {
+        l1.printLine();
+        l2.printLine();
+        l3.printLine();
+        l4.printLine();
+        l5.printLine();
+        l6.printLine();
+        l7.printLine();
+        l8.printLine();
+        l9.printLine();
+        l10.printLine();
+        l11.printLine();
+        l12.printLine();
+        l13.printLine();
+        l14.printLine();
+        l15.printLine();
+        l16.printLine();
+    }
+}
+
+
+{
+Table map = new Table();
+    map.init();
+
+    while(true) {
+       println(); println(); println(); println(); println();
+        map.printTab();
+        map.CalcNextTab();
+    }
+}

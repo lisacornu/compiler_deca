@@ -1,0 +1,13 @@
+// Description:
+//    test du moins unaire
+//
+// Resultats:
+//   3
+//
+// Historique:
+//    cree le 11/01/2025
+
+{
+    int a = -2;
+    println(a + 5);
+}

@@ -1,0 +1,31 @@
+// Description:
+//    test des conditions <, > avec des if / else
+//
+// Resultats:
+//
+// Historique:
+//    cree le 10/01/2025
+
+{
+    if(3>4){
+        println("pas normal");
+    }
+    else{
+        println("normal");
+    }
+    if(3>2){
+        println("normal");
+    }
+    else{
+        println("pas normal");
+    }
+    if(3>3){
+        println("pas normal");
+    }
+    else{
+        println("normal");
+    }
+    
+
+
+}

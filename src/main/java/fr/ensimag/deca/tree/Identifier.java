@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegisterHandler;
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -15,8 +15,10 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -167,7 +169,19 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (localEnv.get(getName()) != null){                
+            Definition expr = localEnv.get(getName());
+            if (expr.isExpression()){
+                setDefinition(expr);
+                setType(expr.getType());
+                return getType();
+            }else{
+                throw new ContextualError("This is not an expression.", getLocation());
+            }
+        }else{
+            throw new ContextualError("There is no definition for this name : "+getName(), getLocation());
+        }
+        
     }
 
     /**
@@ -176,10 +190,51 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Definition type = compiler.environmentType.defOfType(getName());
+        if (type == null){
+            throw new ContextualError("Type is not defined", getLocation());
+        }
+        if (type.getType().isVoid()){
+            throw new ContextualError("It's void type", getLocation());
+        }
+        setDefinition(type);
+        setType(type.getType());
+        return getType();
     }
-    
-    
+
+    public Type verifyTypeMethod(DecacCompiler compiler) throws ContextualError{
+        Definition type = compiler.environmentType.defOfType(getName());
+        if (type == null){
+            throw new ContextualError("Type of method is not defined", getLocation());
+        }
+        setDefinition(type);
+        setType(type.getType());
+        return getType();
+    }
+
+    @Override
+    public void printExprValue(DecacCompiler compiler) {
+        if (this.getExpDefinition().getNature().equals("variable") || this.getExpDefinition().isParam()) {
+            compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
+            if (this.getExpDefinition().getType().isFloat())
+                compiler.addInstruction(new WFLOAT());
+            else if (this.getExpDefinition().getType().isInt()) {
+                compiler.addInstruction(new WINT());
+            }
+        }
+
+        if (getExpDefinition().getNature().equals("field")) {
+            DVal exprAddr = codeGenExpr(compiler);
+            GPRegister exprReg = RegisterHandler.popIntoRegister(compiler, exprAddr, GPRegister.R1);
+            compiler.addInstruction(new LOAD(exprReg, GPRegister.R1));
+            if (this.getExpDefinition().getType().isFloat())
+                compiler.addInstruction(new WFLOAT());
+            else if (this.getExpDefinition().getType().isInt())
+                compiler.addInstruction(new WINT());
+        }
+    }
+
+
     private Definition definition;
 
 
@@ -214,4 +269,22 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    //Renvoi un register offset en cas d'assign (si l'identifier est un champ)
+    public DAddr codeGenExprAddr(DecacCompiler compiler, GPRegister tempReg) {
+        RegisterOffset objectAddress = new RegisterOffset(-2, Register.LB);
+        compiler.addInstruction(new LOAD(objectAddress, tempReg));
+        RegisterOffset fielHeapAddress = new RegisterOffset(getFieldDefinition().getIndex(), tempReg);
+        return fielHeapAddress;
+    }
+
+    protected DVal codeGenExpr(DecacCompiler compiler) {
+        if (getDefinition().isField()) {
+            RegisterOffset objectAddress = new RegisterOffset(-2, Register.LB);
+            compiler.addInstruction(new LOAD(objectAddress, GPRegister.R0));
+            RegisterOffset fielHeapAddress = new RegisterOffset(getFieldDefinition().getIndex(), GPRegister.R0);
+            compiler.addInstruction(new LOAD(fielHeapAddress, GPRegister.R0));
+            return RegisterHandler.pushFromRegister(compiler, GPRegister.R0);
+        }
+        return getExpDefinition().getOperand();
+    }
 }

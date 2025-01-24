@@ -1,0 +1,10 @@
+// Description:
+//    Programme qui inclue un fichier sans sens 
+//
+// Resultats:
+//    erreur 
+//
+// Historique:
+//    cree le 03/01/2025
+
+#include ""

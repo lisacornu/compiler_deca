@@ -1,0 +1,53 @@
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 7 elements]
+      |  []> [11, 12] DeclVar
+      |  ||  +> [11, 4] Identifier (boolean)
+      |  ||  +> [11, 12] Identifier (result1)
+      |  ||  `> [11, 20] Initialization
+      |  ||     `> [11, 22] Equals
+      |  ||        +> [11, 23] Int (3)
+      |  ||        `> [11, 28] Int (3)
+      |  []> [12, 12] DeclVar
+      |  ||  +> [12, 4] Identifier (boolean)
+      |  ||  +> [12, 12] Identifier (result2)
+      |  ||  `> [12, 20] Initialization
+      |  ||     `> [12, 22] NotEquals
+      |  ||        +> [12, 23] Int (3)
+      |  ||        `> [12, 28] Int (4)
+      |  []> [13, 12] DeclVar
+      |  ||  +> [13, 4] Identifier (boolean)
+      |  ||  +> [13, 12] Identifier (result3)
+      |  ||  `> [13, 20] Initialization
+      |  ||     `> [13, 22] LowerOrEqual
+      |  ||        +> [13, 23] Int (3)
+      |  ||        `> [13, 28] Int (4)
+      |  []> [14, 12] DeclVar
+      |  ||  +> [14, 4] Identifier (boolean)
+      |  ||  +> [14, 12] Identifier (result4)
+      |  ||  `> [14, 20] Initialization
+      |  ||     `> [14, 22] GreaterOrEqual
+      |  ||        +> [14, 23] Int (4)
+      |  ||        `> [14, 28] Int (3)
+      |  []> [15, 12] DeclVar
+      |  ||  +> [15, 4] Identifier (boolean)
+      |  ||  +> [15, 12] Identifier (result5)
+      |  ||  `> [15, 20] Initialization
+      |  ||     `> [15, 22] Greater
+      |  ||        +> [15, 23] Int (4)
+      |  ||        `> [15, 27] Int (3)
+      |  []> [16, 12] DeclVar
+      |  ||  +> [16, 4] Identifier (boolean)
+      |  ||  +> [16, 12] Identifier (result6)
+      |  ||  `> [16, 20] Initialization
+      |  ||     `> [16, 22] Lower
+      |  ||        +> [16, 23] Int (3)
+      |  ||        `> [16, 27] Int (4)
+      |  []> [17, 12] DeclVar
+      |      +> [17, 4] Identifier (boolean)
+      |      +> [17, 12] Identifier (result7)
+      |      `> [17, 20] Initialization
+      |         `> [17, 22] Not
+      |            `> [17, 23] Identifier (result6)
+      `> ListInst [List with 0 elements]

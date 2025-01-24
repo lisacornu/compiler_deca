@@ -1,0 +1,14 @@
+// Description:
+//    test minimaliste pour testé le pass 2 (object est dans  l'environnement de base)
+//
+// Resultats:
+//
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+class A{
+    object o;
+}
+

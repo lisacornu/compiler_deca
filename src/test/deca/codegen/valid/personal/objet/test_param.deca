@@ -1,0 +1,21 @@
+// Description:
+//    Programme de test des appels de méthodes avec paramètres
+//
+// Resultats:
+//    345
+//
+// Historique:
+//    cree le 20/01/2025
+
+class D {
+
+    void f(int a, int b, int c) {
+        println(a,b,c);
+    }
+
+}
+
+{
+    D d = new D();
+    d.f(3,4,5);
+}

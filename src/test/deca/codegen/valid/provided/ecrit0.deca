@@ -9,9 +9,8 @@
 //    cree le 01/01/2025
 
 {
-   println("ok") ; 
-   print("ok") ; 
-   println() ; 
+   println("ok") ;
+   print("ok") ;
 }
 
 

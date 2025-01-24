@@ -1,0 +1,16 @@
+// Description:
+//    Programme de test de la génération de methodCall
+//
+// Resultats:
+//
+// Historique:
+//    cree le 17/01/2025
+
+class A {
+    void move (int a, int b, int c) { }
+}
+
+{
+    A a = new A();
+    a.move(1, 2, 3);
+}

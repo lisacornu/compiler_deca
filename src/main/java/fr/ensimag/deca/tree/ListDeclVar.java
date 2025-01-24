@@ -5,6 +5,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.IMAProgram;
+
+import java.util.ArrayList;
 
 /**
  * List of declarations (e.g. int x; float y,z).
@@ -16,7 +20,9 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for(AbstractDeclVar declVar : getList()) {
+            declVar.decompile(s);
+        }
     }
 
     /**
@@ -33,7 +39,21 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */    
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        for(AbstractDeclVar var: getList()){
+            var.verifyDeclVar(compiler, localEnv, currentClass);
+        }
     }
 
+    protected void codeGenListDeclVar(DecacCompiler compiler) {
+        for(AbstractDeclVar declVar : getList()) {
+            declVar.codeGenDeclVar(compiler);
+        }
+    }
+
+    protected void codeGenListDeclVarMethod(DecacCompiler compiler) {
+        for(AbstractDeclVar declVar : getList()) {
+            declVar.codeGenDeclVarMethod(compiler);
+        }
+    }
 
 }

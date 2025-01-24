@@ -1,0 +1,19 @@
+// Description:
+//    assigne des variables, fais un calcul et affiche le résultat
+//
+// Resultats:
+//   1
+//
+// Historique:
+//    cree le 10/01/2025
+
+{
+int a = 1;
+int b = 2;
+int c = 3;
+
+a = b - 2 + c * 2 - 6 - a + 1;
+b = c = a;
+
+println(a,b,c);
+}

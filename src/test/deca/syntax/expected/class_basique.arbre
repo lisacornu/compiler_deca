@@ -1,0 +1,35 @@
+`> [13, 0] Program
+   +> ListDeclClass [List with 1 element]
+   |  []> [13, 0] DeclClass
+   |     +> [13, 2] Identifier (A)
+   |        +> ListDeclField [List with 2 elements]
+   |        []> [11, 4] DeclVar
+   |        || +> [11, 4] Identifier (int)
+   |        || +> [11, 8] Identifier (x)
+   |        || `> NoInitialization
+   |        []> [12, 4] DeclVar (protected)
+   |           +> [12, 14] Identifier (int)
+   |           +> [12, 18] Identifier (y)
+   |           `> NoInitialization
+   |     +> ListDeclMethod [List with 1 element]
+   |        []> [18, 4] DeclMethod
+   |           +> [18, 11] Identifier (A)
+   |           +> ListDeclParam [List with 1 element]
+   |           || []> [14, 8] DeclParam
+   |           ||    +> [14, 7] Identifier (int)
+   |           ||    +> [14, 11] Identifier (a)
+   |           ||    `> NoInitialization
+   |           `> MethodBody
+   |              +> ListDeclVar [List with 0 elements]  
+   |              `> ListInst [List with 2 elements]
+   |                 []> [19, 8] Assign
+   |                 || +> [19, 8] Selection
+   |                 || || +> [19, 8] This (true)
+   |                 || || `> [19, 13] Ident (x)
+   |                 || `> [19, 17] Ident (a)
+   |                 []> [20, 8] Assign
+   |                    +> [20, 8] Selection
+   |                    || +> [20, 8] This (true)
+   |                    || `> [20, 13] Ident (y)
+   |                    `> [20, 17] Ident (a)
+   `> EmptyMain

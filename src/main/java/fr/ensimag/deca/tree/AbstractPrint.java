@@ -1,14 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.FloatType;
-import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.IMAProgram;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -39,23 +38,35 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+                
+                for (AbstractExpr arg : getArguments().getList()){
+                    Type argType = arg.verifyExpr(compiler, localEnv, currentClass);
+                    if (!(argType.isString() || argType.isFloat() || argType.isInt() )){
+                        throw new ContextualError("Type is not String or Int or Float, you have "+argType, getLocation());
+                    }
+                }
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, String methodName) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            a.codeGenPrint(compiler, printHex);
         }
     }
 
-    private boolean getPrintHex() {
+
+    protected boolean getPrintHex() {
         return printHex;
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        String print = "print" + getSuffix() + (printHex ? "x" : "");
+
+        s.print(print+"(");
+        arguments.decompile(s);
+        s.print(");");
     }
 
     @Override

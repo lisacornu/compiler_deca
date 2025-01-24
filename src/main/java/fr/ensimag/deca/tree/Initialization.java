@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DVal;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -35,13 +37,21 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        getExpression().verifyRValue(compiler, localEnv, currentClass, t);
+        if (getExpression().getType().isInt() && t.isFloat()){
+            setExpression(new ConvFloat(getExpression()));
+        }
+        expression.setType(t);
     }
 
+    public DVal codeGenInit(DecacCompiler compiler){
+        return expression.codeGenExpr(compiler);
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" = ");
+        expression.decompile(s);
     }
 
     @Override

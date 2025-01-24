@@ -1,0 +1,77 @@
+
+r0.1 : ContextError : env_exp(name) n'est pas défini
+r0.2 : ContextError : Le type correspondant à env_types(name) n'exitse pas
+
+r1.1 : 
+r1.2 : 
+r1.3 : ContextError : env_types(super) n'est pas défini comme une classe (ou class n'existe pas)
+       ContextError : name -> class(_,_) est intersecté avec env_types càd env_types(name) déjà déclaré
+
+r2.1 : 
+r2.2 : 
+r2.3 : la classe n'est pas défini dans env_types(super)
+     : new_def n'est pas une class(super,(envf +° envm)/env_super) ou pas de type_class(name)
+     : env_typesr n'est pas newdef/env_types
+r2.4 : env_expr n'est pas disjoint à env_exp
+r2.5 : type = void ou si (class(_,envexpsuper) = env_types(super) et envexpsuper(name) est défini) alors envexpsuper(name) n'est pas un field
+r2.6 : env_expr n'est pas disjoint à env_exp
+r2.7 : si class connu danc env_types(super) et envexpsuper(name) defini :  method pas défini par envexpsuper(name) ou sig!=sig2 ou !subtype(env_types,type1,type2)
+r2.8 : 
+r2.9 : type = void
+
+r3.1 : 
+r3.2 : 
+r3.3 : 
+r3.4 : n'hérite pas de void 
+r3.5 : la classe n'est pas défini dans les types d'environnement de super
+r3.6 : 
+r3.7
+r3.8 : incompatible avec type
+r3.9 : 
+r3.10 : 
+r3.11 : 
+r3.12 : env_expr n'est pas disjoint à env_exp
+r3.13 : 
+r3.14 : 
+r3.15 : 
+r3.16 :
+r3.17 : {name->(var,type)} n'est pas disjoint à env_exp
+      : type = void
+r3.18 : 
+r3.19 : 
+r3.20 : ??
+r3.21 : 
+r3.22 :
+r3.23 :  
+r3.24 : return = void
+r3.25 : 
+r3.26 : 
+r3.27 : 
+r3.28 : rvalue -> expr : ContextError : type1 et type2 incompatibles 
+r3.29 : condition -> expr : ContextError : expr n'est pas de type booleen
+r3.30 : 
+r3.31 : type is not int or float or string
+r3.32 : identifier -> Identifier : ContextError : env_exp(name) non défini
+r3.33 : type is not operation between type1,2
+r3.34 : 
+r3.35 : type is not int
+r3.36 : type is not float
+r3.37 : type is not unary op on type1
+r3.38 : 
+r3.39 : type and type2 not compatible by envtypes
+r3.40 : type is not instanceof_op between type1 and 2
+r3.41 : 
+r3.42 : type is not a class 
+r3.43 : class is null or type is not a class from type_class
+r3.44-63 :
+r3.64 : 
+r3.65 : valeur synthétisée n'est pas un type de classe2 ou pas de protection public ou class n'est pas défini dans env_types(class2)
+r3.66 : valeur synthétisée n'est pas un type de classe2 ou pas de protection protected ou class n'est pas défini dans env_types(class2) ou pas subtype(envtypes pour type_class2,type_class) ou (type_class avec type_classfield)
+r3.67 : val synthétisée n'est pas field
+r3.68 : val synthétisée n'est pas param
+r3.69 : val synthétisée n'est pas var
+r3.70 : val synthétisée n'est pas field(visible,calss)
+r3.71 : val synthétisée n'est pas type_class2 ou class n'est pas def dans env_types(class2)
+r3.72 : val synthétisée n'est pas method
+r3.73 : rvalue-> eps : ContextError : signature héritée n'est pas vide ([])
+r3.74 : 

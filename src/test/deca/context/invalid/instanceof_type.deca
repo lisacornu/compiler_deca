@@ -1,0 +1,13 @@
+// Description:
+//    instanceof ne peut pas etre utiliser si c'est des type de base 
+//
+// Resultats:
+//    Ligne 12 : 
+// 
+// Historique:
+//    cree le 14/01/2025
+
+{   
+   int x; 
+   boolean b = x instanceof int;
+}

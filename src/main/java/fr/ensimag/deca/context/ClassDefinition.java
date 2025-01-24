@@ -1,8 +1,16 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tree.AbstractDeclMethod;
+import fr.ensimag.deca.tree.ListDeclMethod;
 import fr.ensimag.deca.tree.Location;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Definition of a class.
@@ -12,6 +20,19 @@ import org.apache.commons.lang.Validate;
  */
 public class ClassDefinition extends TypeDefinition {
 
+    private int numberOfFields = 0;
+    private int numberOfMethods = 0;
+    private DAddr definitionAdress;
+
+    private ArrayList<String> methodArray = new ArrayList<>();
+
+    public ArrayList<String> getMethodArray() {
+        return methodArray;
+    }
+
+    public void setMethodArray(ArrayList<String> methodArray) {
+        this.methodArray = methodArray;
+    }
 
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
@@ -29,18 +50,33 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfMethods;
     }
 
+    private int methodIndex = 1;
+
+    public int getMethodIndex() {
+        return methodIndex;
+    }
+
+    public void setMethodIndex(int methodIndex) {
+        this.methodIndex = methodIndex;
+    }
+
     public void setNumberOfMethods(int n) {
         Validate.isTrue(n >= 0);
         numberOfMethods = n;
     }
-    
+
+    public DAddr getDefinitionAdress() {
+        return definitionAdress;
+    }
+
+    public void setDefinitionAdress(int definitionAdress) {
+        this.definitionAdress = new RegisterOffset(definitionAdress, GPRegister.GB);
+    }
+
     public int incNumberOfMethods() {
         numberOfMethods++;
         return numberOfMethods;
     }
-
-    private int numberOfFields = 0;
-    private int numberOfMethods = 0;
     
     @Override
     public boolean isClass() {
@@ -76,5 +112,6 @@ public class ClassDefinition extends TypeDefinition {
         members = new EnvironmentExp(parent);
         this.superClass = superClass;
     }
+
     
 }

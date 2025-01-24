@@ -2,10 +2,12 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
 
 /**
  * @author gl31
@@ -16,8 +18,7 @@ public class Main extends AbstractMain {
     
     private ListDeclVar declVariables;
     private ListInst insts;
-    public Main(ListDeclVar declVariables,
-            ListInst insts) {
+    public Main(ListDeclVar declVariables, ListInst insts) {
         Validate.notNull(declVariables);
         Validate.notNull(insts);
         this.declVariables = declVariables;
@@ -27,18 +28,23 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-        // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
-        // Vous avez le droit de changer le profil fourni pour ces méthodes
-        // (mais ce n'est à priori pas nécessaire).
+        
+        EnvironmentExp localEnv = new EnvironmentExp(null); // nécessité environnement pour démarrer inititalisé à null
+        LOG.debug("verify Variable : start");
+        this.declVariables.verifyListDeclVariable(compiler, localEnv, null); // on verifie en premier les variable 
+        LOG.debug("verify Variable : end");
+        LOG.debug("verify Inst : start");
+        this.insts.verifyListInst(compiler, localEnv, null, null); //on vérifie les inst
+        LOG.debug("verify Inst : end");
         LOG.debug("verify Main: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
-        compiler.addComment("Beginning of main instructions:");
-        insts.codeGenListInst(compiler);
+        compiler.addComment("---------- Déclaration des variables");
+        declVariables.codeGenListDeclVar(compiler);
+        compiler.addComment("---------- Instructions");
+        insts.codeGenListInst(compiler, null);
     }
     
     @Override

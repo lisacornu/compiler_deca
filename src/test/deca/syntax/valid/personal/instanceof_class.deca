@@ -1,0 +1,16 @@
+// Description:
+//    test minimaliste utilisant instanceof
+//
+// Resultats:
+//3
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+class A {
+    boolean sameType(object o){
+        return o instanceof this;
+    }
+}

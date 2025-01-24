@@ -1,0 +1,13 @@
+// Description:
+//    Affectation d'un int
+//
+// Resultats:
+//    
+// 
+// Historique:
+//    cree le 07/01/2025
+
+{
+    int a; //meme si sa suffit il faut tout verifié 
+    a=1;
+}

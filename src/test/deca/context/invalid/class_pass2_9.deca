@@ -1,0 +1,17 @@
+// Description:
+//    test minimaliste pour induire a l erreur lors du pass 2 (declaration de methode avec même nom)
+//
+// Resultats:
+// erreur
+//
+//
+// Historique:
+//    cree le 18/01/2025
+
+
+
+class A {
+    void p( ){}
+    void p(int a){}
+}
+

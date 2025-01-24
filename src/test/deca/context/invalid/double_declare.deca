@@ -1,0 +1,14 @@
+// Description:
+//    Programme declarant une variable 2 fois.
+//
+// Resultats:
+//    Erreur contextuelle
+//    Ligne 13 : The type as already been define for the variable x
+//
+// Historique:
+//    cree le 06/01/2025
+
+{   
+   int x;
+   int x;
+}

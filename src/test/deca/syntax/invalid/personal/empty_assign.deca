@@ -1,0 +1,11 @@
+// Description:
+//    tests de programme affect une variable a rien rien n est pas une expression
+//
+// Resultats:
+//    erreur 
+//
+// Historique:
+//    cree le 17/12/2024
+{
+    int x =;
+}

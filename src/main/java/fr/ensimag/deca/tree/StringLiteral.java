@@ -5,10 +5,14 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+
+import java.io.PrintStream;
+
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
-import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -28,6 +32,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     public StringLiteral(String value) {
         Validate.notNull(value);
+        //retire les guillemets de la string
         value = value.substring(1, value.length() - 1);
         this.value = value;
     }
@@ -35,17 +40,20 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type string = new StringType(compiler.createSymbol("string"));
+        setType(string);   
+        return string;
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
+    public void printExprValue(DecacCompiler compiler) {
         compiler.addInstruction(new WSTR(new ImmediateString(value)));
     }
 
+
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("\"" + value + "\"");
     }
 
     @Override
@@ -63,4 +71,7 @@ public class StringLiteral extends AbstractStringLiteral {
         return "StringLiteral (" + value + ")";
     }
 
+    // jamais appelé
+    @Override
+    protected DVal codeGenExpr(DecacCompiler compiler) { return null; }
 }

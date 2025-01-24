@@ -1,0 +1,17 @@
+// Description:
+//    test minimaliste utilisant instanceof
+//
+// Resultats:
+//3
+//
+//
+// Historique:
+//    cree le 14/01/2025
+
+
+{
+    int x=3;
+     if (x instanceof int) {  
+        println(x);
+    }
+}

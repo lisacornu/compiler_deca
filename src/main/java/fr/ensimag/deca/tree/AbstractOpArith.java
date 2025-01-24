@@ -1,10 +1,14 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import static org.mockito.Mockito.timeout;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -21,6 +25,32 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        
+        Type lefType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type righType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        if ((lefType.isInt() || lefType.isFloat()) && (righType.isFloat()||righType.isInt())){
+            if (lefType.isFloat() && righType.isInt()){
+                ConvFloat FloatTypeExpr = new ConvFloat(getRightOperand());
+                FloatTypeExpr.setType(righType);
+                setRightOperand(FloatTypeExpr); 
+                this.setType(lefType);
+                return lefType;
+
+            }else if (righType.isFloat() && lefType.isInt()){
+                ConvFloat FloatTypeExpr = new ConvFloat(getLeftOperand());
+                FloatTypeExpr.setType(righType);
+                setLeftOperand(FloatTypeExpr); 
+                this.setType(righType);
+                return righType;
+
+            }else if (righType.isFloat()){
+                this.setType(righType);
+                return righType;
+            }
+            this.setType(righType);
+            return righType;
+        }else{
+            throw new ContextualError("Both are not float or int",getLocation());
+        }
     }
 }
