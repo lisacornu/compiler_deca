@@ -133,7 +133,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
             Type type = verifyExpr(compiler, localEnv, currentClass);
-        if (!(type.isBoolean() || type.isFloat() || type.isInt() || type.isString()|| type.isVoid()|| type.isClass())){
+        if (!(type.isBoolean() || type.isFloat() || type.isInt() || type.isString()|| type.isVoid()|| type.isClass() || type.isNull())){
             throw new UnsupportedOperationException("This is not inst type");
         }
     }

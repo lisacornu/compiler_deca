@@ -1,0 +1,14 @@
+class A {
+	int f;
+}
+
+class B extends A {
+	boolean f;
+}
+
+{
+	B a;
+	if (a.f) {
+		null;
+	}
+}
