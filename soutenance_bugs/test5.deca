@@ -1,6 +1,0 @@
-// a executer avec ima
-{
-   if (true || ((5/0) == 3)) {
-      println ("ok");
-   }
-}
